@@ -11,7 +11,73 @@
 
 const WHATSAPP_NUMBER = "913653244745";
 
+/* =========================================
+   COUNTRY GATE
+========================================= */
 
+function selectCountry(country) {
+
+    selectedCountry = country;
+
+    localStorage.setItem(
+        "footworldCountry",
+        country
+    );
+
+    const countryGate =
+        document.getElementById("countryGate");
+
+    if (countryGate) {
+
+        countryGate.style.display = "none";
+
+    }
+
+    loadProducts();
+
+    updateCart();
+
+    updateCheckoutTotal();
+
+    updateCurrencyNotice();
+
+    updatePaymentMethods();
+
+}
+
+
+/* =========================================
+   CHECK SAVED COUNTRY
+========================================= */
+
+function initializeCountry() {
+
+    const savedCountry =
+        localStorage.getItem(
+            "footworldCountry"
+        );
+
+
+    if (savedCountry &&
+        countrySettings[savedCountry]) {
+
+        selectedCountry = savedCountry;
+
+        const countryGate =
+            document.getElementById(
+                "countryGate"
+            );
+
+        if (countryGate) {
+
+            countryGate.style.display =
+                "none";
+
+        }
+
+    }
+
+}
 /* =========================================
    COUNTRY / CURRENCY SETTINGS
 ========================================= */
@@ -1629,6 +1695,8 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
 
+        initializeCountry();
+
         loadProducts();
 
         updateCart();
@@ -1636,6 +1704,9 @@ document.addEventListener(
         updateCurrencyNotice();
 
         updatePaymentMethods();
+
+    }
+);
 
 
         /* Set checkout country */
