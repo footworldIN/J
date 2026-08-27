@@ -1,19 +1,19 @@
 /* =========================================
    FOOTWORLD
-   PRODUCT + CART + WHATSAPP SYSTEM
+   PRODUCT + CART + SIZE SYSTEM
 ========================================= */
 
 
 /* =========================================
    WHATSAPP NUMBER
-   CHANGE ONLY THIS NUMBER LATER
+   CHANGE THIS LATER
 ========================================= */
 
 const WHATSAPP_NUMBER = "913653244745";
 
 
 /* =========================================
-   PRODUCT DATABASE
+   PRODUCTS
 ========================================= */
 
 const products = [
@@ -24,8 +24,13 @@ const products = [
         category: "Men",
         type: "Formal Shoes",
         price: 1499,
-        image: "https://images.unsplash.com/photo-1614252235316-8c857d1c9b8e?auto=format&fit=crop&w=900&q=85"
+
+        sizes: [6, 7, 8, 9, 10, 11],
+
+        image:
+            "https://images.unsplash.com/photo-1614252235316-8c857d1c9b8e?auto=format&fit=crop&w=900&q=85"
     },
+
 
     {
         id: 2,
@@ -33,8 +38,13 @@ const products = [
         category: "Men",
         type: "Loafers",
         price: 1699,
-        image: "https://images.unsplash.com/photo-1614252369475-531eba835eb1?auto=format&fit=crop&w=900&q=85"
+
+        sizes: [6, 7, 8, 9, 10, 11],
+
+        image:
+            "https://images.unsplash.com/photo-1614252369475-531eba835eb1?auto=format&fit=crop&w=900&q=85"
     },
+
 
     {
         id: 3,
@@ -42,8 +52,13 @@ const products = [
         category: "Men",
         type: "Formal Shoes",
         price: 1799,
-        image: "https://images.unsplash.com/photo-1533867617858-e7b97e060509?auto=format&fit=crop&w=900&q=85"
+
+        sizes: [6, 7, 8, 9, 10, 11],
+
+        image:
+            "https://images.unsplash.com/photo-1533867617858-e7b97e060509?auto=format&fit=crop&w=900&q=85"
     },
+
 
     {
         id: 4,
@@ -51,8 +66,13 @@ const products = [
         category: "Men",
         type: "Loafers",
         price: 1399,
-        image: "https://images.unsplash.com/photo-1614252235316-8c857d1c9b8e?auto=format&fit=crop&w=900&q=85"
+
+        sizes: [6, 7, 8, 9, 10, 11],
+
+        image:
+            "https://images.unsplash.com/photo-1614252235316-8c857d1c9b8e?auto=format&fit=crop&w=900&q=85"
     },
+
 
     {
         id: 5,
@@ -60,8 +80,13 @@ const products = [
         category: "Boys",
         type: "Formal Shoes",
         price: 999,
-        image: "https://images.unsplash.com/photo-1528569937393-ee892b976859?auto=format&fit=crop&w=900&q=85"
+
+        sizes: [10, 11, 12, 13, 1, 2, 3, 4, 5],
+
+        image:
+            "https://images.unsplash.com/photo-1528569937393-ee892b976859?auto=format&fit=crop&w=900&q=85"
     },
+
 
     {
         id: 6,
@@ -69,7 +94,11 @@ const products = [
         category: "Boys",
         type: "Loafers",
         price: 1099,
-        image: "https://images.unsplash.com/photo-1528569937393-ee892b976859?auto=format&fit=crop&w=900&q=85"
+
+        sizes: [10, 11, 12, 13, 1, 2, 3, 4, 5],
+
+        image:
+            "https://images.unsplash.com/photo-1528569937393-ee892b976859?auto=format&fit=crop&w=900&q=85"
     }
 
 ];
@@ -80,6 +109,17 @@ const products = [
 ========================================= */
 
 let cart = [];
+
+
+/* =========================================
+   MODAL STATE
+========================================= */
+
+let selectedProduct = null;
+
+let selectedSize = null;
+
+let modalQuantity = 1;
 
 
 /* =========================================
@@ -103,7 +143,8 @@ function loadProducts() {
 
     products.forEach(product => {
 
-        productGrid.innerHTML += createProductCard(product);
+        productGrid.innerHTML +=
+            createProductCard(product);
 
     });
 
@@ -112,12 +153,14 @@ function loadProducts() {
 
         newProducts.innerHTML = "";
 
-        products.slice(0, 4).forEach(product => {
+        products
+            .slice(0, 4)
+            .forEach(product => {
 
-            newProducts.innerHTML +=
-                createProductCard(product);
+                newProducts.innerHTML +=
+                    createProductCard(product);
 
-        });
+            });
 
     }
 
@@ -144,24 +187,32 @@ function createProductCard(product) {
             <div class="product-info">
 
                 <div class="product-category">
+
                     ${product.category}
                     ·
                     ${product.type}
+
                 </div>
 
                 <h3 class="product-name">
+
                     ${product.name}
+
                 </h3>
 
                 <div class="product-price">
+
                     ₹${product.price.toLocaleString("en-IN")}
+
                 </div>
 
                 <button
                     class="product-action"
-                    onclick="addToCart(${product.id})"
+                    onclick="openProductModal(${product.id})"
                 >
-                    ADD TO BAG
+
+                    VIEW PRODUCT
+
                 </button>
 
             </div>
@@ -174,35 +225,234 @@ function createProductCard(product) {
 
 
 /* =========================================
-   ADD TO CART
+   OPEN PRODUCT MODAL
 ========================================= */
 
-function addToCart(productId) {
+function openProductModal(productId) {
 
     const product =
-        products.find(p => p.id === productId);
+        products.find(
+            p => p.id === productId
+        );
 
 
     if (!product) return;
 
 
+    selectedProduct = product;
+
+    selectedSize = null;
+
+    modalQuantity = 1;
+
+
+    document.getElementById(
+        "modalProductImage"
+    ).src = product.image;
+
+
+    document.getElementById(
+        "modalProductImage"
+    ).alt = product.name;
+
+
+    document.getElementById(
+        "modalProductName"
+    ).textContent = product.name;
+
+
+    document.getElementById(
+        "modalProductCategory"
+    ).textContent =
+        `${product.category} · ${product.type}`;
+
+
+    document.getElementById(
+        "modalProductPrice"
+    ).textContent =
+        `₹${product.price.toLocaleString("en-IN")}`;
+
+
+    document.getElementById(
+        "modalQuantity"
+    ).textContent = modalQuantity;
+
+
+    loadSizes(product);
+
+
+    document.getElementById(
+        "productModal"
+    ).classList.add("active");
+
+}
+
+
+/* =========================================
+   CLOSE PRODUCT MODAL
+========================================= */
+
+function closeProductModal() {
+
+    document.getElementById(
+        "productModal"
+    ).classList.remove("active");
+
+}
+
+
+/* =========================================
+   LOAD SIZES
+========================================= */
+
+function loadSizes(product) {
+
+    const container =
+        document.getElementById("sizeOptions");
+
+
+    container.innerHTML = "";
+
+
+    product.sizes.forEach(size => {
+
+        const button =
+            document.createElement("button");
+
+
+        button.type = "button";
+
+        button.className =
+            "size-option";
+
+
+        button.textContent =
+            size;
+
+
+        button.onclick = function () {
+
+            selectSize(size, button);
+
+        };
+
+
+        container.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================================
+   SELECT SIZE
+========================================= */
+
+function selectSize(size, button) {
+
+    selectedSize = size;
+
+
+    document
+        .querySelectorAll(".size-option")
+        .forEach(option => {
+
+            option.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+    button.classList.add(
+        "selected"
+    );
+
+}
+
+
+/* =========================================
+   CHANGE MODAL QUANTITY
+========================================= */
+
+function changeModalQuantity(amount) {
+
+    modalQuantity += amount;
+
+
+    if (modalQuantity < 1) {
+
+        modalQuantity = 1;
+
+    }
+
+
+    if (modalQuantity > 10) {
+
+        modalQuantity = 10;
+
+    }
+
+
+    document.getElementById(
+        "modalQuantity"
+    ).textContent = modalQuantity;
+
+}
+
+
+/* =========================================
+   ADD SELECTED PRODUCT
+========================================= */
+
+function addSelectedProductToCart() {
+
+    if (!selectedProduct) return;
+
+
+    if (!selectedSize) {
+
+        alert(
+            "Please select a size before adding to your bag."
+        );
+
+        return;
+
+    }
+
+
     const existing =
-        cart.find(item => item.id === productId);
+        cart.find(
+            item =>
+                item.id === selectedProduct.id &&
+                item.size === selectedSize
+        );
 
 
     if (existing) {
 
-        existing.quantity++;
+        existing.quantity +=
+            modalQuantity;
 
     } else {
 
         cart.push({
 
-            ...product,
+            id: selectedProduct.id,
 
-            quantity: 1,
+            name: selectedProduct.name,
 
-            size: null
+            category: selectedProduct.category,
+
+            type: selectedProduct.type,
+
+            price: selectedProduct.price,
+
+            image: selectedProduct.image,
+
+            size: selectedSize,
+
+            quantity: modalQuantity
 
         });
 
@@ -210,6 +460,8 @@ function addToCart(productId) {
 
 
     updateCart();
+
+    closeProductModal();
 
     openCart();
 
@@ -223,13 +475,21 @@ function addToCart(productId) {
 function updateCart() {
 
     const cartCount =
-        document.getElementById("cartCount");
+        document.getElementById(
+            "cartCount"
+        );
+
 
     const cartItems =
-        document.getElementById("cartItems");
+        document.getElementById(
+            "cartItems"
+        );
+
 
     const cartTotal =
-        document.getElementById("cartTotal");
+        document.getElementById(
+            "cartTotal"
+        );
 
 
     const totalQuantity =
@@ -249,12 +509,17 @@ function updateCart() {
         cartItems.innerHTML = `
 
             <p class="empty-cart">
+
                 Your bag is empty.
+
             </p>
 
         `;
 
-        cartTotal.textContent = "₹0";
+
+        cartTotal.textContent =
+            "₹0";
+
 
         return;
 
@@ -267,59 +532,64 @@ function updateCart() {
     let total = 0;
 
 
-    cart.forEach((item, index) => {
+    cart.forEach(
+        (item, index) => {
 
-        total +=
-            item.price *
-            item.quantity;
+            total +=
+                item.price *
+                item.quantity;
 
 
-        cartItems.innerHTML += `
+            cartItems.innerHTML += `
 
-            <div class="cart-item">
+                <div class="cart-item">
 
-                <img
-                    src="${item.image}"
-                    alt="${item.name}"
-                >
+                    <img
+                        src="${item.image}"
+                        alt="${item.name}"
+                    >
 
-                <div class="cart-item-info">
+                    <div
+                        class="cart-item-info"
+                    >
 
-                    <h4>
-                        ${item.name}
-                    </h4>
+                        <h4>
+                            ${item.name}
+                        </h4>
 
-                    <p>
-                        Size:
-                        ${item.size || "Not selected"}
-                    </p>
+                        <p>
+                            Size: ${item.size}
+                        </p>
 
-                    <p>
-                        Qty:
-                        ${item.quantity}
-                    </p>
+                        <p>
+                            Qty: ${item.quantity}
+                        </p>
 
-                    <p>
-                        ₹${(
-                            item.price *
-                            item.quantity
-                        ).toLocaleString("en-IN")}
-                    </p>
+                        <p>
+                            ₹${(
+                                item.price *
+                                item.quantity
+                            ).toLocaleString("en-IN")}
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="remove-item"
+                        onclick="removeFromCart(${index})"
+                    >
+
+                        REMOVE
+
+                    </button>
 
                 </div>
 
-                <button
-                    class="remove-item"
-                    onclick="removeFromCart(${index})"
-                >
-                    REMOVE
-                </button>
+            `;
 
-            </div>
-
-        `;
-
-    });
+        }
+    );
 
 
     cartTotal.textContent =
@@ -329,7 +599,7 @@ function updateCart() {
 
 
 /* =========================================
-   REMOVE FROM CART
+   REMOVE CART ITEM
 ========================================= */
 
 function removeFromCart(index) {
@@ -347,10 +617,9 @@ function removeFromCart(index) {
 
 function openCart() {
 
-    const overlay =
-        document.getElementById("cartOverlay");
-
-    overlay.classList.add("active");
+    document
+        .getElementById("cartOverlay")
+        .classList.add("active");
 
 }
 
@@ -361,10 +630,9 @@ function openCart() {
 
 function closeCart() {
 
-    const overlay =
-        document.getElementById("cartOverlay");
-
-    overlay.classList.remove("active");
+    document
+        .getElementById("cartOverlay")
+        .classList.remove("active");
 
 }
 
@@ -378,7 +646,7 @@ function checkout() {
     if (cart.length === 0) {
 
         alert(
-            "Your bag is empty. Please add a product first."
+            "Your bag is empty."
         );
 
         return;
@@ -389,8 +657,9 @@ function checkout() {
     let message =
         "Hello FOOTWORLD,%0A%0A";
 
+
     message +=
-        "I would like to place an order:%0A%0A";
+        "I would like to place an order.%0A%0A";
 
 
     let total = 0;
@@ -407,7 +676,7 @@ function checkout() {
             `Product: ${encodeURIComponent(item.name)}%0A`;
 
         message +=
-            `Size: ${encodeURIComponent(item.size || "To be confirmed")}%0A`;
+            `Size: ${encodeURIComponent(item.size)}%0A`;
 
         message +=
             `Quantity: ${item.quantity}%0A`;
@@ -421,8 +690,9 @@ function checkout() {
     message +=
         `TOTAL: ₹${total}%0A%0A`;
 
+
     message +=
-        "Please send me the delivery details and payment options.";
+        "Please confirm my order and send delivery details.";
 
 
     const whatsappURL =
