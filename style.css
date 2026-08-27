@@ -1,0 +1,1006 @@
+/* =========================================
+   FOOTWORLD
+   PREMIUM FORMAL FOOTWEAR
+========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap');
+
+
+/* =========================================
+   RESET
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "DM Sans", sans-serif;
+    background: #f7f5f1;
+    color: #171717;
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font-family: inherit;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header {
+    height: 82px;
+    background: rgba(247, 245, 241, 0.96);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 5%;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+
+    backdrop-filter: blur(12px);
+}
+
+
+/* LOGO */
+
+.logo {
+    font-family: "Playfair Display", serif;
+    font-size: 27px;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+.logo span {
+    display: block;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 8px;
+    letter-spacing: 3px;
+
+    margin-top: -5px;
+}
+
+
+/* NAVIGATION */
+
+.navigation {
+    display: flex;
+    gap: 28px;
+}
+
+.navigation a {
+    font-size: 11px;
+    font-weight: 600;
+
+    letter-spacing: 1.5px;
+
+    position: relative;
+}
+
+.navigation a::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -6px;
+
+    width: 0;
+    height: 1px;
+
+    background: #171717;
+
+    transition: width 0.3s ease;
+}
+
+.navigation a:hover::after {
+    width: 100%;
+}
+
+
+/* CART */
+
+.cart-button {
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    letter-spacing: 1.5px;
+}
+
+.cart-button span {
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 20px;
+    height: 20px;
+
+    border-radius: 50%;
+
+    background: #171717;
+
+    color: #fff;
+
+    margin-left: 5px;
+
+    font-size: 10px;
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.hero {
+
+    min-height: calc(100vh - 82px);
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 8%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,0.72),
+            rgba(0,0,0,0.20)
+        ),
+
+        url("https://images.unsplash.com/photo-1614252369475-531eba835eb1?auto=format&fit=crop&w=2200&q=85");
+
+    background-size: cover;
+    background-position: center;
+
+    color: white;
+}
+
+.hero-content {
+    max-width: 650px;
+}
+
+.small-title {
+
+    font-size: 10px;
+
+    letter-spacing: 3px;
+
+    font-weight: 600;
+
+    margin-bottom: 20px;
+
+    text-transform: uppercase;
+}
+
+.hero h1 {
+
+    font-family: "Playfair Display", serif;
+
+    font-size: clamp(55px, 8vw, 110px);
+
+    line-height: 0.95;
+
+    font-weight: 400;
+
+    margin-bottom: 30px;
+}
+
+.hero h1 span {
+
+    font-style: italic;
+}
+
+.hero-text {
+
+    max-width: 470px;
+
+    font-size: 16px;
+
+    opacity: 0.92;
+
+    margin-bottom: 40px;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.hero-buttons {
+
+    display: flex;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+}
+
+.button {
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 160px;
+
+    padding: 15px 28px;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: 2px;
+
+    transition: all 0.3s ease;
+}
+
+.button-dark {
+
+    background: #171717;
+
+    color: white;
+}
+
+.button-dark:hover {
+
+    background: #333;
+}
+
+.button-light {
+
+    background: white;
+
+    color: #171717;
+}
+
+.button-light:hover {
+
+    background: #e9e6df;
+}
+
+
+/* =========================================
+   INTRO
+========================================= */
+
+.intro {
+
+    text-align: center;
+
+    max-width: 800px;
+
+    margin: auto;
+
+    padding: 130px 20px;
+}
+
+.intro h2 {
+
+    font-family: "Playfair Display", serif;
+
+    font-size: clamp(40px, 6vw, 72px);
+
+    line-height: 1.05;
+
+    font-weight: 400;
+
+    margin-bottom: 25px;
+}
+
+.intro p:last-child {
+
+    max-width: 500px;
+
+    margin: auto;
+
+    color: #666;
+
+    font-size: 15px;
+}
+
+
+/* =========================================
+   COLLECTION SECTIONS
+========================================= */
+
+.collection {
+
+    width: 100%;
+}
+
+.collection-image {
+
+    min-height: 700px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 8%;
+
+    background-size: cover;
+
+    background-position: center;
+
+    color: white;
+
+    position: relative;
+}
+
+
+/* MEN */
+
+.men-image {
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,0.72),
+            rgba(0,0,0,0.10)
+        ),
+
+        url("https://images.unsplash.com/photo-1614252235316-8c857d1c9b8e?auto=format&fit=crop&w=2200&q=85");
+
+    background-size: cover;
+    background-position: center;
+}
+
+
+/* BOYS */
+
+.boys-image {
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,0.62),
+            rgba(0,0,0,0.10)
+        ),
+
+        url("https://images.unsplash.com/photo-1528569937393-ee892b976859?auto=format&fit=crop&w=2200&q=85");
+
+    background-size: cover;
+    background-position: center;
+}
+
+.collection-overlay {
+
+    max-width: 600px;
+}
+
+.collection-overlay h2 {
+
+    font-family: "Playfair Display", serif;
+
+    font-size: clamp(55px, 7vw, 100px);
+
+    line-height: 0.95;
+
+    font-weight: 400;
+
+    margin-bottom: 35px;
+}
+
+
+/* =========================================
+   PRODUCTS
+========================================= */
+
+.products-section {
+
+    padding: 120px 5%;
+}
+
+.section-heading {
+
+    text-align: center;
+
+    max-width: 700px;
+
+    margin: 0 auto 70px;
+}
+
+.section-heading h2 {
+
+    font-family: "Playfair Display", serif;
+
+    font-size: clamp(42px, 5vw, 70px);
+
+    font-weight: 400;
+
+    margin-bottom: 20px;
+}
+
+.section-heading p:last-child {
+
+    color: #666;
+
+    font-size: 15px;
+}
+
+
+/* PRODUCT GRID */
+
+.product-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 22px;
+
+    max-width: 1500px;
+
+    margin: auto;
+}
+
+
+/* =========================================
+   PRODUCT CARD
+========================================= */
+
+.product-card {
+
+    background: #fff;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.product-card:hover {
+
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 18px 45px rgba(0,0,0,0.08);
+}
+
+.product-image {
+
+    width: 100%;
+
+    aspect-ratio: 0.82;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition:
+        transform 0.6s ease;
+}
+
+.product-card:hover .product-image {
+
+    transform: scale(1.035);
+}
+
+.product-info {
+
+    padding: 20px;
+}
+
+.product-name {
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 19px;
+
+    margin-bottom: 6px;
+}
+
+.product-category {
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: #777;
+
+    text-transform: uppercase;
+
+    margin-bottom: 10px;
+}
+
+.product-price {
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+.product-action {
+
+    width: 100%;
+
+    margin-top: 15px;
+
+    padding: 12px;
+
+    border: 1px solid #171717;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    letter-spacing: 1.5px;
+
+    transition: all 0.3s ease;
+}
+
+.product-action:hover {
+
+    background: #171717;
+
+    color: white;
+}
+
+
+/* =========================================
+   LOAFERS
+========================================= */
+
+.loafers-section {
+
+    min-height: 750px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 8%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,0.76),
+            rgba(0,0,0,0.15)
+        ),
+
+        url("https://images.unsplash.com/photo-1614252235316-8c857d1c9b8e?auto=format&fit=crop&w=2200&q=85");
+
+    background-size: cover;
+
+    background-position: center;
+
+    color: white;
+}
+
+.loafers-content {
+
+    max-width: 650px;
+}
+
+.loafers-content h2 {
+
+    font-family: "Playfair Display", serif;
+
+    font-size: clamp(55px, 7vw, 105px);
+
+    line-height: 0.95;
+
+    font-weight: 400;
+
+    margin-bottom: 30px;
+}
+
+.loafers-content p {
+
+    max-width: 430px;
+
+    margin-bottom: 35px;
+
+    opacity: 0.9;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer {
+
+    background: #171717;
+
+    color: white;
+
+    padding: 90px 5% 35px;
+
+    text-align: center;
+}
+
+.footer-logo {
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 34px;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 12px;
+}
+
+.footer-logo span {
+
+    display: block;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 3px;
+}
+
+.footer p {
+
+    color: #aaa;
+
+    font-size: 13px;
+
+    margin-bottom: 30px;
+}
+
+.footer-links {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 30px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 70px;
+}
+
+.footer-links a {
+
+    font-size: 10px;
+
+    letter-spacing: 1.5px;
+}
+
+.copyright {
+
+    border-top: 1px solid #333;
+
+    padding-top: 25px;
+
+    font-size: 10px !important;
+
+    color: #777 !important;
+}
+
+
+/* =========================================
+   CART
+========================================= */
+
+.cart-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.5);
+
+    display: none;
+
+    justify-content: flex-end;
+
+    z-index: 3000;
+}
+
+.cart-overlay.active {
+
+    display: flex;
+}
+
+.cart {
+
+    width: min(450px, 100%);
+
+    height: 100%;
+
+    background: #f7f5f1;
+
+    padding: 40px;
+
+    overflow-y: auto;
+
+    animation: cartSlide 0.3s ease;
+}
+
+@keyframes cartSlide {
+
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.close-cart {
+
+    border: none;
+
+    background: none;
+
+    font-size: 32px;
+
+    cursor: pointer;
+
+    float: right;
+}
+
+.cart h2 {
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 38px;
+
+    font-weight: 400;
+
+    margin-bottom: 40px;
+}
+
+.empty-cart {
+
+    color: #777;
+
+    text-align: center;
+
+    padding: 50px 0;
+}
+
+.cart-item {
+
+    display: flex;
+
+    gap: 15px;
+
+    padding: 20px 0;
+
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-item img {
+
+    width: 80px;
+
+    height: 100px;
+
+    object-fit: cover;
+}
+
+.cart-item-info {
+
+    flex: 1;
+}
+
+.cart-item-info h4 {
+
+    font-family: "Playfair Display", serif;
+
+    font-weight: 400;
+
+    margin-bottom: 5px;
+}
+
+.cart-item-info p {
+
+    font-size: 12px;
+
+    color: #666;
+}
+
+.remove-item {
+
+    border: none;
+
+    background: none;
+
+    color: #999;
+
+    cursor: pointer;
+
+    font-size: 12px;
+}
+
+.cart-total {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 25px 0;
+
+    border-top: 1px solid #171717;
+
+    margin-top: 30px;
+}
+
+.cart-total strong {
+
+    font-size: 20px;
+}
+
+.checkout-button {
+
+    width: 100%;
+
+    padding: 17px;
+
+    border: none;
+
+    background: #171717;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 1000px) {
+
+    .navigation {
+
+        gap: 15px;
+    }
+
+    .navigation a {
+
+        font-size: 9px;
+    }
+
+    .product-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .header {
+
+        height: 70px;
+
+        padding: 0 20px;
+    }
+
+    .logo {
+
+        font-size: 22px;
+    }
+
+    .navigation {
+
+        display: none;
+    }
+
+    .hero {
+
+        min-height: 700px;
+
+        padding: 40px 25px;
+    }
+
+    .hero h1 {
+
+        font-size: 58px;
+    }
+
+    .hero-text {
+
+        font-size: 14px;
+    }
+
+    .intro {
+
+        padding: 90px 25px;
+    }
+
+    .collection-image {
+
+        min-height: 600px;
+
+        padding: 40px 25px;
+    }
+
+    .products-section {
+
+        padding: 80px 20px;
+    }
+
+    .product-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 12px;
+    }
+
+    .product-info {
+
+        padding: 14px;
+    }
+
+    .product-name {
+
+        font-size: 16px;
+    }
+
+    .loafers-section {
+
+        min-height: 600px;
+
+        padding: 40px 25px;
+    }
+
+    .cart {
+
+        padding: 30px 20px;
+    }
+
+}
