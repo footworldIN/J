@@ -1367,3 +1367,425 @@ button {
     }
 
 }
+/* =========================================
+   CHECKOUT
+========================================= */
+
+.checkout-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.68);
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 6000;
+
+    backdrop-filter: blur(8px);
+
+}
+
+.checkout-overlay.active {
+
+    display: flex;
+
+}
+
+
+/* CHECKOUT BOX */
+
+.checkout-box {
+
+    width: min(760px, 100%);
+
+    max-height: 92vh;
+
+    overflow-y: auto;
+
+    background: #f7f5f1;
+
+    padding: 50px;
+
+    position: relative;
+
+    animation: checkoutIn 0.3s ease;
+
+}
+
+
+@keyframes checkoutIn {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(20px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+/* CLOSE */
+
+.checkout-close {
+
+    position: absolute;
+
+    right: 20px;
+
+    top: 15px;
+
+    width: 40px;
+
+    height: 40px;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 30px;
+
+    cursor: pointer;
+
+}
+
+
+/* HEADER */
+
+.checkout-header {
+
+    text-align: center;
+
+    margin-bottom: 50px;
+
+}
+
+.checkout-header h2 {
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 42px;
+
+    font-weight: 400;
+
+    line-height: 1.1;
+
+}
+
+
+/* SECTION */
+
+.checkout-section {
+
+    margin-bottom: 40px;
+
+}
+
+.checkout-section h3 {
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 25px;
+
+    border-bottom: 1px solid #ddd;
+
+    padding-bottom: 12px;
+
+}
+
+
+/* FORM GRID */
+
+.form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+
+}
+
+
+/* FORM FIELD */
+
+.form-field {
+
+    margin-bottom: 20px;
+
+}
+
+.form-field label {
+
+    display: block;
+
+    font-size: 9px;
+
+    letter-spacing: 1.5px;
+
+    font-weight: 600;
+
+    margin-bottom: 8px;
+
+}
+
+.form-field input,
+
+.form-field textarea,
+
+.form-field select {
+
+    width: 100%;
+
+    border: 1px solid #d3d0ca;
+
+    background: #fff;
+
+    padding: 14px;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 13px;
+
+    outline: none;
+
+    border-radius: 0;
+
+    transition: border 0.2s ease;
+
+}
+
+.form-field textarea {
+
+    resize: vertical;
+
+}
+
+.form-field input:focus,
+
+.form-field textarea:focus,
+
+.form-field select:focus {
+
+    border-color: #171717;
+
+}
+
+
+/* PAYMENT */
+
+.payment-option {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    background: #fff;
+
+    border: 1px solid #d3d0ca;
+
+    padding: 18px;
+
+    margin-bottom: 10px;
+
+    cursor: pointer;
+
+    transition: border 0.2s ease;
+
+}
+
+.payment-option:hover {
+
+    border-color: #171717;
+
+}
+
+.payment-option input {
+
+    width: 18px;
+
+    height: 18px;
+
+    accent-color: #171717;
+
+}
+
+.payment-option span {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+}
+
+.payment-option strong {
+
+    font-size: 13px;
+
+}
+
+.payment-option small {
+
+    color: #777;
+
+    font-size: 11px;
+
+}
+
+
+/* SUMMARY */
+
+.checkout-summary {
+
+    border-top: 1px solid #171717;
+
+    border-bottom: 1px solid #ddd;
+
+    padding: 25px 0;
+
+    margin-bottom: 25px;
+
+}
+
+.checkout-summary div {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+.checkout-summary span {
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+
+}
+
+.checkout-summary strong {
+
+    font-size: 22px;
+
+}
+
+
+/* PLACE ORDER */
+
+.place-order-button {
+
+    width: 100%;
+
+    padding: 19px;
+
+    border: none;
+
+    background: #171717;
+
+    color: #fff;
+
+    cursor: pointer;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: 2px;
+
+    transition: background 0.3s ease;
+
+}
+
+.place-order-button:hover {
+
+    background: #333;
+
+}
+
+
+/* NOTE */
+
+.checkout-note {
+
+    text-align: center;
+
+    color: #777;
+
+    font-size: 11px;
+
+    margin-top: 15px;
+
+}
+
+
+/* =========================================
+   MOBILE CHECKOUT
+========================================= */
+
+@media (max-width: 700px) {
+
+    .checkout-overlay {
+
+        padding: 10px;
+
+        align-items: flex-end;
+
+    }
+
+    .checkout-box {
+
+        width: 100%;
+
+        max-height: 95vh;
+
+        padding: 35px 20px 25px;
+
+    }
+
+    .checkout-header {
+
+        margin-bottom: 35px;
+
+    }
+
+    .checkout-header h2 {
+
+        font-size: 32px;
+
+    }
+
+    .form-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 0;
+
+    }
+
+}
