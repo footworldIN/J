@@ -81,7 +81,8 @@ const countrySettings = {
 };
 
 
-let selectedCountry = "IN";
+let selectedCountry =
+    localStorage.getItem("footworldCountry") || "IN";
 
 
 /* =========================================
@@ -1017,30 +1018,88 @@ function closeCart() {
 function countryChanged() {
 
     const countrySelect =
-        document.getElementById(
-            "customerCountry"
-        );
-
+        document.getElementById("customerCountry");
 
     if (!countrySelect) return;
-
 
     selectedCountry =
         countrySelect.value;
 
+    localStorage.setItem(
+        "footworldCountry",
+        selectedCountry
+    );
 
-   loadProducts();
+    loadProducts();
 
-updateCart();
+    updateCart();
 
-updateCheckoutTotal();
+    updateCheckoutTotal();
 
-updateCurrencyNotice();
+    updateCurrencyNotice();
 
-updatePaymentMethods();
+    updatePaymentMethods();
 
 }
+/* =========================================
+   SHOPPING COUNTRY SELECTOR
+========================================= */
 
+function selectShoppingCountry(country) {
+
+    if (!countrySettings[country]) {
+        return;
+    }
+
+    selectedCountry = country;
+
+    localStorage.setItem(
+        "footworldCountry",
+        country
+    );
+
+    loadProducts();
+
+    updateCart();
+
+    updateCheckoutTotal();
+
+    updateCurrencyNotice();
+
+    updatePaymentMethods();
+
+
+    /* Update checkout country */
+
+    const countrySelect =
+        document.getElementById(
+            "customerCountry"
+        );
+
+    if (countrySelect) {
+
+        countrySelect.value =
+            selectedCountry;
+
+    }
+
+
+    /* Close country selector */
+
+    const selector =
+        document.getElementById(
+            "countrySelector"
+        );
+
+    if (selector) {
+
+        selector.classList.remove(
+            "active"
+        );
+
+    }
+
+}
 function updatePaymentMethods() {
 
     const india =
@@ -1575,7 +1634,50 @@ document.addEventListener(
         updateCart();
 
         updateCurrencyNotice();
+
         updatePaymentMethods();
+
+
+        /* Set checkout country */
+
+        const countrySelect =
+            document.getElementById(
+                "customerCountry"
+            );
+
+        if (countrySelect) {
+
+            countrySelect.value =
+                selectedCountry;
+
+        }
+
+
+        /* Show country selector
+           only if customer has
+           not selected a country */
+
+        const countrySelector =
+            document.getElementById(
+                "countrySelector"
+            );
+
+        const savedCountry =
+            localStorage.getItem(
+                "footworldCountry"
+            );
+
+
+        if (
+            countrySelector &&
+            !savedCountry
+        ) {
+
+            countrySelector.classList.add(
+                "active"
+            );
+
+        }
 
     }
 );
