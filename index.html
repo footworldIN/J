@@ -326,7 +326,105 @@
 
 </div>
 
+<!-- =========================
+     PRODUCT MODAL
+========================= -->
 
+<div class="product-modal" id="productModal">
+
+    <div class="product-modal-box">
+
+        <button
+            class="modal-close"
+            onclick="closeProductModal()">
+            ×
+        </button>
+
+        <div class="modal-image">
+
+            <img
+                id="modalProductImage"
+                src=""
+                alt=""
+            >
+
+        </div>
+
+        <div class="modal-details">
+
+            <p
+                class="product-category"
+                id="modalProductCategory">
+            </p>
+
+            <h2
+                id="modalProductName">
+            </h2>
+
+            <div
+                class="modal-price"
+                id="modalProductPrice">
+            </div>
+
+
+            <!-- SIZE -->
+
+            <div class="size-section">
+
+                <div class="size-title">
+                    SELECT SIZE
+                </div>
+
+                <div
+                    class="size-options"
+                    id="sizeOptions">
+                </div>
+
+            </div>
+
+
+            <!-- QUANTITY -->
+
+            <div class="quantity-section">
+
+                <div class="size-title">
+                    QUANTITY
+                </div>
+
+                <div class="quantity-control">
+
+                    <button
+                        onclick="changeModalQuantity(-1)">
+                        −
+                    </button>
+
+                    <span id="modalQuantity">
+                        1
+                    </span>
+
+                    <button
+                        onclick="changeModalQuantity(1)">
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="modal-add-button"
+                onclick="addSelectedProductToCart()">
+
+                ADD TO BAG
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 <script src="script.js"></script>
 
 </body>
