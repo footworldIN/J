@@ -1,12 +1,12 @@
 /* =========================================
    FOOTWORLD
-   PRODUCT + CART + SIZE SYSTEM
+   COMPLETE PRODUCT + CART + CHECKOUT SYSTEM
 ========================================= */
 
 
 /* =========================================
    WHATSAPP NUMBER
-   CHANGE THIS LATER
+   CHANGE THIS ONE LINE LATER
 ========================================= */
 
 const WHATSAPP_NUMBER = "913653244745";
@@ -112,7 +112,7 @@ let cart = [];
 
 
 /* =========================================
-   MODAL STATE
+   PRODUCT MODAL STATE
 ========================================= */
 
 let selectedProduct = null;
@@ -225,7 +225,7 @@ function createProductCard(product) {
 
 
 /* =========================================
-   OPEN PRODUCT MODAL
+   OPEN PRODUCT
 ========================================= */
 
 function openProductModal(productId) {
@@ -289,14 +289,14 @@ function openProductModal(productId) {
 
 
 /* =========================================
-   CLOSE PRODUCT MODAL
+   CLOSE PRODUCT
 ========================================= */
 
 function closeProductModal() {
 
-    document.getElementById(
-        "productModal"
-    ).classList.remove("active");
+    document
+        .getElementById("productModal")
+        .classList.remove("active");
 
 }
 
@@ -308,7 +308,9 @@ function closeProductModal() {
 function loadSizes(product) {
 
     const container =
-        document.getElementById("sizeOptions");
+        document.getElementById(
+            "sizeOptions"
+        );
 
 
     container.innerHTML = "";
@@ -330,11 +332,15 @@ function loadSizes(product) {
             size;
 
 
-        button.onclick = function () {
+        button.onclick =
+            function () {
 
-            selectSize(size, button);
+                selectSize(
+                    size,
+                    button
+                );
 
-        };
+            };
 
 
         container.appendChild(button);
@@ -372,7 +378,7 @@ function selectSize(size, button) {
 
 
 /* =========================================
-   CHANGE MODAL QUANTITY
+   QUANTITY
 ========================================= */
 
 function changeModalQuantity(amount) {
@@ -396,13 +402,14 @@ function changeModalQuantity(amount) {
 
     document.getElementById(
         "modalQuantity"
-    ).textContent = modalQuantity;
+    ).textContent =
+        modalQuantity;
 
 }
 
 
 /* =========================================
-   ADD SELECTED PRODUCT
+   ADD PRODUCT TO CART
 ========================================= */
 
 function addSelectedProductToCart() {
@@ -413,7 +420,7 @@ function addSelectedProductToCart() {
     if (!selectedSize) {
 
         alert(
-            "Please select a size before adding to your bag."
+            "Please select a size before adding the product."
         );
 
         return;
@@ -442,17 +449,23 @@ function addSelectedProductToCart() {
 
             name: selectedProduct.name,
 
-            category: selectedProduct.category,
+            category:
+                selectedProduct.category,
 
-            type: selectedProduct.type,
+            type:
+                selectedProduct.type,
 
-            price: selectedProduct.price,
+            price:
+                selectedProduct.price,
 
-            image: selectedProduct.image,
+            image:
+                selectedProduct.image,
 
-            size: selectedSize,
+            size:
+                selectedSize,
 
-            quantity: modalQuantity
+            quantity:
+                modalQuantity
 
         });
 
@@ -558,11 +571,13 @@ function updateCart() {
                         </h4>
 
                         <p>
-                            Size: ${item.size}
+                            Size:
+                            ${item.size}
                         </p>
 
                         <p>
-                            Qty: ${item.quantity}
+                            Qty:
+                            ${item.quantity}
                         </p>
 
                         <p>
@@ -638,10 +653,10 @@ function closeCart() {
 
 
 /* =========================================
-   CHECKOUT
+   OPEN CHECKOUT
 ========================================= */
 
-function checkout() {
+function openCheckout() {
 
     if (cart.length === 0) {
 
@@ -654,13 +669,41 @@ function checkout() {
     }
 
 
-    let message =
-        "Hello FOOTWORLD,%0A%0A";
+    updateCheckoutTotal();
 
 
-    message +=
-        "I would like to place an order.%0A%0A";
+    document
+        .getElementById(
+            "checkoutOverlay"
+        )
+        .classList.add("active");
 
+
+    closeCart();
+
+}
+
+
+/* =========================================
+   CLOSE CHECKOUT
+========================================= */
+
+function closeCheckout() {
+
+    document
+        .getElementById(
+            "checkoutOverlay"
+        )
+        .classList.remove("active");
+
+}
+
+
+/* =========================================
+   CHECKOUT TOTAL
+========================================= */
+
+function updateCheckoutTotal() {
 
     let total = 0;
 
@@ -671,29 +714,280 @@ function checkout() {
             item.price *
             item.quantity;
 
+    });
+
+
+    document.getElementById(
+        "checkoutTotal"
+    ).textContent =
+        `₹${total.toLocaleString("en-IN")}`;
+
+}
+
+
+/* =========================================
+   PLACE ORDER
+========================================= */
+
+function placeOrder() {
+
+
+    /* -----------------------------
+       GET FORM VALUES
+    ----------------------------- */
+
+    const name =
+        document.getElementById(
+            "customerName"
+        ).value.trim();
+
+
+    const phone =
+        document.getElementById(
+            "customerPhone"
+        ).value.trim();
+
+
+    const address =
+        document.getElementById(
+            "customerAddress"
+        ).value.trim();
+
+
+    const city =
+        document.getElementById(
+            "customerCity"
+        ).value.trim();
+
+
+    const state =
+        document.getElementById(
+            "customerState"
+        ).value;
+
+
+    const pin =
+        document.getElementById(
+            "customerPin"
+        ).value.trim();
+
+
+    const landmark =
+        document.getElementById(
+            "customerLandmark"
+        ).value.trim();
+
+
+    const payment =
+        document.querySelector(
+            'input[name="paymentMethod"]:checked'
+        );
+
+
+    /* -----------------------------
+       VALIDATION
+    ----------------------------- */
+
+    if (!name) {
+
+        alert(
+            "Please enter your full name."
+        );
+
+        return;
+
+    }
+
+
+    if (!/^[6-9][0-9]{9}$/.test(phone)) {
+
+        alert(
+            "Please enter a valid 10 digit Indian mobile number."
+        );
+
+        return;
+
+    }
+
+
+    if (!address) {
+
+        alert(
+            "Please enter your delivery address."
+        );
+
+        return;
+
+    }
+
+
+    if (!city) {
+
+        alert(
+            "Please enter your city."
+        );
+
+        return;
+
+    }
+
+
+    if (!state) {
+
+        alert(
+            "Please select your state."
+        );
+
+        return;
+
+    }
+
+
+    if (!/^[0-9]{6}$/.test(pin)) {
+
+        alert(
+            "Please enter a valid 6 digit PIN code."
+        );
+
+        return;
+
+    }
+
+
+    if (!payment) {
+
+        alert(
+            "Please select a payment method."
+        );
+
+        return;
+
+    }
+
+
+    if (cart.length === 0) {
+
+        alert(
+            "Your bag is empty."
+        );
+
+        return;
+
+    }
+
+
+    /* -----------------------------
+       ORDER NUMBER
+    ----------------------------- */
+
+    const orderNumber =
+        "FW" +
+        Date.now()
+            .toString()
+            .slice(-8);
+
+
+    /* -----------------------------
+       CALCULATE TOTAL
+    ----------------------------- */
+
+    let total = 0;
+
+
+    cart.forEach(item => {
+
+        total +=
+            item.price *
+            item.quantity;
+
+    });
+
+
+    /* -----------------------------
+       WHATSAPP MESSAGE
+    ----------------------------- */
+
+    let message = "";
+
+    message +=
+        `*FOOTWORLD ORDER*%0A%0A`;
+
+
+    message +=
+        `Order No: ${orderNumber}%0A%0A`;
+
+
+    message +=
+        `*CUSTOMER DETAILS*%0A`;
+
+
+    message +=
+        `Name: ${encodeURIComponent(name)}%0A`;
+
+
+    message +=
+        `Mobile: ${encodeURIComponent(phone)}%0A%0A`;
+
+
+    message +=
+        `*DELIVERY ADDRESS*%0A`;
+
+
+    message +=
+        `${encodeURIComponent(address)}%0A`;
+
+
+    message +=
+        `${encodeURIComponent(city)}, ${encodeURIComponent(state)} - ${encodeURIComponent(pin)}%0A`;
+
+
+    if (landmark) {
 
         message +=
-            `Product: ${encodeURIComponent(item.name)}%0A`;
+            `Landmark: ${encodeURIComponent(landmark)}%0A`;
+
+    }
+
+
+    message +=
+        `%0A*ORDER DETAILS*%0A`;
+
+
+    cart.forEach(item => {
+
+        message +=
+            `%0A${encodeURIComponent(item.name)}%0A`;
+
 
         message +=
             `Size: ${encodeURIComponent(item.size)}%0A`;
 
+
         message +=
             `Quantity: ${item.quantity}%0A`;
 
+
         message +=
-            `Price: ₹${item.price}%0A%0A`;
+            `Price: ₹${item.price}%0A`;
 
     });
 
 
     message +=
-        `TOTAL: ₹${total}%0A%0A`;
+        `%0A*TOTAL: ₹${total.toLocaleString("en-IN")}*%0A`;
 
 
     message +=
-        "Please confirm my order and send delivery details.";
+        `Payment: ${encodeURIComponent(payment.value)}%0A%0A`;
 
+
+    message +=
+        `Please confirm my FOOTWORLD order.`;
+
+
+    /* -----------------------------
+       WHATSAPP
+    ----------------------------- */
 
     const whatsappURL =
         `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
