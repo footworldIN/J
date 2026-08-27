@@ -1,35 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>FOOTWORLD | Premium Formal Footwear</title>
 
-    <title>
-        FOOTWORLD | Premium Formal Footwear
-    </title>
+    <meta name="description"
+          content="FOOTWORLD - Premium formal shoes and loafers for men and boys.">
 
-    <meta
-        name="description"
-        content="FOOTWORLD - Premium formal shoes and loafers for men and boys."
-    >
-
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
+    <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
-    <!-- COUNTRY SELECTION -->
+<!-- =====================================================
+     COUNTRY SELECTION
+===================================================== -->
 
 <div id="countryGate" class="country-gate">
 
@@ -50,134 +37,52 @@
         </h1>
 
         <p class="country-description">
-            Prices, currency and payment options will be
-            shown based on your selected country.
+            Select your country to see local prices,
+            currency and available payment methods.
         </p>
 
-      <div class="country-options">
+        <div class="country-options">
 
-    <button type="button" onclick="selectCountry('IN')">
-        <span class="country-flag">🇮🇳</span>
-        <span class="country-name">India</span>
-    </button>
-
-    <button type="button" onclick="selectCountry('CA')">
-        <span class="country-flag">🇨🇦</span>
-        <span class="country-name">Canada</span>
-    </button>
-
-    <button type="button" onclick="selectCountry('US')">
-        <span class="country-flag">🇺🇸</span>
-        <span class="country-name">United States</span>
-    </button>
-
-    <button type="button" onclick="selectCountry('GB')">
-        <span class="country-flag">🇬🇧</span>
-        <span class="country-name">United Kingdom</span>
-    </button>
-
-    <button type="button" onclick="selectCountry('AU')">
-        <span class="country-flag">🇦🇺</span>
-        <span class="country-name">Australia</span>
-    </button>
-
-    <button type="button" onclick="selectCountry('EU')">
-        <span class="country-flag">🇪🇺</span>
-        <span class="country-name">Europe</span>
-    </button>
-
-</div>
-<!-- =====================================================
-     COUNTRY SELECTOR
-===================================================== -->
-
-<div
-    class="country-selector-overlay"
-    id="countrySelector"
->
-
-    <div class="country-selector-box">
-
-        <p class="small-title">
-            WELCOME TO FOOTWORLD
-        </p>
-
-        <h2>
-            SELECT YOUR<br>
-            SHOPPING COUNTRY
-        </h2>
-
-        <p class="country-selector-text">
-            Prices, currency and payment options
-            will be shown for your country.
-        </p>
-
-
-        <div class="country-selector-grid">
-
-            <button
-                type="button"
-                onclick="selectShoppingCountry('IN')"
-            >
-                🇮🇳
-                <span>India</span>
+            <button type="button" onclick="selectCountry('IN')">
+                <span class="country-flag">🇮🇳</span>
+                <span class="country-name">India</span>
             </button>
 
-
-            <button
-                type="button"
-                onclick="selectShoppingCountry('CA')"
-            >
-                🇨🇦
-                <span>Canada</span>
+            <button type="button" onclick="selectCountry('CA')">
+                <span class="country-flag">🇨🇦</span>
+                <span class="country-name">Canada</span>
             </button>
 
-
-            <button
-                type="button"
-                onclick="selectShoppingCountry('US')"
-            >
-                🇺🇸
-                <span>United States</span>
+            <button type="button" onclick="selectCountry('US')">
+                <span class="country-flag">🇺🇸</span>
+                <span class="country-name">United States</span>
             </button>
 
-
-            <button
-                type="button"
-                onclick="selectShoppingCountry('GB')"
-            >
-                🇬🇧
-                <span>United Kingdom</span>
+            <button type="button" onclick="selectCountry('GB')">
+                <span class="country-flag">🇬🇧</span>
+                <span class="country-name">United Kingdom</span>
             </button>
 
-
-            <button
-                type="button"
-                onclick="selectShoppingCountry('AU')"
-            >
-                🇦🇺
-                <span>Australia</span>
+            <button type="button" onclick="selectCountry('AU')">
+                <span class="country-flag">🇦🇺</span>
+                <span class="country-name">Australia</span>
             </button>
 
-
-            <button
-                type="button"
-                onclick="selectShoppingCountry('DE')"
-            >
-                🇪🇺
-                <span>Europe</span>
+            <button type="button" onclick="selectCountry('DE')">
+                <span class="country-flag">🇩🇪</span>
+                <span class="country-name">Germany</span>
             </button>
 
         </div>
 
-
-        <p class="country-selector-note">
-            You can change your country anytime.
+        <p class="country-note">
+            You can change your country later.
         </p>
 
     </div>
 
 </div>
+
 
 <!-- =====================================================
      HEADER
@@ -185,71 +90,58 @@
 
 <header class="header">
 
-    <div class="logo">
-
+    <a href="#home" class="logo">
         FOOTWORLD
-
-        <span>
-            FORMAL FOOTWEAR
-        </span>
-
-    </div>
-
+        <span>FORMAL FOOTWEAR</span>
+    </a>
 
     <nav class="navigation">
 
-        <a href="#home">
-            HOME
-        </a>
-
-        <a href="#men">
-            MEN
-        </a>
-
-        <a href="#boys">
-            BOYS
-        </a>
-
-        <a href="#formal">
-            FORMAL
-        </a>
-
-        <a href="#loafers">
-            LOAFERS
-        </a>
-
-        <a href="#new">
-            NEW ARRIVALS
-        </a>
+        <a href="#home">HOME</a>
+        <a href="#men">MEN</a>
+        <a href="#boys">BOYS</a>
+        <a href="#formal">FORMAL</a>
+        <a href="#loafers">LOAFERS</a>
+        <a href="#new">NEW</a>
 
     </nav>
 
+    <div class="header-actions">
 
-    <button
-        class="cart-button"
-        onclick="openCart()"
-    >
+        <button
+            class="country-change"
+            onclick="changeCountry()">
 
-        BAG
+            <span id="headerCountryFlag">🇮🇳</span>
 
-        <span id="cartCount">
-            0
-        </span>
+            <span id="headerCountryName">
+                India
+            </span>
 
-    </button>
+        </button>
+
+        <button
+            class="cart-button"
+            onclick="openCart()">
+
+            BAG
+
+            <span id="cartCount">
+                0
+            </span>
+
+        </button>
+
+    </div>
 
 </header>
-
 
 
 <!-- =====================================================
      HERO
 ===================================================== -->
 
-<section
-    class="hero"
-    id="home"
->
+<section class="hero" id="home">
 
     <div class="hero-content">
 
@@ -257,43 +149,33 @@
             THE NEW FORMAL EDIT
         </p>
 
-
         <h1>
-
-            STEP INTO
-
-            <br>
-
-            <span>
-                CONFIDENCE.
-            </span>
-
+            STEP INTO<br>
+            <span>CONFIDENCE.</span>
         </h1>
 
-
         <p class="hero-text">
-
-            Premium formal footwear and loafers
-            designed for every important step.
-
+            Premium formal footwear and timeless loafers
+            designed for work, weddings and every
+            important step.
         </p>
-
 
         <div class="hero-buttons">
 
             <a
-                href="#men"
-                class="button button-dark"
-            >
-                SHOP MEN
+                href="#formal"
+                class="button button-dark">
+
+                SHOP COLLECTION
+
             </a>
 
-
             <a
-                href="#boys"
-                class="button button-light"
-            >
-                SHOP BOYS
+                href="#loafers"
+                class="button button-light">
+
+                EXPLORE LOAFERS
+
             </a>
 
         </div>
@@ -301,7 +183,6 @@
     </div>
 
 </section>
-
 
 
 <!-- =====================================================
@@ -314,37 +195,26 @@
         FOOTWORLD
     </p>
 
-
     <h2>
-
-        WHERE STYLE
-
-        <br>
-
+        WHERE STYLE<br>
         MEETS EVERY STEP.
-
     </h2>
 
-
     <p>
-
-        Discover carefully selected formal shoes
-        and timeless loafers for men and boys.
-
+        Carefully selected formal shoes and loafers
+        for men and boys who believe every detail matters.
     </p>
 
 </section>
 
 
-
 <!-- =====================================================
-     MEN COLLECTION
+     MEN
 ===================================================== -->
 
 <section
     class="collection"
-    id="men"
->
+    id="men">
 
     <div class="collection-image men-image">
 
@@ -354,23 +224,17 @@
                 MEN'S COLLECTION
             </p>
 
-
             <h2>
-
-                CLASSIC.
-
-                <br>
-
+                CLASSIC.<br>
                 REFINED.
-
             </h2>
-
 
             <a
                 href="#formal"
-                class="button button-light"
-            >
+                class="button button-light">
+
                 SHOP MEN
+
             </a>
 
         </div>
@@ -380,15 +244,13 @@
 </section>
 
 
-
 <!-- =====================================================
-     BOYS COLLECTION
+     BOYS
 ===================================================== -->
 
 <section
     class="collection"
-    id="boys"
->
+    id="boys">
 
     <div class="collection-image boys-image">
 
@@ -398,23 +260,17 @@
                 BOYS' COLLECTION
             </p>
 
-
             <h2>
-
-                LITTLE STEPS.
-
-                <br>
-
+                LITTLE STEPS.<br>
                 BIG STYLE.
-
             </h2>
-
 
             <a
                 href="#formal"
-                class="button button-light"
-            >
+                class="button button-light">
+
                 SHOP BOYS
+
             </a>
 
         </div>
@@ -424,15 +280,13 @@
 </section>
 
 
-
 <!-- =====================================================
-     FORMAL PRODUCTS
+     PRODUCTS
 ===================================================== -->
 
 <section
     class="products-section"
-    id="formal"
->
+    id="formal">
 
     <div class="section-heading">
 
@@ -440,33 +294,24 @@
             FOOTWORLD COLLECTION
         </p>
 
-
         <h2>
             FORMAL ESSENTIALS
         </h2>
 
-
         <p>
-
             Timeless footwear for work, weddings,
             celebrations and every occasion.
-
         </p>
 
     </div>
 
-
     <div
         class="product-grid"
-        id="productGrid"
-    >
-
-        <!-- PRODUCTS LOADED BY JAVASCRIPT -->
+        id="productGrid">
 
     </div>
 
 </section>
-
 
 
 <!-- =====================================================
@@ -475,8 +320,7 @@
 
 <section
     class="loafers-section"
-    id="loafers"
->
+    id="loafers">
 
     <div class="loafers-content">
 
@@ -484,37 +328,27 @@
             THE LOAFER EDIT
         </p>
 
-
         <h2>
-
-            EFFORTLESS
-
-            <br>
-
+            EFFORTLESS<br>
             ELEGANCE.
-
         </h2>
 
-
         <p>
-
-            Slip into timeless comfort
-            with our signature loafer collection.
-
+            Slip into timeless comfort with our
+            signature loafer collection.
         </p>
-
 
         <a
             href="#formal"
-            class="button button-light"
-        >
-            EXPLORE LOAFERS
+            class="button button-light">
+
+            EXPLORE COLLECTION
+
         </a>
 
     </div>
 
 </section>
-
 
 
 <!-- =====================================================
@@ -523,8 +357,7 @@
 
 <section
     class="products-section"
-    id="new"
->
+    id="new">
 
     <div class="section-heading">
 
@@ -532,25 +365,19 @@
             JUST ARRIVED
         </p>
 
-
         <h2>
             NEW ARRIVALS
         </h2>
 
     </div>
 
-
     <div
         class="product-grid"
-        id="newProducts"
-    >
-
-        <!-- PRODUCTS LOADED BY JAVASCRIPT -->
+        id="newProducts">
 
     </div>
 
 </section>
-
 
 
 <!-- =====================================================
@@ -569,49 +396,25 @@
 
     </div>
 
-
     <p>
-
-        Premium formal footwear
-        for men & boys.
-
+        Premium formal footwear for men & boys.
     </p>
-
 
     <div class="footer-links">
 
-        <a href="#home">
-            Home
-        </a>
-
-        <a href="#men">
-            Men
-        </a>
-
-        <a href="#boys">
-            Boys
-        </a>
-
-        <a href="#formal">
-            Formal Shoes
-        </a>
-
-        <a href="#loafers">
-            Loafers
-        </a>
+        <a href="#home">Home</a>
+        <a href="#men">Men</a>
+        <a href="#boys">Boys</a>
+        <a href="#formal">Formal Shoes</a>
+        <a href="#loafers">Loafers</a>
 
     </div>
 
-
     <p class="copyright">
-
-        © 2026 FOOTWORLD.
-        All rights reserved.
-
+        © 2026 FOOTWORLD. All rights reserved.
     </p>
 
 </footer>
-
 
 
 <!-- =====================================================
@@ -620,34 +423,29 @@
 
 <div
     class="cart-overlay"
-    id="cartOverlay"
->
+    id="cartOverlay">
 
     <div class="cart">
 
         <button
             class="close-cart"
-            onclick="closeCart()"
-        >
-            ×
-        </button>
+            onclick="closeCart()">
 
+            ×
+
+        </button>
 
         <h2>
             YOUR BAG
         </h2>
 
-
         <div id="cartItems">
 
             <p class="empty-cart">
-
                 Your bag is empty.
-
             </p>
 
         </div>
-
 
         <div class="cart-total">
 
@@ -655,18 +453,15 @@
                 TOTAL
             </span>
 
-
             <strong id="cartTotal">
                 ₹0
             </strong>
 
         </div>
 
-
         <button
             class="checkout-button"
-            onclick="openCheckout()"
-        >
+            onclick="openCheckout()">
 
             PROCEED TO CHECKOUT
 
@@ -677,36 +472,29 @@
 </div>
 
 
-
 <!-- =====================================================
-     CHECKOUT MODAL
+     CHECKOUT
 ===================================================== -->
 
 <div
     class="checkout-overlay"
-    id="checkoutOverlay"
->
+    id="checkoutOverlay">
 
     <div class="checkout-box">
 
-
         <button
             class="checkout-close"
-            onclick="closeCheckout()"
-        >
+            onclick="closeCheckout()">
+
             ×
+
         </button>
-
-
-
-        <!-- CHECKOUT HEADER -->
 
         <div class="checkout-header">
 
             <p class="small-title">
                 FOOTWORLD
             </p>
-
 
             <h2>
                 DELIVERY & PAYMENT
@@ -715,20 +503,11 @@
         </div>
 
 
-
-        <!-- =================================================
-             DELIVERY DETAILS
-        ================================================= -->
-
         <div class="checkout-section">
 
             <h3>
-                DELIVERY DETAILS
+                CUSTOMER DETAILS
             </h3>
-
-
-
-            <!-- NAME + EMAIL -->
 
             <div class="form-grid">
 
@@ -738,16 +517,12 @@
                         FULL NAME *
                     </label>
 
-
                     <input
                         type="text"
                         id="customerName"
-                        placeholder="Your full name"
-                    >
+                        placeholder="Your full name">
 
                 </div>
-
-
 
                 <div class="form-field">
 
@@ -755,20 +530,15 @@
                         EMAIL ADDRESS *
                     </label>
 
-
                     <input
                         type="email"
                         id="customerEmail"
-                        placeholder="you@example.com"
-                    >
+                        placeholder="you@example.com">
 
                 </div>
 
             </div>
 
-
-
-            <!-- MOBILE + COUNTRY -->
 
             <div class="form-grid">
 
@@ -778,17 +548,13 @@
                         MOBILE NUMBER *
                     </label>
 
-
                     <input
                         type="tel"
                         id="customerPhone"
                         placeholder="Mobile number"
-                        maxlength="15"
-                    >
+                        maxlength="15">
 
                 </div>
-
-
 
                 <div class="form-field">
 
@@ -796,11 +562,9 @@
                         COUNTRY *
                     </label>
 
-
                     <select
                         id="customerCountry"
-                        onchange="countryChanged()"
-                    >
+                        onchange="countryChanged()">
 
                         <option value="IN">
                             🇮🇳 India
@@ -826,22 +590,6 @@
                             🇩🇪 Germany
                         </option>
 
-                        <option value="FR">
-                            🇫🇷 France
-                        </option>
-
-                        <option value="IT">
-                            🇮🇹 Italy
-                        </option>
-
-                        <option value="ES">
-                            🇪🇸 Spain
-                        </option>
-
-                        <option value="NL">
-                            🇳🇱 Netherlands
-                        </option>
-
                     </select>
 
                 </div>
@@ -849,27 +597,19 @@
             </div>
 
 
-
-            <!-- ADDRESS -->
-
             <div class="form-field">
 
                 <label>
-                    ADDRESS *
+                    DELIVERY ADDRESS *
                 </label>
-
 
                 <textarea
                     id="customerAddress"
                     placeholder="House / Flat / Building, Street, Area"
-                    rows="3"
-                ></textarea>
+                    rows="3"></textarea>
 
             </div>
 
-
-
-            <!-- CITY + STATE -->
 
             <div class="form-grid">
 
@@ -879,16 +619,12 @@
                         CITY *
                     </label>
 
-
                     <input
                         type="text"
                         id="customerCity"
-                        placeholder="City"
-                    >
+                        placeholder="City">
 
                 </div>
-
-
 
                 <div class="form-field">
 
@@ -896,20 +632,15 @@
                         STATE / PROVINCE *
                     </label>
 
-
                     <input
                         type="text"
                         id="customerState"
-                        placeholder="State / Province"
-                    >
+                        placeholder="State / Province">
 
                 </div>
 
             </div>
 
-
-
-            <!-- POSTAL + LANDMARK -->
 
             <div class="form-grid">
 
@@ -919,17 +650,13 @@
                         POSTAL / PIN CODE *
                     </label>
 
-
                     <input
                         type="text"
                         id="customerPin"
                         placeholder="Postal / PIN code"
-                        maxlength="10"
-                    >
+                        maxlength="10">
 
                 </div>
-
-
 
                 <div class="form-field">
 
@@ -937,12 +664,10 @@
                         LANDMARK
                     </label>
 
-
                     <input
                         type="text"
                         id="customerLandmark"
-                        placeholder="Nearby landmark (optional)"
-                    >
+                        placeholder="Optional">
 
                 </div>
 
@@ -951,10 +676,7 @@
         </div>
 
 
-
-        <!-- =================================================
-             PAYMENT
-        ================================================= -->
+        <!-- PAYMENT -->
 
         <div class="payment-section">
 
@@ -962,115 +684,65 @@
                 PAYMENT METHOD
             </h3>
 
-
             <div id="paymentMethods">
 
-
-                <!-- INDIA -->
-
-                <div
-                    id="indiaPayments"
-                >
+                <div id="indiaPayments">
 
                     <label class="payment-option">
 
                         <input
                             type="radio"
                             name="paymentMethod"
-                            value="UPI"
-                        >
+                            value="UPI">
 
                         <span>
-
-                            <strong>
-                                UPI
-                            </strong>
-
-                            <small>
-                                Pay using UPI
-                            </small>
-
+                            UPI
                         </span>
 
                     </label>
 
-
-
                     <label class="payment-option">
 
                         <input
                             type="radio"
                             name="paymentMethod"
-                            value="Cash on Delivery"
-                        >
+                            value="Cash on Delivery">
 
                         <span>
-
-                            <strong>
-                                Cash on Delivery
-                            </strong>
-
-                            <small>
-                                Pay when your order arrives
-                            </small>
-
+                            Cash on Delivery
                         </span>
 
                     </label>
 
                 </div>
 
-
-
-                <!-- CANADA -->
 
                 <div
                     id="canadaPayments"
-                    style="display:none;"
-                >
+                    style="display:none;">
 
                     <label class="payment-option">
 
                         <input
                             type="radio"
                             name="paymentMethod"
-                            value="Card"
-                        >
+                            value="Card">
 
                         <span>
-
-                            <strong>
-                                Card Payment
-                            </strong>
-
-                            <small>
-                                Secure online card payment
-                            </small>
-
+                            Card Payment
                         </span>
 
                     </label>
 
-
-
                     <label class="payment-option">
 
                         <input
                             type="radio"
                             name="paymentMethod"
-                            value="Interac e-Transfer"
-                        >
+                            value="Interac e-Transfer">
 
                         <span>
-
-                            <strong>
-                                Interac e-Transfer
-                            </strong>
-
-                            <small>
-                                Pay by Canadian e-Transfer
-                            </small>
-
+                            Interac e-Transfer
                         </span>
 
                     </label>
@@ -1078,32 +750,19 @@
                 </div>
 
 
-
-                <!-- INTERNATIONAL -->
-
                 <div
                     id="internationalPayments"
-                    style="display:none;"
-                >
+                    style="display:none;">
 
                     <label class="payment-option">
 
                         <input
                             type="radio"
                             name="paymentMethod"
-                            value="Card"
-                        >
+                            value="Card">
 
                         <span>
-
-                            <strong>
-                                Card Payment
-                            </strong>
-
-                            <small>
-                                Secure online card payment
-                            </small>
-
+                            Card Payment
                         </span>
 
                     </label>
@@ -1115,10 +774,7 @@
         </div>
 
 
-
-        <!-- =================================================
-             ORDER SUMMARY
-        ================================================= -->
+        <!-- SUMMARY -->
 
         <div class="checkout-summary">
 
@@ -1128,50 +784,31 @@
                     ORDER TOTAL
                 </span>
 
-
                 <strong id="checkoutTotal">
                     ₹0
                 </strong>
 
             </div>
 
-
-            <p
-                id="currencyNotice"
-                style="
-                    font-size:11px;
-                    color:#777;
-                    margin-top:10px;
-                    text-align:right;
-                "
-            >
-
-                Prices shown in Indian Rupee
-
+            <p id="currencyNotice">
+                Prices shown in INR
             </p>
 
         </div>
 
 
-
-        <!-- =================================================
-             PLACE ORDER
-        ================================================= -->
-
         <button
             class="place-order-button"
-            onclick="placeOrder()"
-        >
+            onclick="placeOrder()">
 
             PLACE ORDER
 
         </button>
 
-
         <p class="checkout-note">
 
-            Your order details will be sent
-            to FOOTWORLD on WhatsApp for confirmation.
+            Your order details will be sent to
+            FOOTWORLD on WhatsApp for confirmation.
 
         </p>
 
@@ -1180,69 +817,49 @@
 </div>
 
 
-
 <!-- =====================================================
      PRODUCT MODAL
 ===================================================== -->
 
 <div
     class="product-modal"
-    id="productModal"
->
+    id="productModal">
 
     <div class="product-modal-box">
 
-
         <button
             class="modal-close"
-            onclick="closeProductModal()"
-        >
+            onclick="closeProductModal()">
+
             ×
+
         </button>
-
-
-
-        <!-- IMAGE -->
 
         <div class="modal-image">
 
             <img
                 id="modalProductImage"
                 src=""
-                alt=""
-            >
+                alt="">
 
         </div>
 
-
-
-        <!-- DETAILS -->
-
         <div class="modal-details">
-
 
             <p
                 class="product-category"
-                id="modalProductCategory"
-            >
+                id="modalProductCategory">
             </p>
 
-
             <h2
-                id="modalProductName"
-            >
+                id="modalProductName">
             </h2>
-
 
             <div
                 class="modal-price"
-                id="modalProductPrice"
-            >
+                id="modalProductPrice">
             </div>
 
-
-
-            <!-- SIZE -->
 
             <div class="size-section">
 
@@ -1250,18 +867,13 @@
                     SELECT SIZE
                 </div>
 
-
                 <div
                     class="size-options"
-                    id="sizeOptions"
-                >
+                    id="sizeOptions">
                 </div>
 
             </div>
 
-
-
-            <!-- QUANTITY -->
 
             <div class="quantity-section">
 
@@ -1269,24 +881,19 @@
                     QUANTITY
                 </div>
 
-
                 <div class="quantity-control">
 
                     <button
-                        onclick="changeModalQuantity(-1)"
-                    >
+                        onclick="changeModalQuantity(-1)">
                         −
                     </button>
-
 
                     <span id="modalQuantity">
                         1
                     </span>
 
-
                     <button
-                        onclick="changeModalQuantity(1)"
-                    >
+                        onclick="changeModalQuantity(1)">
                         +
                     </button>
 
@@ -1295,13 +902,9 @@
             </div>
 
 
-
-            <!-- ADD TO BAG -->
-
             <button
                 class="modal-add-button"
-                onclick="addSelectedProductToCart()"
-            >
+                onclick="addSelectedProductToCart()">
 
                 ADD TO BAG
 
@@ -1314,14 +917,7 @@
 </div>
 
 
-
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
-
 <script src="script.js"></script>
 
-
 </body>
-
 </html>
