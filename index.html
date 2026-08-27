@@ -593,31 +593,25 @@
 
         <!-- PAYMENT -->
 
-        <div class="checkout-section">
+ <div class="payment-section">
 
-            <h3>
-                PAYMENT METHOD
-            </h3>
+    <h3>PAYMENT METHOD</h3>
 
+    <div id="paymentMethods">
+
+        <!-- INDIA PAYMENT METHODS -->
+
+        <div id="indiaPayments">
 
             <label class="payment-option">
 
                 <input
                     type="radio"
                     name="paymentMethod"
-                    value="UPI"
-                >
+                    value="UPI">
 
                 <span>
-
-                    <strong>
-                        UPI
-                    </strong>
-
-                    <small>
-                        Pay securely using UPI
-                    </small>
-
+                    UPI
                 </span>
 
             </label>
@@ -628,24 +622,77 @@
                 <input
                     type="radio"
                     name="paymentMethod"
-                    value="Cash on Delivery"
-                >
+                    value="Cash on Delivery">
 
                 <span>
-
-                    <strong>
-                        Cash on Delivery
-                    </strong>
-
-                    <small>
-                        Pay when your order arrives
-                    </small>
-
+                    Cash on Delivery
                 </span>
 
             </label>
 
         </div>
+
+
+        <!-- CANADA PAYMENT METHODS -->
+
+        <div
+            id="canadaPayments"
+            style="display:none;">
+
+            <label class="payment-option">
+
+                <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="Card">
+
+                <span>
+                    Card Payment
+                </span>
+
+            </label>
+
+
+            <label class="payment-option">
+
+                <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="Interac e-Transfer">
+
+                <span>
+                    Interac e-Transfer
+                </span>
+
+            </label>
+
+        </div>
+
+
+        <!-- OTHER INTERNATIONAL PAYMENT -->
+
+        <div
+            id="internationalPayments"
+            style="display:none;">
+
+            <label class="payment-option">
+
+                <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="Card">
+
+                <span>
+                    Card Payment
+                </span>
+
+            </label>
+
+        </div>
+
+    </div>
+
+</div>
 
 
         <!-- ORDER SUMMARY -->
