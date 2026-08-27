@@ -360,30 +360,114 @@
             <h3>
                 DELIVERY DETAILS
             </h3>
+<div class="form-grid">
 
-            <div class="form-grid">
+    <div class="form-field">
 
-                <div class="form-field">
+        <label>
+            FULL NAME *
+        </label>
 
-                    <label>
-                        FULL NAME *
-                    </label>
+        <input
+            type="text"
+            id="customerName"
+            placeholder="Your full name"
+        >
 
-                    <input
-                        type="text"
-                        id="customerName"
-                        placeholder="Your full name"
-                    >
-
-                </div>
+    </div>
 
 
-                <div class="form-field">
+    <div class="form-field">
 
-                    <label>
-                        MOBILE NUMBER *
-                    </label>
+        <label>
+            EMAIL ADDRESS *
+        </label>
 
+        <input
+            type="email"
+            id="customerEmail"
+            placeholder="you@example.com"
+        >
+
+    </div>
+
+</div>
+
+
+<div class="form-grid">
+
+    <div class="form-field">
+
+        <label>
+            MOBILE NUMBER *
+        </label>
+
+        <input
+            type="tel"
+            id="customerPhone"
+            placeholder="Mobile number"
+            maxlength="15"
+        >
+
+    </div>
+
+
+    <div class="form-field">
+
+        <label>
+            COUNTRY *
+        </label>
+
+        <select
+            id="customerCountry"
+            onchange="countryChanged()">
+
+            <option value="IN">
+                🇮🇳 India
+            </option>
+
+            <option value="CA">
+                🇨🇦 Canada
+            </option>
+
+            <option value="US">
+                🇺🇸 United States
+            </option>
+
+            <option value="GB">
+                🇬🇧 United Kingdom
+            </option>
+
+            <option value="AU">
+                🇦🇺 Australia
+            </option>
+
+            <option value="DE">
+                🇩🇪 Germany
+            </option>
+
+            <option value="FR">
+                🇫🇷 France
+            </option>
+
+            <option value="IT">
+                🇮🇹 Italy
+            </option>
+
+            <option value="ES">
+                🇪🇸 Spain
+            </option>
+
+            <option value="NL">
+                🇳🇱 Netherlands
+            </option>
+
+        </select>
+
+    </div>
+
+</div>
+            
                     <input
                         type="tel"
                         id="customerPhone"
@@ -578,22 +662,27 @@
 
         <!-- ORDER SUMMARY -->
 
-        <div class="checkout-summary">
+      <div class="checkout-summary">
 
-            <div>
+    <div>
 
-                <span>
-                    ORDER TOTAL
-                </span>
+        <span>
+            ORDER TOTAL
+        </span>
 
-                <strong id="checkoutTotal">
-                    ₹0
-                </strong>
+        <strong id="checkoutTotal">
+            ₹0
+        </strong>
 
-            </div>
+    </div>
 
-        </div>
+    <p
+        id="currencyNotice"
+        style="font-size:11px;color:#777;margin-top:10px;text-align:right;">
+        Prices shown in INR
+    </p>
 
+</div>
 
        <button
     class="checkout-button"
