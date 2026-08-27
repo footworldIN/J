@@ -326,6 +326,294 @@
 
 </div>
 
+   <!-- =========================
+     CHECKOUT MODAL
+========================= -->
+
+<div class="checkout-overlay" id="checkoutOverlay">
+
+    <div class="checkout-box">
+
+        <button
+            class="checkout-close"
+            onclick="closeCheckout()">
+            ×
+        </button>
+
+        <div class="checkout-header">
+
+            <p class="small-title">
+                FOOTWORLD
+            </p>
+
+            <h2>
+                DELIVERY & PAYMENT
+            </h2>
+
+        </div>
+
+
+        <!-- CUSTOMER INFORMATION -->
+
+        <div class="checkout-section">
+
+            <h3>
+                DELIVERY DETAILS
+            </h3>
+
+            <div class="form-grid">
+
+                <div class="form-field">
+
+                    <label>
+                        FULL NAME *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="customerName"
+                        placeholder="Your full name"
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        MOBILE NUMBER *
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="customerPhone"
+                        placeholder="10 digit mobile number"
+                        maxlength="10"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-field">
+
+                <label>
+                    ADDRESS *
+                </label>
+
+                <textarea
+                    id="customerAddress"
+                    placeholder="House / Flat / Building, Street, Area"
+                    rows="3"
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-field">
+
+                    <label>
+                        CITY *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="customerCity"
+                        placeholder="City"
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        STATE *
+                    </label>
+
+                    <select id="customerState">
+
+                        <option value="">
+                            Select State
+                        </option>
+
+                        <option>Andhra Pradesh</option>
+                        <option>Arunachal Pradesh</option>
+                        <option>Assam</option>
+                        <option>Bihar</option>
+                        <option>Chhattisgarh</option>
+                        <option>Goa</option>
+                        <option>Gujarat</option>
+                        <option>Haryana</option>
+                        <option>Himachal Pradesh</option>
+                        <option>Jharkhand</option>
+                        <option>Karnataka</option>
+                        <option>Kerala</option>
+                        <option>Madhya Pradesh</option>
+                        <option>Maharashtra</option>
+                        <option>Manipur</option>
+                        <option>Meghalaya</option>
+                        <option>Mizoram</option>
+                        <option>Nagaland</option>
+                        <option>Odisha</option>
+                        <option>Punjab</option>
+                        <option>Rajasthan</option>
+                        <option>Sikkim</option>
+                        <option>Tamil Nadu</option>
+                        <option>Telangana</option>
+                        <option>Tripura</option>
+                        <option>Uttar Pradesh</option>
+                        <option>Uttarakhand</option>
+                        <option>West Bengal</option>
+                        <option>Delhi</option>
+                        <option>Jammu and Kashmir</option>
+                        <option>Ladakh</option>
+                        <option>Chandigarh</option>
+                        <option>Puducherry</option>
+                        <option>Other</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-field">
+
+                    <label>
+                        PIN CODE *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="customerPin"
+                        placeholder="6 digit PIN code"
+                        maxlength="6"
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        LANDMARK
+                    </label>
+
+                    <input
+                        type="text"
+                        id="customerLandmark"
+                        placeholder="Nearby landmark (optional)"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PAYMENT -->
+
+        <div class="checkout-section">
+
+            <h3>
+                PAYMENT METHOD
+            </h3>
+
+
+            <label class="payment-option">
+
+                <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="UPI"
+                >
+
+                <span>
+
+                    <strong>
+                        UPI
+                    </strong>
+
+                    <small>
+                        Pay securely using UPI
+                    </small>
+
+                </span>
+
+            </label>
+
+
+            <label class="payment-option">
+
+                <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="Cash on Delivery"
+                >
+
+                <span>
+
+                    <strong>
+                        Cash on Delivery
+                    </strong>
+
+                    <small>
+                        Pay when your order arrives
+                    </small>
+
+                </span>
+
+            </label>
+
+        </div>
+
+
+        <!-- ORDER SUMMARY -->
+
+        <div class="checkout-summary">
+
+            <div>
+
+                <span>
+                    ORDER TOTAL
+                </span>
+
+                <strong id="checkoutTotal">
+                    ₹0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="place-order-button"
+            onclick="placeOrder()">
+
+            PLACE ORDER ON WHATSAPP
+
+        </button>
+
+
+        <p class="checkout-note">
+
+            Your order details will be sent to
+            FOOTWORLD on WhatsApp for confirmation.
+
+        </p>
+
+    </div>
+
+</div> 
 <!-- =========================
      PRODUCT MODAL
 ========================= -->
