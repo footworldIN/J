@@ -1789,3 +1789,257 @@ button {
     }
 
 }
+
+/* =========================================
+   FOOTWORLD COUNTRY SELECTION
+========================================= */
+
+.country-gate {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: #f7f5f1;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+
+    z-index: 99999;
+
+    overflow-y: auto;
+}
+
+
+.country-gate-box {
+
+    width: min(700px, 100%);
+
+    text-align: center;
+
+    padding: 50px 30px;
+}
+
+
+/* LOGO */
+
+.country-logo {
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 30px;
+
+    font-weight: 600;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 55px;
+}
+
+.country-logo span {
+
+    display: block;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 3px;
+
+    margin-top: -4px;
+}
+
+
+/* SMALL TITLE */
+
+.country-small-title {
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 18px;
+}
+
+
+/* HEADING */
+
+.country-gate-box h1 {
+
+    font-family: "Playfair Display", serif;
+
+    font-size: clamp(42px, 7vw, 70px);
+
+    line-height: 1.05;
+
+    font-weight: 400;
+
+    margin-bottom: 20px;
+}
+
+
+/* DESCRIPTION */
+
+.country-description {
+
+    max-width: 500px;
+
+    margin: 0 auto 40px;
+
+    color: #777;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* COUNTRY OPTIONS */
+
+.country-options {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+
+    max-width: 600px;
+
+    margin: auto;
+}
+
+
+/* COUNTRY BUTTON */
+
+.country-options button {
+
+    min-height: 85px;
+
+    border: 1px solid #d3d0ca;
+
+    background: #fff;
+
+    cursor: pointer;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    font-family: "DM Sans", sans-serif;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        border 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.country-options button:first-letter {
+
+    font-size: 25px;
+}
+
+
+.country-options button span {
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.8px;
+
+    text-transform: uppercase;
+}
+
+
+.country-options button:hover {
+
+    background: #171717;
+
+    color: white;
+
+    border-color: #171717;
+
+    transform: translateY(-3px);
+}
+
+
+/* NOTE */
+
+.country-note {
+
+    margin-top: 30px;
+
+    font-size: 11px;
+
+    color: #999;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .country-gate {
+
+        align-items: flex-start;
+
+        padding: 15px;
+    }
+
+    .country-gate-box {
+
+        padding: 35px 10px;
+    }
+
+    .country-logo {
+
+        margin-bottom: 40px;
+
+        font-size: 25px;
+    }
+
+    .country-gate-box h1 {
+
+        font-size: 42px;
+    }
+
+    .country-description {
+
+        font-size: 13px;
+
+        margin-bottom: 30px;
+    }
+
+    .country-options {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 10px;
+    }
+
+    .country-options button {
+
+        min-height: 75px;
+    }
+
+}
