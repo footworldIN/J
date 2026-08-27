@@ -1918,7 +1918,9 @@ button {
 }
 
 
-/* COUNTRY BUTTON */
+/* =========================================
+   COUNTRY BUTTON CLEAN DESIGN
+========================================= */
 
 .country-options button {
 
@@ -1938,33 +1940,31 @@ button {
 
     justify-content: center;
 
-    gap: 7px;
+    gap: 8px;
 
     font-family: "DM Sans", sans-serif;
 
-    transition:
-        background 0.25s ease,
-        color 0.25s ease,
-        border 0.25s ease,
-        transform 0.25s ease;
+    transition: all 0.25s ease;
 }
 
 
-.country-options button:first-letter {
+.country-flag {
 
-    font-size: 25px;
+    font-size: 30px;
+
+    line-height: 1;
 }
 
 
-.country-options button span {
+.country-name {
 
     font-size: 11px;
 
     font-weight: 600;
 
-    letter-spacing: 0.8px;
+    letter-spacing: 0.5px;
 
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 
@@ -1972,23 +1972,11 @@ button {
 
     background: #171717;
 
-    color: white;
+    color: #fff;
 
     border-color: #171717;
 
     transform: translateY(-3px);
-}
-
-
-/* NOTE */
-
-.country-note {
-
-    margin-top: 30px;
-
-    font-size: 11px;
-
-    color: #999;
 }
 
 
