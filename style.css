@@ -1004,3 +1004,366 @@ button {
     }
 
 }
+/* =========================================
+   PRODUCT MODAL
+========================================= */
+
+.product-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.65);
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 5000;
+
+    backdrop-filter: blur(8px);
+}
+
+.product-modal.active {
+
+    display: flex;
+}
+
+
+/* MODAL BOX */
+
+.product-modal-box {
+
+    width: min(950px, 100%);
+
+    max-height: 90vh;
+
+    overflow: auto;
+
+    background: #f7f5f1;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    position: relative;
+
+    animation: productModalIn 0.3s ease;
+}
+
+
+@keyframes productModalIn {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(20px) scale(0.98);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0) scale(1);
+
+    }
+
+}
+
+
+/* CLOSE */
+
+.modal-close {
+
+    position: absolute;
+
+    right: 18px;
+
+    top: 12px;
+
+    width: 40px;
+
+    height: 40px;
+
+    border: none;
+
+    background: rgba(255,255,255,0.85);
+
+    border-radius: 50%;
+
+    font-size: 28px;
+
+    cursor: pointer;
+
+    z-index: 10;
+}
+
+
+/* IMAGE */
+
+.modal-image {
+
+    min-height: 520px;
+
+    background: #e9e6df;
+
+    overflow: hidden;
+}
+
+.modal-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    min-height: 520px;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* DETAILS */
+
+.modal-details {
+
+    padding: 70px 55px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+
+.modal-details h2 {
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 42px;
+
+    line-height: 1.05;
+
+    font-weight: 400;
+
+    margin-bottom: 15px;
+}
+
+
+.modal-price {
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    margin-bottom: 45px;
+}
+
+
+/* SIZE */
+
+.size-section {
+
+    margin-bottom: 30px;
+}
+
+
+.size-title {
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    font-weight: 600;
+
+    margin-bottom: 12px;
+}
+
+
+.size-options {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+
+.size-option {
+
+    min-width: 48px;
+
+    height: 44px;
+
+    border: 1px solid #ccc;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    font-size: 12px;
+}
+
+
+.size-option:hover {
+
+    border-color: #171717;
+}
+
+
+.size-option.selected {
+
+    background: #171717;
+
+    color: white;
+
+    border-color: #171717;
+}
+
+
+/* QUANTITY */
+
+.quantity-section {
+
+    margin-bottom: 35px;
+}
+
+
+.quantity-control {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    border: 1px solid #ccc;
+
+    width: fit-content;
+}
+
+
+.quantity-control button {
+
+    width: 42px;
+
+    height: 42px;
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-size: 18px;
+}
+
+
+.quantity-control span {
+
+    width: 42px;
+
+    text-align: center;
+
+    font-size: 13px;
+}
+
+
+/* ADD BUTTON */
+
+.modal-add-button {
+
+    width: 100%;
+
+    padding: 18px;
+
+    border: none;
+
+    background: #171717;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: 2px;
+
+    transition: background 0.3s ease;
+}
+
+
+.modal-add-button:hover {
+
+    background: #333;
+}
+
+
+/* =========================================
+   MOBILE MODAL
+========================================= */
+
+@media (max-width: 700px) {
+
+    .product-modal {
+
+        padding: 10px;
+
+        align-items: flex-end;
+    }
+
+
+    .product-modal-box {
+
+        grid-template-columns: 1fr;
+
+        width: 100%;
+
+        max-height: 94vh;
+    }
+
+
+    .modal-image {
+
+        min-height: 330px;
+
+        max-height: 330px;
+    }
+
+
+    .modal-image img {
+
+        min-height: 330px;
+    }
+
+
+    .modal-details {
+
+        padding: 35px 25px 30px;
+    }
+
+
+    .modal-details h2 {
+
+        font-size: 32px;
+    }
+
+
+    .modal-price {
+
+        margin-bottom: 30px;
+    }
+
+}
