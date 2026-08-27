@@ -28,7 +28,97 @@
 
 
 <body>
+<!-- =====================================================
+     COUNTRY SELECTOR
+===================================================== -->
 
+<div
+    class="country-selector-overlay"
+    id="countrySelector"
+>
+
+    <div class="country-selector-box">
+
+        <p class="small-title">
+            WELCOME TO FOOTWORLD
+        </p>
+
+        <h2>
+            SELECT YOUR<br>
+            SHOPPING COUNTRY
+        </h2>
+
+        <p class="country-selector-text">
+            Prices, currency and payment options
+            will be shown for your country.
+        </p>
+
+
+        <div class="country-selector-grid">
+
+            <button
+                type="button"
+                onclick="selectShoppingCountry('IN')"
+            >
+                🇮🇳
+                <span>India</span>
+            </button>
+
+
+            <button
+                type="button"
+                onclick="selectShoppingCountry('CA')"
+            >
+                🇨🇦
+                <span>Canada</span>
+            </button>
+
+
+            <button
+                type="button"
+                onclick="selectShoppingCountry('US')"
+            >
+                🇺🇸
+                <span>United States</span>
+            </button>
+
+
+            <button
+                type="button"
+                onclick="selectShoppingCountry('GB')"
+            >
+                🇬🇧
+                <span>United Kingdom</span>
+            </button>
+
+
+            <button
+                type="button"
+                onclick="selectShoppingCountry('AU')"
+            >
+                🇦🇺
+                <span>Australia</span>
+            </button>
+
+
+            <button
+                type="button"
+                onclick="selectShoppingCountry('DE')"
+            >
+                🇪🇺
+                <span>Europe</span>
+            </button>
+
+        </div>
+
+
+        <p class="country-selector-note">
+            You can change your country anytime.
+        </p>
+
+    </div>
+
+</div>
 
 <!-- =====================================================
      HEADER
