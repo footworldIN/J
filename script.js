@@ -1029,17 +1029,83 @@ function countryChanged() {
         countrySelect.value;
 
 
-    loadProducts();
+   loadProducts();
 
-    updateCart();
+updateCart();
 
-    updateCheckoutTotal();
+updateCheckoutTotal();
 
-    updateCurrencyNotice();
+updateCurrencyNotice();
+
+updatePaymentMethods();
 
 }
 
+function updatePaymentMethods() {
 
+    const india =
+        document.getElementById(
+            "indiaPayments"
+        );
+
+    const canada =
+        document.getElementById(
+            "canadaPayments"
+        );
+
+    const international =
+        document.getElementById(
+            "internationalPayments"
+        );
+
+
+    if (!india || !canada || !international) {
+        return;
+    }
+
+
+    india.style.display = "none";
+
+    canada.style.display = "none";
+
+    international.style.display = "none";
+
+
+    if (selectedCountry === "IN") {
+
+        india.style.display = "block";
+
+    }
+
+    else if (selectedCountry === "CA") {
+
+        canada.style.display = "block";
+
+    }
+
+    else {
+
+        international.style.display = "block";
+
+    }
+
+
+    /*
+       Clear previous payment selection
+       when country changes.
+    */
+
+    document
+        .querySelectorAll(
+            'input[name="paymentMethod"]'
+        )
+        .forEach(input => {
+
+            input.checked = false;
+
+        });
+
+}
 /* =========================================
    CURRENCY NOTICE
 ========================================= */
@@ -1509,6 +1575,7 @@ document.addEventListener(
         updateCart();
 
         updateCurrencyNotice();
+        updatePaymentMethods();
 
     }
 );
