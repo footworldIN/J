@@ -1,12 +1,7 @@
 /* =========================================================
    FOOTWORLD
    PREMIUM FORMAL FOOTWEAR
-   COMPLETE STYLE SHEET
-========================================================= */
-
-
-/* =========================================================
-   RESET
+   CLEAN MASTER CSS
 ========================================================= */
 
 * {
@@ -15,47 +10,31 @@
     box-sizing: border-box;
 }
 
-
 html {
     scroll-behavior: smooth;
 }
 
-
 body {
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background: #f7f5f0;
-    color: #111;
-
-    overflow-x: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f8f7f4;
+    color: #151515;
+    line-height: 1.5;
 }
 
+body.modal-open {
+    overflow: hidden;
+}
 
-body,
 button,
 input,
 select,
 textarea {
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    font: inherit;
 }
-
-
-button,
-a {
-    -webkit-tap-highlight-color: transparent;
-}
-
 
 button {
     cursor: pointer;
 }
-
 
 a {
     color: inherit;
@@ -65,302 +44,93 @@ a {
 
 /* =========================================================
    COUNTRY GATE
-   THIS IS THE FIRST SCREEN
 ========================================================= */
 
 .country-gate {
-
     position: fixed;
-
     inset: 0;
-
-    width: 100%;
-    height: 100vh;
-
-    min-height: 650px;
-
     z-index: 99999;
-
     display: flex;
-
     align-items: center;
     justify-content: center;
-
-    overflow-y: auto;
-
-    background: #111;
-
-    color: #fff;
-}
-
-
-/* =========================================================
-   COUNTRY BACKGROUND
-========================================================= */
-
-.country-gate-background {
-
-    position: absolute;
-
-    inset: 0;
-
+    min-height: 100vh;
     background:
         linear-gradient(
-            rgba(0,0,0,0.78),
-            rgba(0,0,0,0.84)
+            rgba(0, 0, 0, 0.58),
+            rgba(0, 0, 0, 0.68)
         ),
         url("images/formal-shoes-background.jpg")
-        center center / cover no-repeat;
-
-    z-index: -1;
-
-    transform: scale(1.02);
+        center / cover no-repeat;
+    padding: 25px;
 }
 
+.country-gate.hidden {
+    display: none;
+}
 
-/* =========================================================
-   COUNTRY CONTENT
-========================================================= */
-
-.country-gate-content {
-
-    width: min(1000px, 92%);
-
-    padding: 50px 20px;
-
+.country-gate-box {
+    width: min(850px, 100%);
+    padding: 55px 45px;
     text-align: center;
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
 }
 
-
-/* =========================================================
-   BRAND
-========================================================= */
-
-.country-brand {
-
-    font-size: 30px;
-
-    font-weight: 700;
-
-    letter-spacing: 7px;
-
-    margin-bottom: 35px;
-}
-
-
-.country-brand span {
-
-    display: block;
-
-    font-size: 9px;
-
-    letter-spacing: 4px;
-
-    font-weight: 400;
-
-    margin-top: 7px;
-
-    opacity: 0.7;
-}
-
-
-/* =========================================================
-   COUNTRY TITLE
-========================================================= */
-
-.country-eyebrow {
-
-    font-size: 11px;
-
-    letter-spacing: 4px;
-
-    font-weight: 600;
-
-    margin-bottom: 18px;
-
-    opacity: 0.7;
-}
-
-
-.country-gate h1 {
-
-    font-size: clamp(38px, 6vw, 68px);
-
-    line-height: 0.98;
-
-    letter-spacing: -2px;
-
-    font-weight: 600;
-
-    margin-bottom: 22px;
-}
-
-
-.country-gate h1 span {
-
-    font-weight: 300;
-
-    color: #d5b47a;
-}
-
-
-.country-description {
-
-    max-width: 520px;
-
-    margin: 0 auto 38px;
-
-    color: rgba(255,255,255,0.72);
-
+.country-gate-brand {
     font-size: 14px;
-
-    line-height: 1.7;
+    letter-spacing: 5px;
+    font-weight: 700;
+    margin-bottom: 12px;
 }
 
+.country-gate-box h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(32px, 5vw, 58px);
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
 
-/* =========================================================
-   COUNTRY GRID
-========================================================= */
+.country-gate-box p {
+    max-width: 570px;
+    margin: 0 auto 35px;
+    color: #666;
+    font-size: 15px;
+}
 
 .country-options {
-
-    width: min(900px, 100%);
-
-    margin: 0 auto;
-
     display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
+    grid-template-columns: repeat(3, 1fr);
     gap: 14px;
 }
 
-
-/* =========================================================
-   COUNTRY BUTTON
-========================================================= */
-
 .country-option {
-
-    position: relative;
-
-    min-height: 125px;
-
-    padding: 22px 15px;
-
-    border: 1px solid rgba(255,255,255,0.22);
-
-    border-radius: 2px;
-
-    background:
-        rgba(255,255,255,0.06);
-
-    color: #fff;
-
+    min-height: 105px;
+    border: 1px solid #ddd;
+    background: #fff;
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
     justify-content: center;
-
     gap: 8px;
-
-    transition:
-        transform 0.25s ease,
-        background 0.25s ease,
-        border-color 0.25s ease;
+    transition: 0.25s ease;
 }
-
 
 .country-option:hover {
-
-    transform: translateY(-5px);
-
-    background:
-        rgba(255,255,255,0.12);
-
-    border-color:
-        rgba(213,180,122,0.8);
+    border-color: #111;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
-
-
-.country-option:active {
-
-    transform: translateY(-1px);
-}
-
 
 .country-flag {
-
-    font-size: 36px;
-
+    font-size: 32px;
     line-height: 1;
 }
 
-
 .country-name {
-
-    font-size: 14px;
-
-    font-weight: 600;
-
-    letter-spacing: 0.3px;
-}
-
-
-.country-code {
-
-    font-size: 10px;
-
-    letter-spacing: 2px;
-
-    color: #d5b47a;
-
-    font-weight: 600;
-}
-
-
-/* =========================================================
-   COUNTRY NOTE
-========================================================= */
-
-.country-note {
-
-    margin-top: 28px;
-
-    font-size: 11px;
-
-    color:
-        rgba(255,255,255,0.45);
-
-    letter-spacing: 0.3px;
-}
-
-
-/* =========================================================
-   MAIN WEBSITE
-   HIDDEN UNTIL COUNTRY SELECTED
-========================================================= */
-
-.main-website {
-
-    display: none;
-
-    width: 100%;
-}
-
-
-/*
-   When JavaScript adds .visible,
-   the website appears.
-*/
-
-.main-website.visible {
-
-    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 
@@ -369,192 +139,79 @@ a {
 ========================================================= */
 
 .header {
-
     position: sticky;
-
     top: 0;
-
-    z-index: 500;
-
-    width: 100%;
-
-    min-height: 82px;
-
-    padding:
-        0 5%;
-
-    background:
-        rgba(255,255,255,0.96);
-
-    border-bottom:
-        1px solid #e5e1d9;
-
+    z-index: 1000;
+    min-height: 78px;
+    padding: 0 5%;
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
-    gap: 25px;
+    gap: 30px;
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid #e7e5e0;
 }
 
-
-/* =========================================================
-   LOGO
-========================================================= */
-
-.logo a {
-
+.logo {
     display: flex;
-
     flex-direction: column;
-
-    align-items: flex-start;
-
-    font-size: 24px;
-
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 23px;
     font-weight: 700;
-
-    letter-spacing: 5px;
+    letter-spacing: 3px;
 }
-
 
 .logo span {
-
+    margin-top: 2px;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 8px;
-
+    font-weight: 600;
     letter-spacing: 3px;
-
-    font-weight: 400;
-
-    margin-top: 4px;
-
-    color: #777;
 }
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
 
 .navigation {
-
     display: flex;
-
     align-items: center;
-
-    gap: 28px;
+    justify-content: center;
+    gap: 26px;
 }
-
 
 .navigation a {
-
     font-size: 11px;
-
-    letter-spacing: 1.5px;
-
-    font-weight: 600;
-
-    color: #333;
-
-    transition:
-        color 0.2s ease;
+    font-weight: 700;
+    letter-spacing: 1.2px;
 }
-
 
 .navigation a:hover {
-
-    color: #a88652;
+    opacity: 0.55;
 }
 
-
-/* =========================================================
-   HEADER ACTIONS
-========================================================= */
-
 .header-actions {
-
     display: flex;
-
     align-items: center;
-
     gap: 12px;
 }
 
-
-.country-change {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 7px;
-
-    border: 1px solid #ddd7cc;
-
-    background: #fff;
-
-    padding: 9px 12px;
-
-    font-size: 11px;
-
-    color: #222;
-}
-
-
-.country-change:hover {
-
-    border-color: #a88652;
-}
-
-
+.country-change,
 .cart-button {
-
-    border: 1px solid #111;
-
-    background: #111;
-
-    color: #fff;
-
-    padding: 10px 15px;
-
-    font-size: 10px;
-
-    letter-spacing: 1.5px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
+    border: 1px solid #d8d6d0;
+    background: #fff;
+    min-height: 40px;
+    padding: 0 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
-
+.country-change:hover,
 .cart-button:hover {
-
-    background: #333;
+    background: #111;
+    color: #fff;
+    border-color: #111;
 }
-
 
 #cartCount {
-
-    min-width: 17px;
-
-    height: 17px;
-
-    border-radius: 50%;
-
-    background: #d5b47a;
-
-    color: #111;
-
-    font-size: 9px;
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
+    margin-left: 5px;
 }
 
 
@@ -563,160 +220,83 @@ a {
 ========================================================= */
 
 .hero {
-
-    min-height: 720px;
-
-    position: relative;
-
+    min-height: 680px;
     display: flex;
-
     align-items: center;
-
-    padding:
-        80px 8%;
-
+    padding: 90px 7%;
     background:
-
         linear-gradient(
             90deg,
-            rgba(0,0,0,0.78),
-            rgba(0,0,0,0.25)
+            rgba(0, 0, 0, 0.72),
+            rgba(0, 0, 0, 0.28)
         ),
-
         url("images/formal-shoes-background.jpg")
         center / cover no-repeat;
-
     color: #fff;
 }
 
-
 .hero-content {
-
-    max-width: 680px;
+    max-width: 650px;
 }
-
 
 .small-title {
-
-    font-size: 10px;
-
-    letter-spacing: 4px;
-
-    font-weight: 600;
-
-    margin-bottom: 20px;
-
-    color: #a88652;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
 }
-
 
 .hero h1 {
-
-    font-size:
-        clamp(55px, 8vw, 105px);
-
-    line-height: 0.9;
-
-    letter-spacing: -4px;
-
-    font-weight: 600;
-
-    margin-bottom: 30px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(48px, 7vw, 92px);
+    line-height: 0.95;
+    letter-spacing: -2px;
+    margin-bottom: 28px;
 }
-
 
 .hero h1 span {
-
-    font-weight: 300;
-
-    color: #d5b47a;
+    font-style: italic;
+    font-weight: 400;
 }
 
-
 .hero-text {
-
     max-width: 520px;
-
-    color:
-        rgba(255,255,255,0.78);
-
-    font-size: 15px;
-
-    line-height: 1.8;
-
+    color: rgba(255,255,255,0.82);
+    font-size: 16px;
     margin-bottom: 35px;
 }
 
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
 .hero-buttons {
-
     display: flex;
-
-    flex-wrap: wrap;
-
     gap: 12px;
+    flex-wrap: wrap;
 }
-
 
 .button {
-
     display: inline-flex;
-
     align-items: center;
-
     justify-content: center;
-
     min-height: 48px;
-
-    padding:
-        0 25px;
-
-    font-size: 10px;
-
+    padding: 0 28px;
+    font-size: 11px;
     font-weight: 700;
-
-    letter-spacing: 2px;
-
-    transition:
-        all 0.25s ease;
+    letter-spacing: 1.5px;
+    transition: 0.25s ease;
 }
-
 
 .button-dark {
-
     background: #111;
-
     color: #fff;
-
-    border: 1px solid #111;
 }
-
-
-.button-dark:hover {
-
-    background: #333;
-}
-
 
 .button-light {
-
     background: #fff;
-
     color: #111;
-
-    border: 1px solid #fff;
 }
 
-
-.button-light:hover {
-
-    background: #d5b47a;
-
-    border-color: #d5b47a;
+.button:hover {
+    transform: translateY(-2px);
 }
 
 
@@ -725,308 +305,173 @@ a {
 ========================================================= */
 
 .intro {
-
-    padding:
-        120px 20px;
-
+    padding: 110px 7%;
     text-align: center;
+}
 
-    max-width: 800px;
+.intro-content {
+    max-width: 760px;
+    margin: auto;
+}
 
+.intro h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(38px, 5vw, 64px);
+    line-height: 1;
+    margin-bottom: 25px;
+}
+
+.intro p {
+    color: #666;
+    max-width: 620px;
     margin: auto;
 }
 
 
-.intro h2 {
+/* =========================================================
+   COLLECTION BANNER
+========================================================= */
 
-    font-size:
-        clamp(40px, 6vw, 70px);
+.collection {
+    min-height: 560px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 70px 7%;
+    color: #fff;
+    overflow: hidden;
+}
 
+.collection-image {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-size: cover;
+}
+
+.collection-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+}
+
+.men-image {
+    background-image:
+        url("images/formal-shoes-background.jpg");
+}
+
+.boys-image {
+    background-image:
+        url("images/boys-formal-shoes.jpg");
+}
+
+.collection-content {
+    position: relative;
+    z-index: 2;
+    max-width: 580px;
+}
+
+.collection h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(45px, 6vw, 75px);
     line-height: 0.95;
-
-    letter-spacing: -2px;
-
-    font-weight: 500;
-
     margin-bottom: 30px;
 }
 
 
-.intro > p:last-child {
-
-    color: #666;
-
-    line-height: 1.8;
-
-    font-size: 15px;
-}
-
-
 /* =========================================================
-   COLLECTION BANNERS
-========================================================= */
-
-.collection {
-
-    width: 100%;
-
-    min-height: 650px;
-}
-
-
-.collection-image {
-
-    min-height: 650px;
-
-    width: 100%;
-
-    position: relative;
-
-    display: flex;
-
-    align-items: center;
-
-    padding: 8%;
-}
-
-
-.men-image {
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0,0,0,0.75),
-            rgba(0,0,0,0.2)
-        ),
-
-        url("images/formal-shoes-background.jpg")
-        center / cover no-repeat;
-}
-
-
-.boys-image {
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0,0,0,0.72),
-            rgba(0,0,0,0.2)
-        ),
-
-        url("images/boys-formal-shoes-background.jpg")
-        center / cover no-repeat;
-}
-
-
-.collection-overlay {
-
-    color: #fff;
-
-    max-width: 600px;
-}
-
-
-.collection-overlay h2 {
-
-    font-size:
-        clamp(48px, 7vw, 90px);
-
-    line-height: 0.92;
-
-    letter-spacing: -3px;
-
-    font-weight: 500;
-
-    margin-bottom: 35px;
-}
-
-
-/* =========================================================
-   PRODUCT SECTION
+   PRODUCTS
 ========================================================= */
 
 .products-section {
-
-    padding:
-        110px 5%;
-
-    background: #f7f5f0;
+    padding: 100px 6%;
+    background: #f8f7f4;
 }
 
-
 .section-heading {
-
     max-width: 700px;
-
-    margin:
-        0 auto 55px;
-
+    margin: 0 auto 55px;
     text-align: center;
 }
 
-
 .section-heading h2 {
-
-    font-size:
-        clamp(38px, 5vw, 65px);
-
-    line-height: 1;
-
-    letter-spacing: -2px;
-
-    font-weight: 500;
-
-    margin-bottom: 20px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(38px, 5vw, 60px);
+    margin-bottom: 15px;
 }
-
 
 .section-heading p:last-child {
-
     color: #777;
-
-    font-size: 14px;
-
-    line-height: 1.7;
 }
-
-
-/* =========================================================
-   PRODUCT GRID
-========================================================= */
 
 .product-grid {
-
-    max-width: 1400px;
-
+    max-width: 1250px;
     margin: auto;
-
     display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
 }
 
-
-/* =========================================================
-   PRODUCT CARD
-========================================================= */
-
 .product-card {
-
     background: #fff;
-
-    border:
-        1px solid #e7e1d7;
-
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
-
-    cursor: pointer;
-
+    border: 1px solid #e8e6e0;
+    transition: 0.3s ease;
     overflow: hidden;
 }
 
-
 .product-card:hover {
-
-    transform: translateY(-6px);
-
-    box-shadow:
-        0 15px 35px
-        rgba(0,0,0,0.08);
+    transform: translateY(-5px);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.09);
 }
 
-
-/* =========================================================
-   PRODUCT IMAGE
-========================================================= */
-
 .product-image {
-
     width: 100%;
-
-    aspect-ratio: 0.82;
-
+    aspect-ratio: 4 / 5;
     object-fit: cover;
-
     display: block;
-
     background: #eee;
 }
 
-
-/* =========================================================
-   PRODUCT INFO
-========================================================= */
-
 .product-info {
-
     padding: 20px;
 }
 
-
 .product-category {
-
-    color: #a88652;
-
+    color: #888;
     font-size: 9px;
-
-    letter-spacing: 2px;
-
+    font-weight: 700;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
-
-    margin-bottom: 8px;
+    margin-bottom: 7px;
 }
-
 
 .product-name {
-
-    font-size: 15px;
-
-    font-weight: 600;
-
-    margin-bottom: 10px;
-
-    color: #222;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 20px;
+    margin-bottom: 12px;
 }
 
-
 .product-price {
-
-    font-size: 16px;
-
-    font-weight: 600;
-
+    font-size: 14px;
+    font-weight: 700;
     margin-bottom: 18px;
 }
 
-
 .product-action {
-
     width: 100%;
-
-    padding: 12px;
-
+    min-height: 42px;
+    border: 1px solid #111;
     background: #111;
-
     color: #fff;
-
-    border: none;
-
-    font-size: 9px;
-
-    letter-spacing: 2px;
-
+    font-size: 10px;
     font-weight: 700;
+    letter-spacing: 1.5px;
 }
 
-
 .product-action:hover {
-
-    background: #333;
+    background: #fff;
+    color: #111;
 }
 
 
@@ -1035,60 +480,34 @@ a {
 ========================================================= */
 
 .loafers-section {
-
-    min-height: 650px;
-
+    min-height: 580px;
     display: flex;
-
     align-items: center;
-
-    padding: 8%;
-
+    padding: 80px 7%;
     color: #fff;
-
     background:
-
         linear-gradient(
-            90deg,
-            rgba(0,0,0,0.8),
-            rgba(0,0,0,0.25)
+            rgba(0,0,0,0.55),
+            rgba(0,0,0,0.55)
         ),
-
         url("images/formal-loafers-background.jpg")
         center / cover no-repeat;
 }
 
-
 .loafers-content {
-
-    max-width: 650px;
+    max-width: 600px;
 }
-
 
 .loafers-content h2 {
-
-    font-size:
-        clamp(50px, 7vw, 95px);
-
-    line-height: 0.9;
-
-    letter-spacing: -4px;
-
-    font-weight: 500;
-
-    margin-bottom: 30px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(50px, 7vw, 85px);
+    line-height: 0.92;
+    margin-bottom: 25px;
 }
 
-
-.loafers-content p:not(.small-title) {
-
+.loafers-content p {
     max-width: 500px;
-
-    color:
-        rgba(255,255,255,0.75);
-
-    line-height: 1.8;
-
+    color: rgba(255,255,255,0.8);
     margin-bottom: 30px;
 }
 
@@ -1098,278 +517,164 @@ a {
 ========================================================= */
 
 .footer {
-
-    padding:
-        70px 6% 30px;
-
+    padding: 65px 7% 35px;
     background: #111;
-
     color: #fff;
 }
 
+.footer-inner {
+    max-width: 1250px;
+    margin: auto;
+}
 
-.footer-brand h2 {
-
-    font-size: 25px;
-
-    letter-spacing: 5px;
-
+.footer-logo {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 30px;
+    letter-spacing: 3px;
     margin-bottom: 12px;
 }
 
-
-.footer-brand p {
-
-    color: #888;
-
+.footer p {
+    color: #aaa;
     font-size: 13px;
 }
-
 
 .footer-links {
-
     display: flex;
-
-    flex-wrap: wrap;
-
     gap: 25px;
-
-    margin:
-        35px 0;
+    flex-wrap: wrap;
+    margin: 25px 0 40px;
 }
-
 
 .footer-links a {
-
     font-size: 10px;
-
-    letter-spacing: 1.5px;
-
-    color: #aaa;
-}
-
-
-.footer-links a:hover {
-
-    color: #d5b47a;
-}
-
-
-.copyright {
-
-    padding-top: 25px;
-
-    border-top:
-        1px solid #292929;
-
-    color: #666;
-
-    font-size: 10px;
-}
-
-
-/* =========================================================
-   CART OVERLAY
-========================================================= */
-
-.cart-overlay {
-
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 9000;
-
-    background:
-        rgba(0,0,0,0.65);
-
-    display: none;
-
-    justify-content: flex-end;
-}
-
-
-.cart-overlay.active {
-
-    display: flex;
-}
-
-
-.cart {
-
-    width: min(460px, 100%);
-
-    height: 100%;
-
-    overflow-y: auto;
-
-    background: #fff;
-
-    padding: 35px;
-}
-
-
-.close-cart {
-
-    float: right;
-
-    border: none;
-
-    background: none;
-
-    font-size: 30px;
-
-    line-height: 1;
-}
-
-
-.cart h2 {
-
-    font-size: 28px;
-
-    letter-spacing: -1px;
-
-    margin-bottom: 30px;
-}
-
-
-/* =========================================================
-   CART ITEM
-========================================================= */
-
-.cart-item {
-
-    display: grid;
-
-    grid-template-columns:
-        75px 1fr auto;
-
-    gap: 15px;
-
-    padding:
-        15px 0;
-
-    border-bottom:
-        1px solid #eee;
-
-    align-items: center;
-}
-
-
-.cart-item img {
-
-    width: 75px;
-
-    height: 90px;
-
-    object-fit: cover;
-
-    background: #eee;
-}
-
-
-.cart-item-info h4 {
-
-    font-size: 13px;
-
-    margin-bottom: 7px;
-}
-
-
-.cart-item-info p {
-
-    font-size: 10px;
-
-    color: #777;
-
-    margin-bottom: 4px;
-}
-
-
-.remove-item {
-
-    border: none;
-
-    background: none;
-
-    color: #999;
-
-    font-size: 8px;
-
+    font-weight: 700;
     letter-spacing: 1px;
 }
 
-
-.remove-item:hover {
-
-    color: #111;
+.footer-links a:hover {
+    color: #aaa;
 }
 
-
-.empty-cart {
-
-    text-align: center;
-
-    padding:
-        60px 10px;
-
-    color: #888;
+.copyright {
+    padding-top: 25px;
+    border-top: 1px solid #333;
+    font-size: 10px !important;
 }
 
 
 /* =========================================================
-   CART TOTAL
+   CART
 ========================================================= */
 
-.cart-total {
-
-    display: flex;
-
-    justify-content: space-between;
-
+.cart-overlay,
+.product-modal,
+.checkout-overlay,
+.country-selector-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: none;
     align-items: center;
-
-    padding:
-        25px 0;
-
-    border-bottom:
-        1px solid #ddd;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0,0,0,0.65);
 }
 
-
-.cart-total span {
-
-    font-size: 10px;
-
-    letter-spacing: 2px;
+.cart-overlay.active,
+.product-modal.active,
+.checkout-overlay.active,
+.country-selector-overlay.active {
+    display: flex;
 }
 
-
-.cart-total strong {
-
-    font-size: 20px;
+.cart {
+    width: min(620px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #fff;
+    padding: 35px;
+    position: relative;
 }
 
+.close-cart,
+.checkout-close,
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    border: 0;
+    background: transparent;
+    font-size: 28px;
+}
 
-.checkout-button {
+.cart h2,
+.checkout-box h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    margin-bottom: 25px;
+}
 
-    width: 100%;
+.cart-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 15px;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
 
-    margin-top: 20px;
+.cart-item img {
+    width: 80px;
+    height: 90px;
+    object-fit: cover;
+}
 
-    padding: 17px;
+.cart-item-info h4 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px;
+}
 
-    background: #111;
+.cart-item-info p {
+    font-size: 11px;
+    color: #777;
+}
 
-    color: #fff;
-
-    border: none;
-
-    font-size: 10px;
-
-    letter-spacing: 2px;
-
+.remove-item {
+    border: 0;
+    background: transparent;
+    color: #a00;
+    font-size: 9px;
     font-weight: 700;
+}
+
+.empty-cart {
+    color: #777;
+    text-align: center;
+    padding: 40px 0;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 0;
+    border-top: 1px solid #ddd;
+    margin-top: 20px;
+}
+
+.checkout-button,
+.place-order-button {
+    width: 100%;
+    min-height: 50px;
+    border: 0;
+    background: #111;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.checkout-button:hover,
+.place-order-button:hover {
+    background: #333;
 }
 
 
@@ -1377,258 +682,87 @@ a {
    PRODUCT MODAL
 ========================================================= */
 
-.product-modal {
-
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 9500;
-
-    background:
-        rgba(0,0,0,0.75);
-
-    display: none;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 25px;
-}
-
-
-.product-modal.active {
-
-    display: flex;
-}
-
-
 .product-modal-box {
-
-    width: min(950px, 100%);
-
-    max-height: 92vh;
-
+    width: min(900px, 100%);
+    max-height: 90vh;
     overflow-y: auto;
-
     background: #fff;
-
     display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
+    grid-template-columns: 1fr 1fr;
     position: relative;
 }
 
-
-.modal-close {
-
-    position: absolute;
-
-    top: 15px;
-
-    right: 15px;
-
-    z-index: 2;
-
-    width: 38px;
-
-    height: 38px;
-
-    border: none;
-
-    background: #fff;
-
-    font-size: 25px;
-}
-
-
 .modal-image {
-
-    min-height: 600px;
-
-    background: #eee;
+    min-height: 550px;
 }
-
 
 .modal-image img {
-
     width: 100%;
-
     height: 100%;
-
-    min-height: 600px;
-
+    min-height: 550px;
     object-fit: cover;
 }
 
-
 .modal-details {
-
-    padding: 60px 45px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
+    padding: 55px 40px;
 }
-
 
 .modal-details h2 {
-
+    font-family: Georgia, "Times New Roman", serif;
     font-size: 35px;
-
-    line-height: 1.05;
-
-    margin-bottom: 15px;
+    margin: 10px 0;
 }
 
-
 .modal-price {
-
-    font-size: 22px;
-
-    font-weight: 600;
-
+    font-size: 20px;
+    font-weight: 700;
     margin-bottom: 35px;
 }
 
-
-/* =========================================================
-   SIZE
-========================================================= */
-
-.size-section {
-
-    margin-bottom: 25px;
-}
-
-
 .size-title {
-
     font-size: 10px;
-
-    letter-spacing: 2px;
-
     font-weight: 700;
-
+    letter-spacing: 1.5px;
     margin-bottom: 12px;
 }
 
-
 .size-options {
-
     display: flex;
-
     flex-wrap: wrap;
-
     gap: 8px;
+    margin-bottom: 30px;
 }
-
 
 .size-option {
-
-    width: 45px;
-
+    width: 48px;
     height: 42px;
-
+    border: 1px solid #ccc;
     background: #fff;
-
-    border:
-        1px solid #ccc;
-
-    font-size: 12px;
 }
-
 
 .size-option:hover,
 .size-option.selected {
-
     background: #111;
-
     color: #fff;
-
     border-color: #111;
 }
 
-
-/* =========================================================
-   QUANTITY
-========================================================= */
-
-.quantity-section {
-
-    margin-bottom: 25px;
-}
-
-
 .quantity-control {
-
     display: flex;
-
     align-items: center;
-
-    width: 130px;
-
-    border:
-        1px solid #ccc;
+    margin-bottom: 30px;
 }
-
 
 .quantity-control button {
-
     width: 40px;
-
     height: 40px;
-
-    border: none;
-
+    border: 1px solid #ccc;
     background: #fff;
-
-    font-size: 18px;
 }
-
 
 .quantity-control span {
-
-    flex: 1;
-
+    width: 45px;
     text-align: center;
-
-    font-size: 13px;
-}
-
-
-/* =========================================================
-   ADD TO BAG
-========================================================= */
-
-.modal-add-button {
-
-    width: 100%;
-
-    padding: 17px;
-
-    background: #111;
-
-    color: #fff;
-
-    border: none;
-
-    font-size: 10px;
-
-    letter-spacing: 2px;
-
-    font-weight: 700;
-}
-
-
-.modal-add-button:hover {
-
-    background: #333;
 }
 
 
@@ -1636,304 +770,175 @@ a {
    CHECKOUT
 ========================================================= */
 
-.checkout-overlay {
-
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 9800;
-
-    background:
-        rgba(0,0,0,0.7);
-
-    display: none;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 20px;
-}
-
-
-.checkout-overlay.active {
-
-    display: flex;
-}
-
-
 .checkout-box {
-
-    position: relative;
-
     width: min(850px, 100%);
-
-    max-height: 94vh;
-
+    max-height: 92vh;
     overflow-y: auto;
-
     background: #fff;
-
-    padding: 45px;
+    padding: 40px;
+    position: relative;
 }
-
-
-.checkout-close {
-
-    position: absolute;
-
-    top: 15px;
-
-    right: 20px;
-
-    border: none;
-
-    background: none;
-
-    font-size: 28px;
-}
-
 
 .checkout-header {
-
     margin-bottom: 35px;
 }
-
-
-.checkout-header h2 {
-
-    font-size: 35px;
-
-    line-height: 1;
-}
-
 
 .checkout-section,
-.payment-section {
-
-    margin-bottom: 35px;
+.payment-section,
+.checkout-summary {
+    margin-bottom: 30px;
 }
 
-
-.checkout-section h3,
-.payment-section h3 {
-
-    font-size: 11px;
-
-    letter-spacing: 2px;
-
-    margin-bottom: 20px;
+.checkout-box h3 {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    margin-bottom: 18px;
 }
-
-
-/* =========================================================
-   FORMS
-========================================================= */
 
 .form-grid {
-
     display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
+    grid-template-columns: 1fr 1fr;
     gap: 15px;
-
     margin-bottom: 15px;
 }
-
 
 .form-field {
-
     margin-bottom: 15px;
 }
 
-
 .form-field label {
-
     display: block;
-
-    font-size: 9px;
-
-    letter-spacing: 1px;
-
+    font-size: 10px;
     font-weight: 700;
-
+    letter-spacing: 1px;
     margin-bottom: 7px;
 }
-
 
 .form-field input,
 .form-field select,
 .form-field textarea {
-
     width: 100%;
-
-    border:
-        1px solid #d9d9d9;
-
+    padding: 12px;
+    border: 1px solid #ddd;
     background: #fff;
-
-    padding: 13px;
-
-    font-size: 13px;
-
     outline: none;
-
-    resize: vertical;
 }
-
 
 .form-field input:focus,
 .form-field select:focus,
 .form-field textarea:focus {
-
     border-color: #111;
 }
-
-
-/* =========================================================
-   PAYMENT OPTIONS
-========================================================= */
 
 .payment-option {
-
     display: flex;
-
-    align-items: center;
-
     gap: 12px;
-
     padding: 15px;
-
-    border:
-        1px solid #ddd;
-
+    border: 1px solid #ddd;
     margin-bottom: 10px;
-
-    cursor: pointer;
 }
-
-
-.payment-option:hover {
-
-    border-color: #111;
-}
-
-
-.payment-option input {
-
-    accent-color: #111;
-}
-
 
 .payment-option span {
-
     display: flex;
-
     flex-direction: column;
-
-    gap: 4px;
 }
-
 
 .payment-option strong {
-
-    font-size: 13px;
+    font-size: 12px;
 }
-
 
 .payment-option small {
-
     color: #777;
-
     font-size: 10px;
 }
-
-
-/* =========================================================
-   CHECKOUT SUMMARY
-========================================================= */
 
 .checkout-summary {
+    padding: 20px 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
 
-    border-top:
-        1px solid #ddd;
-
-    padding-top: 20px;
-
+.checkout-summary > div {
     display: flex;
-
     justify-content: space-between;
-
-    align-items: center;
-
-    flex-wrap: wrap;
-
-    gap: 10px;
-
-    margin-bottom: 20px;
 }
 
-
-.checkout-summary span {
-
-    font-size: 10px;
-
-    letter-spacing: 2px;
-}
-
-
-.checkout-summary strong {
-
-    font-size: 22px;
-}
-
-
+.currency-notice,
 #currencyNotice {
-
-    width: 100%;
-
     color: #777;
-
     font-size: 10px;
-
+    margin-top: 8px;
     text-align: right;
 }
 
-
-.place-order-button {
-
-    width: 100%;
-
-    padding: 17px;
-
-    border: none;
-
-    background: #111;
-
-    color: #fff;
-
+.checkout-note {
+    margin-top: 15px;
+    color: #777;
     font-size: 10px;
-
-    letter-spacing: 2px;
-
-    font-weight: 700;
+    text-align: center;
 }
 
 
-.checkout-note {
+/* =========================================================
+   COUNTRY CHANGE MODAL
+========================================================= */
 
+.country-selector-overlay {
+    z-index: 6000;
+}
+
+.country-selector-box {
+    width: min(760px, 100%);
+    background: #fff;
+    padding: 45px;
     text-align: center;
+}
 
-    color: #888;
+.country-selector-box h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(30px, 5vw, 48px);
+    line-height: 1;
+    margin-bottom: 15px;
+}
 
+.country-selector-text {
+    color: #777;
+    margin-bottom: 30px;
+}
+
+.country-selector-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.country-selector-grid button {
+    min-height: 90px;
+    border: 1px solid #ddd;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.country-selector-grid button:hover {
+    border-color: #111;
+    background: #f8f8f8;
+}
+
+.country-selector-grid button:first-line {
+    font-size: 25px;
+}
+
+.country-selector-note,
+.country-note {
+    color: #999;
     font-size: 10px;
-
-    line-height: 1.6;
-
-    margin-top: 15px;
+    margin-top: 25px;
 }
 
 
@@ -1944,19 +949,11 @@ a {
 @media (max-width: 1050px) {
 
     .navigation {
-
         gap: 15px;
     }
 
-    .navigation a {
-
-        font-size: 9px;
-    }
-
     .product-grid {
-
-        grid-template-columns:
-            repeat(3, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 
 }
@@ -1965,353 +962,123 @@ a {
 @media (max-width: 800px) {
 
     .header {
-
-        min-height: 70px;
-
-        padding: 0 20px;
+        padding: 15px 5%;
+        flex-wrap: wrap;
     }
-
 
     .navigation {
-
-        display: none;
+        order: 3;
+        width: 100%;
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 5px;
     }
 
-
-    .logo a {
-
-        font-size: 20px;
+    .navigation a {
+        white-space: nowrap;
     }
-
-
-    .country-options {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-
 
     .hero {
-
-        min-height: 650px;
-
-        padding:
-            60px 25px;
+        min-height: 600px;
     }
-
-
-    .collection-image {
-
-        min-height: 550px;
-
-        padding: 40px 25px;
-    }
-
-
-    .collection-overlay h2 {
-
-        font-size: 55px;
-    }
-
-
-    .loafers-section {
-
-        min-height: 550px;
-
-        padding: 40px 25px;
-    }
-
 
     .product-grid {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-
-        gap: 12px;
+        grid-template-columns: repeat(2, 1fr);
     }
-
-
-    .product-info {
-
-        padding: 14px;
-    }
-
-
-    .product-name {
-
-        font-size: 13px;
-    }
-
-
-    .product-action {
-
-        padding: 10px;
-    }
-
 
     .product-modal-box {
-
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr;
     }
 
-
-    .modal-image {
-
-        min-height: 350px;
-
-        max-height: 450px;
-    }
-
-
+    .modal-image,
     .modal-image img {
-
         min-height: 350px;
-
-        max-height: 450px;
+        height: 350px;
     }
 
-
-    .modal-details {
-
-        padding: 30px;
+    .country-options,
+    .country-selector-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
 }
 
 
-@media (max-width: 520px) {
+@media (max-width: 560px) {
 
-    .country-gate {
-
-        min-height: 100vh;
-
-        align-items: flex-start;
+    .header {
+        gap: 12px;
     }
 
-
-    .country-gate-content {
-
-        padding:
-            35px 10px;
+    .logo {
+        font-size: 19px;
     }
-
-
-    .country-brand {
-
-        font-size: 23px;
-
-        letter-spacing: 5px;
-
-        margin-bottom: 25px;
-    }
-
-
-    .country-gate h1 {
-
-        font-size: 40px;
-    }
-
-
-    .country-description {
-
-        font-size: 12px;
-
-        margin-bottom: 25px;
-    }
-
-
-    .country-options {
-
-        grid-template-columns:
-            1fr 1fr;
-
-        gap: 9px;
-    }
-
-
-    .country-option {
-
-        min-height: 105px;
-
-        padding: 12px 6px;
-    }
-
-
-    .country-flag {
-
-        font-size: 29px;
-    }
-
-
-    .country-name {
-
-        font-size: 11px;
-    }
-
-
-    .country-code {
-
-        font-size: 8px;
-    }
-
 
     .header-actions {
-
-        gap: 5px;
+        margin-left: auto;
     }
-
 
     .country-change {
-
-        padding: 7px;
-
-        font-size: 9px;
+        padding: 0 8px;
     }
-
-
-    .country-change span:last-child {
-
-        display: none;
-    }
-
-
-    .cart-button {
-
-        padding: 9px;
-    }
-
 
     .hero {
-
-        min-height: 600px;
+        padding: 70px 6%;
     }
-
 
     .hero h1 {
-
-        font-size: 58px;
-
-        letter-spacing: -3px;
+        font-size: 50px;
     }
-
-
-    .hero-text {
-
-        font-size: 13px;
-    }
-
-
-    .hero-buttons {
-
-        flex-direction: column;
-
-        align-items: stretch;
-    }
-
-
-    .button {
-
-        width: 100%;
-    }
-
-
-    .intro {
-
-        padding:
-            80px 20px;
-    }
-
-
-    .intro h2 {
-
-        font-size: 42px;
-    }
-
 
     .products-section {
-
-        padding:
-            75px 12px;
+        padding: 70px 5%;
     }
-
 
     .product-grid {
-
-        grid-template-columns:
-            1fr 1fr;
-
-        gap: 8px;
+        grid-template-columns: 1fr;
     }
 
-
-    .product-info {
-
-        padding: 11px;
+    .collection,
+    .loafers-section {
+        min-height: 500px;
+        padding: 60px 6%;
     }
-
-
-    .product-category {
-
-        font-size: 7px;
-
-        letter-spacing: 1px;
-    }
-
-
-    .product-name {
-
-        font-size: 12px;
-    }
-
-
-    .product-price {
-
-        font-size: 13px;
-    }
-
-
-    .checkout-box {
-
-        padding:
-            30px 18px;
-    }
-
 
     .form-grid {
-
-        grid-template-columns:
-            1fr;
-
+        grid-template-columns: 1fr;
         gap: 0;
     }
 
-
-    .cart {
-
-        padding: 25px 18px;
+    .checkout-box,
+    .cart,
+    .country-selector-box,
+    .country-gate-box {
+        padding: 25px;
     }
 
+    .country-options,
+    .country-selector-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .country-option {
+        min-height: 85px;
+    }
+
+    .country-flag {
+        font-size: 27px;
+    }
+
+    .country-name {
+        font-size: 10px;
+    }
 
     .cart-item {
-
-        grid-template-columns:
-            60px 1fr;
+        grid-template-columns: 65px 1fr;
     }
-
-
-    .cart-item img {
-
-        width: 60px;
-
-        height: 75px;
-    }
-
 
     .remove-item {
-
         grid-column: 2;
-
         text-align: left;
     }
 
