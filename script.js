@@ -1,7 +1,6 @@
 /* =========================================================
    FOOTWORLD
-   CLEAN STORE SYSTEM
-   COUNTRY + PRODUCTS + CART + CHECKOUT
+   CLEAN PRODUCT + COUNTRY + CART SYSTEM
    ========================================================= */
 
 
@@ -10,7 +9,6 @@
    ========================================================= */
 
 const countrySettings = {
-
     IN: {
         name: "India",
         flag: "🇮🇳",
@@ -52,17 +50,16 @@ const countrySettings = {
         currency: "EUR",
         symbol: "€"
     }
-
 };
 
 
 /* =========================================================
    PRODUCT DATABASE
    =========================================================
-
+   
    TO ADD A PRODUCT:
 
-   Copy one product and change:
+   Copy an existing product and change:
 
    id
    name
@@ -74,18 +71,18 @@ const countrySettings = {
 
    SECTION MUST BE:
 
-   formal
-   loafers
-   boys
-   new
+   "formal"
+   "loafers"
+   "boys"
+   "new"
 
    ========================================================= */
 
 const products = [
 
-    /* =====================================================
+    /* =========================
        FORMAL SHOES
-       ===================================================== */
+       ========================= */
 
     {
         id: 1,
@@ -147,9 +144,9 @@ const products = [
     },
 
 
-    /* =====================================================
+    /* =========================
        LOAFERS
-       ===================================================== */
+       ========================= */
 
     {
         id: 4,
@@ -211,9 +208,9 @@ const products = [
     },
 
 
-    /* =====================================================
+    /* =========================
        BOYS
-       ===================================================== */
+       ========================= */
 
     {
         id: 7,
@@ -255,9 +252,9 @@ const products = [
     },
 
 
-    /* =====================================================
+    /* =========================
        NEW ARRIVALS
-       ===================================================== */
+       ========================= */
 
     {
         id: 9,
@@ -305,8 +302,7 @@ const products = [
    CURRENT COUNTRY
    ========================================================= */
 
-let currentCountry =
-    localStorage.getItem("footworldCountry");
+let currentCountry = null;
 
 
 /* =========================================================
@@ -315,22 +311,9 @@ let currentCountry =
 
 let cart = [];
 
-try {
-
-    cart =
-        JSON.parse(
-            localStorage.getItem("footworldCart")
-        ) || [];
-
-} catch (error) {
-
-    cart = [];
-
-}
-
 
 /* =========================================================
-   PRODUCT MODAL
+   MODAL STATE
    ========================================================= */
 
 let selectedProduct = null;
@@ -339,12 +322,34 @@ let modalQuantity = 1;
 
 
 /* =========================================================
-   HELPER
+   LOAD SAVED CART
    ========================================================= */
 
-function getElement(id) {
+function loadCart() {
 
-    return document.getElementById(id);
+    try {
+
+        const savedCart =
+            localStorage.getItem("footworldCart");
+
+        if (savedCart) {
+
+            const parsed =
+                JSON.parse(savedCart);
+
+            if (Array.isArray(parsed)) {
+
+                cart = parsed;
+
+            }
+
+        }
+
+    } catch (error) {
+
+        cart = [];
+
+    }
 
 }
 
@@ -359,14 +364,17 @@ function formatPrice(amount) {
         countrySettings[currentCountry];
 
     if (!settings) {
+
         return "";
+
     }
 
-    const number = Number(amount) || 0;
+    const value =
+        Number(amount) || 0;
 
     return (
         settings.symbol +
-        number.toLocaleString(
+        value.toLocaleString(
             "en-US",
             {
                 minimumFractionDigits:
@@ -377,7 +385,6 @@ function formatPrice(amount) {
             }
         )
     );
-
 }
 
 
@@ -388,49 +395,15 @@ function formatPrice(amount) {
 function getProductPrice(product) {
 
     if (!product || !product.prices) {
+
         return 0;
-    }
-
-    if (
-        product.prices[currentCountry] !== undefined
-    ) {
-
-        return Number(
-            product.prices[currentCountry]
-        );
 
     }
 
-    return 0;
+    const price =
+        product.prices[currentCountry];
 
-}
-
-
-/* =========================================================
-   PRODUCT IMAGE FALLBACK
-   ========================================================= */
-
-function productImageFallback(image) {
-
-    return `
-        <div
-            class="product-image-fallback"
-            style="
-                width:100%;
-                aspect-ratio:4/5;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                background:#f4f2ee;
-                color:#777;
-                font-size:14px;
-                letter-spacing:2px;
-            "
-        >
-            FOOTWORLD
-        </div>
-    `;
-
+    return Number(price) || 0;
 }
 
 
@@ -444,41 +417,20 @@ function createProductCard(product) {
         getProductPrice(product);
 
     return `
+        <article class="product-card">
 
-        <article
-            class="product-card"
-            onclick="openProductModal(${product.id})"
-        >
-
-            <div class="product-image-wrap">
+            <div
+                class="product-image-wrap"
+                onclick="openProductModal(${product.id})"
+            >
 
                 <img
                     class="product-image"
                     src="${product.image}"
                     alt="${product.name}"
                     loading="lazy"
-                    onerror="
-                        this.style.display='none';
-                        this.nextElementSibling.style.display='flex';
-                    "
+                    onerror="this.onerror=null;this.src='https://placehold.co/800x1000?text=FOOTWORLD'"
                 >
-
-                <div
-                    class="product-image-fallback"
-                    style="
-                        display:none;
-                        width:100%;
-                        aspect-ratio:4/5;
-                        align-items:center;
-                        justify-content:center;
-                        background:#f4f2ee;
-                        color:#777;
-                        font-size:13px;
-                        letter-spacing:2px;
-                    "
-                >
-                    FOOTWORLD
-                </div>
 
             </div>
 
@@ -488,9 +440,9 @@ function createProductCard(product) {
                     ${product.category}
                 </div>
 
-                <div class="product-name">
+                <h3 class="product-name">
                     ${product.name}
-                </div>
+                </h3>
 
                 <div class="product-price">
                     ${formatPrice(price)}
@@ -499,10 +451,7 @@ function createProductCard(product) {
                 <button
                     type="button"
                     class="product-action"
-                    onclick="
-                        event.stopPropagation();
-                        openProductModal(${product.id});
-                    "
+                    onclick="openProductModal(${product.id})"
                 >
                     VIEW PRODUCT
                 </button>
@@ -510,9 +459,7 @@ function createProductCard(product) {
             </div>
 
         </article>
-
     `;
-
 }
 
 
@@ -526,10 +473,12 @@ function renderProductSection(
 ) {
 
     const container =
-        getElement(containerId);
+        document.getElementById(containerId);
 
     if (!container) {
+
         return;
+
     }
 
     const sectionProducts =
@@ -538,7 +487,7 @@ function renderProductSection(
                 product.section === sectionName
         );
 
-    if (sectionProducts.length === 0) {
+    if (!sectionProducts.length) {
 
         container.innerHTML = "";
 
@@ -550,7 +499,6 @@ function renderProductSection(
         sectionProducts
             .map(createProductCard)
             .join("");
-
 }
 
 
@@ -566,11 +514,6 @@ function renderAllProducts() {
     );
 
     renderProductSection(
-        "new",
-        "newProducts"
-    );
-
-    renderProductSection(
         "loafers",
         "loaferProducts"
     );
@@ -580,6 +523,10 @@ function renderAllProducts() {
         "boysProducts"
     );
 
+    renderProductSection(
+        "new",
+        "newProducts"
+    );
 }
 
 
@@ -597,7 +544,9 @@ function openProductModal(productId) {
         );
 
     if (!product) {
+
         return;
+
     }
 
     selectedProduct = product;
@@ -606,25 +555,37 @@ function openProductModal(productId) {
 
 
     const modal =
-        getElement("productModal");
+        document.getElementById("productModal");
 
     const image =
-        getElement("modalProductImage");
+        document.getElementById(
+            "modalProductImage"
+        );
 
     const category =
-        getElement("modalProductCategory");
+        document.getElementById(
+            "modalProductCategory"
+        );
 
     const name =
-        getElement("modalProductName");
+        document.getElementById(
+            "modalProductName"
+        );
 
     const price =
-        getElement("modalProductPrice");
+        document.getElementById(
+            "modalProductPrice"
+        );
 
     const quantity =
-        getElement("modalQuantity");
+        document.getElementById(
+            "modalQuantity"
+        );
 
     const sizeOptions =
-        getElement("sizeOptions");
+        document.getElementById(
+            "sizeOptions"
+        );
 
 
     if (image) {
@@ -637,6 +598,8 @@ function openProductModal(productId) {
 
         image.onerror =
             function() {
+
+                this.onerror = null;
 
                 this.src =
                     "https://placehold.co/800x1000?text=FOOTWORLD";
@@ -675,7 +638,7 @@ function openProductModal(productId) {
     if (quantity) {
 
         quantity.textContent =
-            modalQuantity;
+            "1";
 
     }
 
@@ -686,20 +649,13 @@ function openProductModal(productId) {
             product.sizes
                 .map(
                     size => `
-
                         <button
                             type="button"
                             class="size-option"
-                            onclick="
-                                selectProductSize(
-                                    '${size}',
-                                    this
-                                )
-                            "
+                            onclick="selectProductSize('${size}', this)"
                         >
                             ${size}
                         </button>
-
                     `
                 )
                 .join("");
@@ -711,8 +667,9 @@ function openProductModal(productId) {
 
         modal.classList.add("active");
 
-        document.body.style.overflow =
-            "hidden";
+        document.body.classList.add(
+            "modal-open"
+        );
 
     }
 
@@ -726,7 +683,9 @@ function openProductModal(productId) {
 function closeProductModal() {
 
     const modal =
-        getElement("productModal");
+        document.getElementById(
+            "productModal"
+        );
 
     if (modal) {
 
@@ -736,13 +695,13 @@ function closeProductModal() {
 
     }
 
-    document.body.style.overflow =
-        "";
+    document.body.classList.remove(
+        "modal-open"
+    );
 
     selectedProduct = null;
     selectedSize = null;
     modalQuantity = 1;
-
 }
 
 
@@ -758,7 +717,6 @@ function selectProductSize(
     selectedSize =
         String(size);
 
-
     document
         .querySelectorAll(
             ".size-option"
@@ -773,7 +731,6 @@ function selectProductSize(
             }
         );
 
-
     if (button) {
 
         button.classList.add(
@@ -786,7 +743,7 @@ function selectProductSize(
 
 
 /* =========================================================
-   QUANTITY
+   CHANGE QUANTITY
    ========================================================= */
 
 function changeModalQuantity(
@@ -794,20 +751,24 @@ function changeModalQuantity(
 ) {
 
     modalQuantity +=
-        Number(amount);
-
+        Number(amount) || 0;
 
     if (modalQuantity < 1) {
+
         modalQuantity = 1;
+
     }
 
     if (modalQuantity > 20) {
+
         modalQuantity = 20;
+
     }
 
-
     const quantity =
-        getElement("modalQuantity");
+        document.getElementById(
+            "modalQuantity"
+        );
 
     if (quantity) {
 
@@ -820,15 +781,16 @@ function changeModalQuantity(
 
 
 /* =========================================================
-   ADD TO CART
+   ADD PRODUCT TO CART
    ========================================================= */
 
 function addSelectedProductToCart() {
 
     if (!selectedProduct) {
-        return;
-    }
 
+        return;
+
+    }
 
     if (!selectedSize) {
 
@@ -840,21 +802,19 @@ function addSelectedProductToCart() {
 
     }
 
+    const price =
+        getProductPrice(
+            selectedProduct
+        );
+
 
     const existingItem =
         cart.find(
             item =>
-
                 Number(item.productId) ===
-                    Number(selectedProduct.id)
-
-                &&
-
+                    Number(selectedProduct.id) &&
                 String(item.size) ===
-                    String(selectedSize)
-
-                &&
-
+                    String(selectedSize) &&
                 item.country ===
                     currentCountry
         );
@@ -891,9 +851,7 @@ function addSelectedProductToCart() {
                 currentCountry,
 
             price:
-                getProductPrice(
-                    selectedProduct
-                )
+                price
 
         });
 
@@ -927,7 +885,7 @@ function saveCart() {
     } catch (error) {
 
         console.error(
-            "Could not save cart:",
+            "Could not save cart.",
             error
         );
 
@@ -943,7 +901,9 @@ function saveCart() {
 function openCart() {
 
     const overlay =
-        getElement("cartOverlay");
+        document.getElementById(
+            "cartOverlay"
+        );
 
     if (overlay) {
 
@@ -963,7 +923,9 @@ function openCart() {
 function closeCart() {
 
     const overlay =
-        getElement("cartOverlay");
+        document.getElementById(
+            "cartOverlay"
+        );
 
     if (overlay) {
 
@@ -1015,12 +977,16 @@ function calculateCartTotal() {
             item
         ) => {
 
+            const price =
+                Number(item.price) || 0;
+
+            const quantity =
+                Number(item.quantity) || 0;
+
             return (
                 total +
-                (
-                    Number(item.price) *
-                    Number(item.quantity)
-                )
+                price *
+                quantity
             );
 
         },
@@ -1044,7 +1010,7 @@ function calculateCartCount() {
 
             return (
                 total +
-                Number(item.quantity)
+                (Number(item.quantity) || 0)
             );
 
         },
@@ -1061,13 +1027,19 @@ function calculateCartCount() {
 function updateCartUI() {
 
     const cartItems =
-        getElement("cartItems");
+        document.getElementById(
+            "cartItems"
+        );
 
     const cartCount =
-        getElement("cartCount");
+        document.getElementById(
+            "cartCount"
+        );
 
     const cartTotal =
-        getElement("cartTotal");
+        document.getElementById(
+            "cartTotal"
+        );
 
 
     if (cartCount) {
@@ -1089,18 +1061,18 @@ function updateCartUI() {
 
 
     if (!cartItems) {
+
         return;
+
     }
 
 
-    if (cart.length === 0) {
+    if (!cart.length) {
 
         cartItems.innerHTML = `
-
             <p class="empty-cart">
                 Your bag is empty.
             </p>
-
         `;
 
         return;
@@ -1109,65 +1081,59 @@ function updateCartUI() {
 
 
     cartItems.innerHTML =
-        cart
-            .map(
-                (
-                    item,
-                    index
-                ) => `
+        cart.map(
+            (
+                item,
+                index
+            ) => `
 
-                    <div class="cart-item">
+                <div class="cart-item">
 
-                        <img
-                            src="${item.image}"
-                            alt="${item.name}"
-                            onerror="
-                                this.src='https://placehold.co/200x250?text=FOOTWORLD';
-                            "
-                        >
+                    <img
+                        src="${item.image}"
+                        alt="${item.name}"
+                        onerror="this.onerror=null;this.src='https://placehold.co/200x250?text=FOOTWORLD'"
+                    >
 
-                        <div class="cart-item-info">
+                    <div class="cart-item-info">
 
-                            <h4>
-                                ${item.name}
-                            </h4>
+                        <h4>
+                            ${item.name}
+                        </h4>
 
-                            <p>
-                                ${item.category}
-                            </p>
+                        <p>
+                            ${item.category}
+                        </p>
 
-                            <p>
-                                Size: ${item.size}
-                            </p>
+                        <p>
+                            Size: ${item.size}
+                        </p>
 
-                            <p>
-                                Quantity: ${item.quantity}
-                            </p>
+                        <p>
+                            Quantity: ${item.quantity}
+                        </p>
 
-                            <p>
-                                ${formatPrice(
-                                    Number(item.price) *
-                                    Number(item.quantity)
-                                )}
-                            </p>
-
-                        </div>
-
-                        <button
-                            type="button"
-                            class="remove-item"
-                            onclick="
-                                removeCartItem(${index})
-                            "
-                        >
-                            REMOVE
-                        </button>
+                        <strong>
+                            ${formatPrice(
+                                Number(item.price) *
+                                Number(item.quantity)
+                            )}
+                        </strong>
 
                     </div>
 
-                `
-            )
-            .join("");
+                    <button
+                        type="button"
+                        class="remove-item"
+                        onclick="removeCartItem(${index})"
+                    >
+                        REMOVE
+                    </button>
+
+                </div>
+            `
+        )
+        .join("");
 
 }
 
@@ -1176,18 +1142,13 @@ function updateCartUI() {
    COUNTRY SELECTION
    ========================================================= */
 
-function selectShoppingCountry(
-    country
-) {
+function selectShoppingCountry(country) {
 
-    if (
-        !countrySettings[country]
-    ) {
+    if (!countrySettings[country]) {
 
         return;
 
     }
-
 
     currentCountry =
         country;
@@ -1210,48 +1171,27 @@ function selectShoppingCountry(
     updateCheckoutTotal();
 
 
-    /*
-       HIDE COUNTRY SCREEN
-    */
-
-    hideCountrySelector();
-
-
-    /*
-       SHOW STORE
-    */
-
-    showStore();
-
-}
-
-
-/* =========================================================
-   OLD FUNCTION COMPATIBILITY
-   ========================================================= */
-
-function selectCountry(
-    country
-) {
-
-    selectShoppingCountry(
-        country
-    );
-
-}
-
-
-/* =========================================================
-   HIDE COUNTRY SELECTOR
-   ========================================================= */
-
-function hideCountrySelector() {
+    const selector =
+        document.getElementById(
+            "countrySelector"
+        );
 
     const gate =
-        getElement("countryGate");
+        document.getElementById(
+            "countryGate"
+        );
 
-    const selector =
-        getElement("countrySelector");
+
+    if (selector) {
+
+        selector.classList.remove(
+            "active"
+        );
+
+        selector.style.display =
+            "none";
+
+    }
 
 
     if (gate) {
@@ -1266,14 +1206,91 @@ function hideCountrySelector() {
     }
 
 
-    if (selector) {
+    document.body.classList.remove(
+        "country-selection-active"
+    );
 
-        selector.classList.remove(
-            "active"
+}
+
+
+/* =========================================================
+   OLD COUNTRY FUNCTION
+   ========================================================= */
+
+function selectCountry(country) {
+
+    selectShoppingCountry(
+        country
+    );
+
+}
+
+
+/* =========================================================
+   UPDATE COUNTRY UI
+   ========================================================= */
+
+function updateCountryUI() {
+
+    const settings =
+        countrySettings[currentCountry];
+
+    if (!settings) {
+
+        return;
+
+    }
+
+
+    const headerFlag =
+        document.getElementById(
+            "headerCountryFlag"
         );
 
-        selector.style.display =
-            "none";
+    const headerName =
+        document.getElementById(
+            "headerCountryName"
+        );
+
+    const customerCountry =
+        document.getElementById(
+            "customerCountry"
+        );
+
+    const currencyNotice =
+        document.getElementById(
+            "currencyNotice"
+        );
+
+
+    if (headerFlag) {
+
+        headerFlag.textContent =
+            settings.flag;
+
+    }
+
+
+    if (headerName) {
+
+        headerName.textContent =
+            settings.name;
+
+    }
+
+
+    if (customerCountry) {
+
+        customerCountry.value =
+            currentCountry;
+
+    }
+
+
+    if (currencyNotice) {
+
+        currencyNotice.textContent =
+            `Prices shown in ${settings.currency}`;
 
     }
 
@@ -1281,16 +1298,119 @@ function hideCountrySelector() {
 
 
 /* =========================================================
-   SHOW COUNTRY SELECTOR
+   CHANGE COUNTRY
    ========================================================= */
 
-function showCountrySelector() {
-
-    const gate =
-        getElement("countryGate");
+function changeCountry() {
 
     const selector =
-        getElement("countrySelector");
+        document.getElementById(
+            "countrySelector"
+        );
+
+    if (!selector) {
+
+        return;
+
+    }
+
+
+    selector.style.display =
+        "flex";
+
+    selector.classList.add(
+        "active"
+    );
+
+    document.body.classList.add(
+        "country-selection-active"
+    );
+
+}
+
+
+/* =========================================================
+   COUNTRY GATE
+   =========================================================
+   
+   IMPORTANT:
+
+   If customer has NEVER selected a country,
+   the website stays hidden.
+
+   Country selector is shown first.
+
+   After selection, the website appears.
+   ========================================================= */
+
+function checkCountryGate() {
+
+    const savedCountry =
+        localStorage.getItem(
+            "footworldCountry"
+        );
+
+
+    const selector =
+        document.getElementById(
+            "countrySelector"
+        );
+
+    const gate =
+        document.getElementById(
+            "countryGate"
+        );
+
+
+    if (
+        savedCountry &&
+        countrySettings[savedCountry]
+    ) {
+
+        currentCountry =
+            savedCountry;
+
+
+        if (selector) {
+
+            selector.classList.remove(
+                "active"
+            );
+
+            selector.style.display =
+                "none";
+
+        }
+
+
+        if (gate) {
+
+            gate.classList.remove(
+                "active"
+            );
+
+            gate.style.display =
+                "none";
+
+        }
+
+
+        document.body.classList.remove(
+            "country-selection-active"
+        );
+
+        return;
+
+    }
+
+
+    /*
+       NO COUNTRY SELECTED.
+
+       Hide entire website.
+    */
+
+    currentCountry = null;
 
 
     if (gate) {
@@ -1316,169 +1436,10 @@ function showCountrySelector() {
 
     }
 
-}
-
-
-/* =========================================================
-   SHOW STORE
-   ========================================================= */
-
-function showStore() {
-
-    document.body.classList.remove(
-        "country-required"
-    );
 
     document.body.classList.add(
-        "country-selected"
+        "country-selection-active"
     );
-
-}
-
-
-/* =========================================================
-   HIDE STORE
-   ========================================================= */
-
-function hideStore() {
-
-    document.body.classList.remove(
-        "country-selected"
-    );
-
-    document.body.classList.add(
-        "country-required"
-    );
-
-}
-
-
-/* =========================================================
-   COUNTRY GATE
-   ========================================================= */
-
-function checkCountryGate() {
-
-    const savedCountry =
-        localStorage.getItem(
-            "footworldCountry"
-        );
-
-
-    /*
-       NO COUNTRY SELECTED
-       ===================
-       Store must NOT be visible.
-    */
-
-    if (
-        !savedCountry ||
-        !countrySettings[savedCountry]
-    ) {
-
-        currentCountry =
-            null;
-
-        hideStore();
-
-        showCountrySelector();
-
-        return;
-
-    }
-
-
-    /*
-       COUNTRY ALREADY SELECTED
-    */
-
-    currentCountry =
-        savedCountry;
-
-
-    hideCountrySelector();
-
-    showStore();
-
-}
-
-
-/* =========================================================
-   COUNTRY UI
-   ========================================================= */
-
-function updateCountryUI() {
-
-    if (
-        !currentCountry ||
-        !countrySettings[currentCountry]
-    ) {
-
-        return;
-
-    }
-
-
-    const settings =
-        countrySettings[currentCountry];
-
-
-    const flag =
-        getElement("headerCountryFlag");
-
-    const name =
-        getElement("headerCountryName");
-
-
-    if (flag) {
-
-        flag.textContent =
-            settings.flag;
-
-    }
-
-
-    if (name) {
-
-        name.textContent =
-            settings.name;
-
-    }
-
-
-    const customerCountry =
-        getElement("customerCountry");
-
-
-    if (customerCountry) {
-
-        customerCountry.value =
-            currentCountry;
-
-    }
-
-
-    const currencyNotice =
-        getElement("currencyNotice");
-
-
-    if (currencyNotice) {
-
-        currencyNotice.textContent =
-            `Prices shown in ${settings.currency}`;
-
-    }
-
-}
-
-
-/* =========================================================
-   CHANGE COUNTRY
-   ========================================================= */
-
-function changeCountry() {
-
-    showCountrySelector();
 
 }
 
@@ -1490,10 +1451,14 @@ function changeCountry() {
 function countryChanged() {
 
     const select =
-        getElement("customerCountry");
+        document.getElementById(
+            "customerCountry"
+        );
 
     if (!select) {
+
         return;
+
     }
 
 
@@ -1501,34 +1466,16 @@ function countryChanged() {
         select.value;
 
 
-    if (
-        !countrySettings[country]
-    ) {
+    if (!countrySettings[country]) {
 
         return;
 
     }
 
 
-    currentCountry =
-        country;
-
-
-    localStorage.setItem(
-        "footworldCountry",
+    selectShoppingCountry(
         country
     );
-
-
-    updateCountryUI();
-
-    renderAllProducts();
-
-    updateCartUI();
-
-    updatePaymentMethods();
-
-    updateCheckoutTotal();
 
 }
 
@@ -1539,7 +1486,7 @@ function countryChanged() {
 
 function openCheckout() {
 
-    if (cart.length === 0) {
+    if (!cart.length) {
 
         alert(
             "Your bag is empty."
@@ -1551,8 +1498,9 @@ function openCheckout() {
 
 
     const checkout =
-        getElement("checkoutOverlay");
-
+        document.getElementById(
+            "checkoutOverlay"
+        );
 
     if (checkout) {
 
@@ -1577,8 +1525,9 @@ function openCheckout() {
 function closeCheckout() {
 
     const checkout =
-        getElement("checkoutOverlay");
-
+        document.getElementById(
+            "checkoutOverlay"
+        );
 
     if (checkout) {
 
@@ -1597,18 +1546,15 @@ function closeCheckout() {
 
 function updateCheckoutTotal() {
 
-    if (
-        !currentCountry ||
-        !countrySettings[currentCountry]
-    ) {
-
-        return;
-
-    }
-
-
     const total =
-        getElement("checkoutTotal");
+        document.getElementById(
+            "checkoutTotal"
+        );
+
+    const notice =
+        document.getElementById(
+            "currencyNotice"
+        );
 
 
     if (total) {
@@ -1621,11 +1567,10 @@ function updateCheckoutTotal() {
     }
 
 
-    const notice =
-        getElement("currencyNotice");
-
-
-    if (notice) {
+    if (
+        notice &&
+        countrySettings[currentCountry]
+    ) {
 
         notice.textContent =
             `Prices shown in ${countrySettings[currentCountry].currency}`;
@@ -1641,19 +1586,20 @@ function updateCheckoutTotal() {
 
 function updatePaymentMethods() {
 
-    if (!currentCountry) {
-        return;
-    }
-
-
     const india =
-        getElement("indiaPayments");
+        document.getElementById(
+            "indiaPayments"
+        );
 
     const canada =
-        getElement("canadaPayments");
+        document.getElementById(
+            "canadaPayments"
+        );
 
     const international =
-        getElement("internationalPayments");
+        document.getElementById(
+            "internationalPayments"
+        );
 
 
     if (india) {
@@ -1680,6 +1626,7 @@ function updatePaymentMethods() {
 
         international.style.display =
             (
+                currentCountry &&
                 currentCountry !== "IN" &&
                 currentCountry !== "CA"
             )
@@ -1697,7 +1644,7 @@ function updatePaymentMethods() {
 
 function placeOrder() {
 
-    if (cart.length === 0) {
+    if (!cart.length) {
 
         alert(
             "Your bag is empty."
@@ -1709,45 +1656,39 @@ function placeOrder() {
 
 
     const name =
-        getElement("customerName")
-            ?.value
-            .trim();
-
+        document.getElementById(
+            "customerName"
+        )?.value.trim();
 
     const email =
-        getElement("customerEmail")
-            ?.value
-            .trim();
-
+        document.getElementById(
+            "customerEmail"
+        )?.value.trim();
 
     const phone =
-        getElement("customerPhone")
-            ?.value
-            .trim();
-
+        document.getElementById(
+            "customerPhone"
+        )?.value.trim();
 
     const address =
-        getElement("customerAddress")
-            ?.value
-            .trim();
-
+        document.getElementById(
+            "customerAddress"
+        )?.value.trim();
 
     const city =
-        getElement("customerCity")
-            ?.value
-            .trim();
-
+        document.getElementById(
+            "customerCity"
+        )?.value.trim();
 
     const state =
-        getElement("customerState")
-            ?.value
-            .trim();
-
+        document.getElementById(
+            "customerState"
+        )?.value.trim();
 
     const pin =
-        getElement("customerPin")
-            ?.value
-            .trim();
+        document.getElementById(
+            "customerPin"
+        )?.value.trim();
 
 
     if (
@@ -1800,10 +1741,7 @@ function placeOrder() {
         `Phone: ${phone}\n`;
 
     message +=
-        `Country: ${
-            countrySettings[currentCountry].name
-        }\n\n`;
-
+        `Country: ${countrySettings[currentCountry].name}\n\n`;
 
     message +=
         "PRODUCTS:\n";
@@ -1813,24 +1751,17 @@ function placeOrder() {
         item => {
 
             message +=
-                `${item.name} | Size ${item.size} | Qty ${item.quantity} | ${formatPrice(
-                    Number(item.price) *
-                    Number(item.quantity)
-                )}\n`;
+                `${item.name} | Size ${item.size} | Qty ${item.quantity} | ${formatPrice(Number(item.price) * Number(item.quantity))}\n`;
 
         }
     );
 
 
     message +=
-        `\nTOTAL: ${formatPrice(
-            calculateCartTotal()
-        )}\n`;
-
+        `\nTOTAL: ${formatPrice(calculateCartTotal())}\n`;
 
     message +=
         `PAYMENT: ${payment.value}\n\n`;
-
 
     message +=
         `ADDRESS: ${address}, ${city}, ${state}, ${pin}`;
@@ -1850,7 +1781,7 @@ function placeOrder() {
 
 
 /* =========================================================
-   MODAL CLICK OUTSIDE
+   MODAL / OVERLAY CLICK HANDLER
    ========================================================= */
 
 document.addEventListener(
@@ -1858,12 +1789,14 @@ document.addEventListener(
     function(event) {
 
         const productModal =
-            getElement("productModal");
-
+            document.getElementById(
+                "productModal"
+            );
 
         if (
             productModal &&
-            event.target === productModal
+            event.target ===
+                productModal
         ) {
 
             closeProductModal();
@@ -1872,12 +1805,14 @@ document.addEventListener(
 
 
         const cartOverlay =
-            getElement("cartOverlay");
-
+            document.getElementById(
+                "cartOverlay"
+            );
 
         if (
             cartOverlay &&
-            event.target === cartOverlay
+            event.target ===
+                cartOverlay
         ) {
 
             closeCart();
@@ -1886,15 +1821,40 @@ document.addEventListener(
 
 
         const checkoutOverlay =
-            getElement("checkoutOverlay");
-
+            document.getElementById(
+                "checkoutOverlay"
+            );
 
         if (
             checkoutOverlay &&
-            event.target === checkoutOverlay
+            event.target ===
+                checkoutOverlay
         ) {
 
             closeCheckout();
+
+        }
+
+
+        const selector =
+            document.getElementById(
+                "countrySelector"
+            );
+
+        /*
+           Do NOT close country selector
+           when customer clicks outside.
+
+           Customer must select a country.
+        */
+
+        if (
+            selector &&
+            selector.classList.contains("active") &&
+            event.target === selector
+        ) {
+
+            return;
 
         }
 
@@ -1911,8 +1871,31 @@ document.addEventListener(
     function(event) {
 
         if (
-            event.key === "Escape"
+            event.key ===
+            "Escape"
         ) {
+
+            /*
+               Do not close country selector
+               with ESC.
+            */
+
+            const selector =
+                document.getElementById(
+                    "countrySelector"
+                );
+
+            if (
+                selector &&
+                selector.classList.contains(
+                    "active"
+                )
+            ) {
+
+                return;
+
+            }
+
 
             closeProductModal();
 
@@ -1934,24 +1917,16 @@ document.addEventListener(
     "DOMContentLoaded",
     function() {
 
-        /*
-           STEP 1
-           Check country BEFORE rendering store.
-        */
+        loadCart();
 
         checkCountryGate();
 
-
         /*
-           STEP 2
-           Only render prices/products
-           if a country exists.
+           Only render products after
+           a valid country exists.
         */
 
-        if (
-            currentCountry &&
-            countrySettings[currentCountry]
-        ) {
+        if (currentCountry) {
 
             updateCountryUI();
 
