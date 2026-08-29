@@ -1,6 +1,7 @@
 /* =========================================================
    FOOTWORLD
-   CLEAN PRODUCT + COUNTRY + CART SYSTEM
+   COMPLETE WEBSITE SYSTEM
+   COUNTRY + PRODUCTS + CART + CHECKOUT
    ========================================================= */
 
 
@@ -57,30 +58,13 @@ const countrySettings = {
 
 /* =========================================================
    PRODUCT DATABASE
-
-   TO ADD NEW PRODUCT:
-
-   id:
-   name:
-   category:
-   section:
-   image:
-   prices:
-   sizes:
-
-   SECTION MUST BE:
-
-   formal
-   loafers
-   boys
-   new
 ========================================================= */
 
 const products = [
 
-    /* =====================================================
+    /* =========================
        FORMAL SHOES
-    ===================================================== */
+    ========================= */
 
     {
         id: 1,
@@ -98,15 +82,8 @@ const products = [
             DE: 89
         },
 
-        sizes: [
-            "7",
-            "8",
-            "9",
-            "10",
-            "11"
-        ]
+        sizes: ["7", "8", "9", "10", "11"]
     },
-
 
     {
         id: 2,
@@ -124,15 +101,8 @@ const products = [
             DE: 95
         },
 
-        sizes: [
-            "7",
-            "8",
-            "9",
-            "10",
-            "11"
-        ]
+        sizes: ["7", "8", "9", "10", "11"]
     },
-
 
     {
         id: 3,
@@ -150,20 +120,13 @@ const products = [
             DE: 109
         },
 
-        sizes: [
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12"
-        ]
+        sizes: ["7", "8", "9", "10", "11", "12"]
     },
 
 
-    /* =====================================================
+    /* =========================
        LOAFERS
-    ===================================================== */
+    ========================= */
 
     {
         id: 4,
@@ -181,15 +144,8 @@ const products = [
             DE: 99
         },
 
-        sizes: [
-            "7",
-            "8",
-            "9",
-            "10",
-            "11"
-        ]
+        sizes: ["7", "8", "9", "10", "11"]
     },
-
 
     {
         id: 5,
@@ -207,15 +163,8 @@ const products = [
             DE: 105
         },
 
-        sizes: [
-            "7",
-            "8",
-            "9",
-            "10",
-            "11"
-        ]
+        sizes: ["7", "8", "9", "10", "11"]
     },
-
 
     {
         id: 6,
@@ -233,20 +182,13 @@ const products = [
             DE: 119
         },
 
-        sizes: [
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12"
-        ]
+        sizes: ["7", "8", "9", "10", "11", "12"]
     },
 
 
-    /* =====================================================
+    /* =========================
        BOYS
-    ===================================================== */
+    ========================= */
 
     {
         id: 7,
@@ -264,15 +206,8 @@ const products = [
             DE: 55
         },
 
-        sizes: [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5"
-        ]
+        sizes: ["1", "2", "3", "4", "5"]
     },
-
 
     {
         id: 8,
@@ -290,19 +225,13 @@ const products = [
             DE: 59
         },
 
-        sizes: [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5"
-        ]
+        sizes: ["1", "2", "3", "4", "5"]
     },
 
 
-    /* =====================================================
+    /* =========================
        NEW ARRIVALS
-    ===================================================== */
+    ========================= */
 
     {
         id: 9,
@@ -320,16 +249,8 @@ const products = [
             DE: 129
         },
 
-        sizes: [
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12"
-        ]
+        sizes: ["7", "8", "9", "10", "11", "12"]
     },
-
 
     {
         id: 10,
@@ -347,13 +268,7 @@ const products = [
             DE: 139
         },
 
-        sizes: [
-            "7",
-            "8",
-            "9",
-            "10",
-            "11"
-        ]
+        sizes: ["7", "8", "9", "10", "11"]
     }
 
 ];
@@ -363,8 +278,7 @@ const products = [
    CURRENT COUNTRY
 ========================================================= */
 
-let currentCountry =
-    localStorage.getItem("footworldCountry") || null;
+let currentCountry = null;
 
 
 /* =========================================================
@@ -394,7 +308,7 @@ try {
 
 
 /* =========================================================
-   PRODUCT MODAL STATE
+   PRODUCT MODAL
 ========================================================= */
 
 let selectedProduct = null;
@@ -403,20 +317,326 @@ let modalQuantity = 1;
 
 
 /* =========================================================
-   PRICE FORMAT
+   COUNTRY GATE
 ========================================================= */
 
-function formatPrice(amount) {
+function showCountryGate() {
+
+    const gate =
+        document.getElementById("countryGate");
+
+    const selector =
+        document.getElementById("countrySelector");
+
+
+    /*
+       IMPORTANT:
+
+       Hide the actual website until
+       country has been selected.
+    */
+
+    document.body.classList.add(
+        "country-selection-active"
+    );
+
+
+    if (gate) {
+
+        gate.style.display = "flex";
+
+    }
+
+
+    if (selector) {
+
+        selector.style.display = "flex";
+
+        selector.classList.add("active");
+
+    }
+
+}
+
+
+/* =========================================================
+   HIDE COUNTRY GATE
+========================================================= */
+
+function hideCountryGate() {
+
+    const gate =
+        document.getElementById("countryGate");
+
+    const selector =
+        document.getElementById("countrySelector");
+
+
+    if (gate) {
+
+        gate.style.display = "none";
+
+    }
+
+
+    if (selector) {
+
+        selector.classList.remove("active");
+
+        selector.style.display = "none";
+
+    }
+
+
+    document.body.classList.remove(
+        "country-selection-active"
+    );
+
+}
+
+
+/* =========================================================
+   SELECT COUNTRY
+========================================================= */
+
+function selectShoppingCountry(country) {
+
+    if (!countrySettings[country]) {
+
+        console.error(
+            "Invalid country:",
+            country
+        );
+
+        return;
+
+    }
+
+
+    currentCountry = country;
+
+
+    /*
+       Remember customer's country.
+    */
+
+    localStorage.setItem(
+        "footworldCountry",
+        country
+    );
+
+
+    /*
+       Update everything BEFORE
+       showing the website.
+    */
+
+    updateCountryUI();
+
+    renderAllProducts();
+
+    updateCartUI();
+
+    updatePaymentMethods();
+
+    updateCheckoutTotal();
+
+
+    /*
+       Now reveal website.
+    */
+
+    hideCountryGate();
+
+
+    /*
+       Scroll to top.
+    */
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
+
+}
+
+
+/* =========================================================
+   OLD COUNTRY FUNCTION
+   Compatibility with old HTML
+========================================================= */
+
+function selectCountry(country) {
+
+    selectShoppingCountry(country);
+
+}
+
+
+/* =========================================================
+   CHANGE COUNTRY
+========================================================= */
+
+function changeCountry() {
+
+    showCountryGate();
+
+}
+
+
+/* =========================================================
+   INITIAL COUNTRY CHECK
+========================================================= */
+
+function checkCountryGate() {
+
+    const savedCountry =
+        localStorage.getItem(
+            "footworldCountry"
+        );
+
+
+    /*
+       If saved country is valid,
+       open website normally.
+    */
+
+    if (
+        savedCountry &&
+        countrySettings[savedCountry]
+    ) {
+
+        currentCountry =
+            savedCountry;
+
+        hideCountryGate();
+
+        return;
+
+    }
+
+
+    /*
+       New customer:
+       COUNTRY FIRST.
+    */
+
+    currentCountry = null;
+
+    showCountryGate();
+
+}
+
+
+/* =========================================================
+   COUNTRY UI
+========================================================= */
+
+function updateCountryUI() {
+
+    if (!currentCountry) {
+
+        return;
+
+    }
+
 
     const settings =
         countrySettings[currentCountry];
 
+
     if (!settings) {
-        return "";
+
+        return;
+
     }
+
+
+    const flag =
+        document.getElementById(
+            "headerCountryFlag"
+        );
+
+
+    const name =
+        document.getElementById(
+            "headerCountryName"
+        );
+
+
+    if (flag) {
+
+        flag.textContent =
+            settings.flag;
+
+    }
+
+
+    if (name) {
+
+        name.textContent =
+            settings.name;
+
+    }
+
+
+    const customerCountry =
+        document.getElementById(
+            "customerCountry"
+        );
+
+
+    if (customerCountry) {
+
+        customerCountry.value =
+            currentCountry;
+
+    }
+
+
+    const currencyNotice =
+        document.getElementById(
+            "currencyNotice"
+        );
+
+
+    if (currencyNotice) {
+
+        currencyNotice.textContent =
+            `Prices shown in ${settings.currency}`;
+
+    }
+
+}
+
+
+/* =========================================================
+   FORMAT PRICE
+========================================================= */
+
+function formatPrice(amount) {
+
+    if (!currentCountry) {
+
+        return "";
+
+    }
+
+
+    const settings =
+        countrySettings[currentCountry];
+
+
+    if (!settings) {
+
+        return "";
+
+    }
+
 
     const number =
         Number(amount) || 0;
+
 
     return (
         settings.symbol +
@@ -424,13 +644,18 @@ function formatPrice(amount) {
             "en-US",
             {
                 minimumFractionDigits:
-                    currentCountry === "IN" ? 0 : 2,
+                    currentCountry === "IN"
+                        ? 0
+                        : 2,
 
                 maximumFractionDigits:
-                    currentCountry === "IN" ? 0 : 2
+                    currentCountry === "IN"
+                        ? 0
+                        : 2
             }
         )
     );
+
 }
 
 
@@ -440,18 +665,26 @@ function formatPrice(amount) {
 
 function getProductPrice(product) {
 
-    if (!product || !product.prices) {
+    if (
+        !product ||
+        !product.prices ||
+        !currentCountry
+    ) {
+
         return 0;
+
     }
 
+
     return Number(
-        product.prices[currentCountry] || 0
-    );
+        product.prices[currentCountry]
+    ) || 0;
+
 }
 
 
 /* =========================================================
-   PRODUCT CARD
+   CREATE PRODUCT CARD
 ========================================================= */
 
 function createProductCard(product) {
@@ -459,27 +692,21 @@ function createProductCard(product) {
     const price =
         getProductPrice(product);
 
+
     return `
+
         <article
             class="product-card"
-            data-product-id="${product.id}"
             onclick="openProductModal(${product.id})"
         >
 
-            <div class="product-image-wrapper">
-
-                <img
-                    class="product-image"
-                    src="${product.image}"
-                    alt="${product.name}"
-                    loading="lazy"
-                    onerror="
-                        this.onerror=null;
-                        this.src='https://placehold.co/800x1000?text=FOOTWORLD';
-                    "
-                >
-
-            </div>
+            <img
+                class="product-image"
+                src="${product.image}"
+                alt="${product.name}"
+                loading="lazy"
+                onerror="this.onerror=null;this.src='https://placehold.co/800x1000?text=FOOTWORLD'"
+            >
 
             <div class="product-info">
 
@@ -509,12 +736,14 @@ function createProductCard(product) {
             </div>
 
         </article>
+
     `;
+
 }
 
 
 /* =========================================================
-   RENDER ONE SECTION
+   RENDER PRODUCT SECTION
 ========================================================= */
 
 function renderProductSection(
@@ -525,9 +754,13 @@ function renderProductSection(
     const container =
         document.getElementById(containerId);
 
+
     if (!container) {
+
         return;
+
     }
+
 
     const sectionProducts =
         products.filter(
@@ -535,29 +768,51 @@ function renderProductSection(
                 product.section === sectionName
         );
 
-    if (sectionProducts.length === 0) {
+
+    if (
+        sectionProducts.length === 0
+    ) {
 
         container.innerHTML = `
-            <div class="no-products">
+
+            <div
+                style="
+                    grid-column:1/-1;
+                    text-align:center;
+                    padding:50px 20px;
+                    color:#777;
+                "
+            >
                 No products available.
             </div>
+
         `;
 
         return;
+
     }
+
 
     container.innerHTML =
         sectionProducts
             .map(createProductCard)
             .join("");
+
 }
 
 
 /* =========================================================
-   RENDER ALL PRODUCT SECTIONS
+   RENDER ALL PRODUCTS
 ========================================================= */
 
 function renderAllProducts() {
+
+    if (!currentCountry) {
+
+        return;
+
+    }
+
 
     /*
        FORMAL
@@ -570,11 +825,17 @@ function renderAllProducts() {
 
 
     /*
+       NEW ARRIVALS
+    */
+
+    renderProductSection(
+        "new",
+        "newProducts"
+    );
+
+
+    /*
        LOAFERS
-
-       Your HTML can have:
-
-       <div id="loaferProducts"></div>
     */
 
     renderProductSection(
@@ -585,25 +846,11 @@ function renderAllProducts() {
 
     /*
        BOYS
-
-       Your HTML can have:
-
-       <div id="boysProducts"></div>
     */
 
     renderProductSection(
         "boys",
         "boysProducts"
-    );
-
-
-    /*
-       NEW ARRIVALS
-    */
-
-    renderProductSection(
-        "new",
-        "newProducts"
     );
 
 }
@@ -618,38 +865,64 @@ function openProductModal(productId) {
     const product =
         products.find(
             item =>
-                item.id === Number(productId)
+                item.id === productId
         );
 
+
     if (!product) {
+
         return;
+
     }
 
+
     selectedProduct = product;
+
     selectedSize = null;
+
     modalQuantity = 1;
 
 
     const modal =
-        document.getElementById("productModal");
+        document.getElementById(
+            "productModal"
+        );
+
 
     const image =
-        document.getElementById("modalProductImage");
+        document.getElementById(
+            "modalProductImage"
+        );
+
 
     const category =
-        document.getElementById("modalProductCategory");
+        document.getElementById(
+            "modalProductCategory"
+        );
+
 
     const name =
-        document.getElementById("modalProductName");
+        document.getElementById(
+            "modalProductName"
+        );
+
 
     const price =
-        document.getElementById("modalProductPrice");
+        document.getElementById(
+            "modalProductPrice"
+        );
+
 
     const quantity =
-        document.getElementById("modalQuantity");
+        document.getElementById(
+            "modalQuantity"
+        );
+
 
     const sizeOptions =
-        document.getElementById("sizeOptions");
+        document.getElementById(
+            "sizeOptions"
+        );
 
 
     if (image) {
@@ -659,6 +932,7 @@ function openProductModal(productId) {
 
         image.alt =
             product.name;
+
     }
 
 
@@ -666,6 +940,7 @@ function openProductModal(productId) {
 
         category.textContent =
             product.category;
+
     }
 
 
@@ -673,6 +948,7 @@ function openProductModal(productId) {
 
         name.textContent =
             product.name;
+
     }
 
 
@@ -682,22 +958,25 @@ function openProductModal(productId) {
             formatPrice(
                 getProductPrice(product)
             );
+
     }
 
 
     if (quantity) {
 
         quantity.textContent =
-            "1";
+            modalQuantity;
+
     }
 
 
     if (sizeOptions) {
 
         sizeOptions.innerHTML =
-            (product.sizes || [])
+            product.sizes
                 .map(
                     size => `
+
                         <button
                             type="button"
                             class="size-option"
@@ -710,9 +989,11 @@ function openProductModal(productId) {
                         >
                             ${size}
                         </button>
+
                     `
                 )
                 .join("");
+
     }
 
 
@@ -720,9 +1001,9 @@ function openProductModal(productId) {
 
         modal.classList.add("active");
 
-        document.body.classList.add(
-            "modal-open"
-        );
+        document.body.style.overflow =
+            "hidden";
+
     }
 
 }
@@ -739,20 +1020,25 @@ function closeProductModal() {
             "productModal"
         );
 
+
     if (modal) {
 
         modal.classList.remove(
             "active"
         );
+
     }
 
-    document.body.classList.remove(
-        "modal-open"
-    );
+
+    document.body.style.overflow = "";
+
 
     selectedProduct = null;
+
     selectedSize = null;
+
     modalQuantity = 1;
+
 }
 
 
@@ -765,8 +1051,8 @@ function selectProductSize(
     button
 ) {
 
-    selectedSize =
-        String(size);
+    selectedSize = size;
+
 
     document
         .querySelectorAll(
@@ -774,93 +1060,98 @@ function selectProductSize(
         )
         .forEach(
             option => {
+
                 option.classList.remove(
                     "selected"
                 );
+
             }
         );
+
 
     if (button) {
 
         button.classList.add(
             "selected"
         );
+
     }
+
 }
 
 
 /* =========================================================
-   CHANGE QUANTITY
+   MODAL QUANTITY
 ========================================================= */
 
-function changeModalQuantity(
-    amount
-) {
+function changeModalQuantity(amount) {
 
     modalQuantity +=
         Number(amount);
 
+
     if (modalQuantity < 1) {
+
         modalQuantity = 1;
+
     }
 
+
     if (modalQuantity > 20) {
+
         modalQuantity = 20;
+
     }
+
 
     const quantity =
         document.getElementById(
             "modalQuantity"
         );
 
+
     if (quantity) {
 
         quantity.textContent =
             modalQuantity;
+
     }
+
 }
 
 
 /* =========================================================
-   ADD PRODUCT TO CART
+   ADD TO CART
 ========================================================= */
 
 function addSelectedProductToCart() {
 
     if (!selectedProduct) {
 
-        alert(
-            "Please select a product."
-        );
-
         return;
+
     }
 
 
     if (!selectedSize) {
 
         alert(
-            "Please select a size."
+            "Please select a size before adding the product to your bag."
         );
 
         return;
+
     }
-
-
-    const price =
-        getProductPrice(
-            selectedProduct
-        );
 
 
     const existingItem =
         cart.find(
             item =>
-                Number(item.productId) ===
-                    Number(selectedProduct.id) &&
+                item.productId ===
+                    selectedProduct.id &&
 
-                String(item.size) ===
-                    String(selectedSize) &&
+                item.size ===
+                    selectedSize &&
 
                 item.country ===
                     currentCountry
@@ -898,9 +1189,12 @@ function addSelectedProductToCart() {
                 currentCountry,
 
             price:
-                price
+                getProductPrice(
+                    selectedProduct
+                )
 
         });
+
     }
 
 
@@ -911,6 +1205,7 @@ function addSelectedProductToCart() {
     closeProductModal();
 
     openCart();
+
 }
 
 
@@ -930,10 +1225,12 @@ function saveCart() {
     } catch (error) {
 
         console.error(
-            "Unable to save cart:",
+            "Could not save cart:",
             error
         );
+
     }
+
 }
 
 
@@ -948,12 +1245,18 @@ function openCart() {
             "cartOverlay"
         );
 
+
     if (overlay) {
 
         overlay.classList.add(
             "active"
         );
+
+        document.body.style.overflow =
+            "hidden";
+
     }
+
 }
 
 
@@ -968,12 +1271,18 @@ function closeCart() {
             "cartOverlay"
         );
 
+
     if (overlay) {
 
         overlay.classList.remove(
             "active"
         );
+
     }
+
+
+    document.body.style.overflow = "";
+
 }
 
 
@@ -987,17 +1296,22 @@ function removeCartItem(index) {
         index < 0 ||
         index >= cart.length
     ) {
+
         return;
+
     }
+
 
     cart.splice(
         index,
         1
     );
 
+
     saveCart();
 
     updateCartUI();
+
 }
 
 
@@ -1021,11 +1335,14 @@ function calculateCartTotal() {
 
             return (
                 total +
-                price * quantity
+                price *
+                quantity
             );
+
         },
         0
     );
+
 }
 
 
@@ -1043,11 +1360,15 @@ function calculateCartCount() {
 
             return (
                 total +
-                (Number(item.quantity) || 0)
+                (
+                    Number(item.quantity) || 0
+                )
             );
+
         },
         0
     );
+
 }
 
 
@@ -1062,10 +1383,12 @@ function updateCartUI() {
             "cartItems"
         );
 
+
     const cartCount =
         document.getElementById(
             "cartCount"
         );
+
 
     const cartTotal =
         document.getElementById(
@@ -1077,6 +1400,7 @@ function updateCartUI() {
 
         cartCount.textContent =
             calculateCartCount();
+
     }
 
 
@@ -1086,23 +1410,29 @@ function updateCartUI() {
             formatPrice(
                 calculateCartTotal()
             );
+
     }
 
 
     if (!cartItems) {
+
         return;
+
     }
 
 
     if (cart.length === 0) {
 
         cartItems.innerHTML = `
+
             <p class="empty-cart">
                 Your bag is empty.
             </p>
+
         `;
 
         return;
+
     }
 
 
@@ -1167,286 +1497,12 @@ function updateCartUI() {
                 `
             )
             .join("");
+
 }
 
 
 /* =========================================================
-   COUNTRY SELECTION
-========================================================= */
-
-function selectShoppingCountry(
-    country
-) {
-
-    if (!countrySettings[country]) {
-
-        console.error(
-            "Invalid country:",
-            country
-        );
-
-        return;
-    }
-
-
-    currentCountry =
-        country;
-
-
-    try {
-
-        localStorage.setItem(
-            "footworldCountry",
-            country
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Could not save country:",
-            error
-        );
-    }
-
-
-    updateCountryUI();
-
-    renderAllProducts();
-
-    updateCartUI();
-
-    updateCheckoutTotal();
-
-    updatePaymentMethods();
-
-    hideCountrySelector();
-}
-
-
-/* =========================================================
-   OLD COUNTRY FUNCTION
-   Keeps old HTML working
-========================================================= */
-
-function selectCountry(
-    country
-) {
-
-    selectShoppingCountry(
-        country
-    );
-}
-
-
-/* =========================================================
-   UPDATE COUNTRY UI
-========================================================= */
-
-function updateCountryUI() {
-
-    const settings =
-        countrySettings[
-            currentCountry
-        ];
-
-    if (!settings) {
-        return;
-    }
-
-
-    const flag =
-        document.getElementById(
-            "headerCountryFlag"
-        );
-
-    const name =
-        document.getElementById(
-            "headerCountryName"
-        );
-
-
-    if (flag) {
-
-        flag.textContent =
-            settings.flag;
-    }
-
-
-    if (name) {
-
-        name.textContent =
-            settings.name;
-    }
-
-
-    const customerCountry =
-        document.getElementById(
-            "customerCountry"
-        );
-
-
-    if (customerCountry) {
-
-        customerCountry.value =
-            currentCountry;
-    }
-
-
-    const currencyNotice =
-        document.getElementById(
-            "currencyNotice"
-        );
-
-
-    if (currencyNotice) {
-
-        currencyNotice.textContent =
-            `Prices shown in ${settings.currency}`;
-    }
-}
-
-
-/* =========================================================
-   HIDE COUNTRY SELECTOR
-========================================================= */
-
-function hideCountrySelector() {
-
-    const gate =
-        document.getElementById(
-            "countryGate"
-        );
-
-    const selector =
-        document.getElementById(
-            "countrySelector"
-        );
-
-
-    if (gate) {
-
-        gate.classList.remove(
-            "active"
-        );
-
-        gate.style.display =
-            "none";
-    }
-
-
-    if (selector) {
-
-        selector.classList.remove(
-            "active"
-        );
-
-        selector.style.display =
-            "none";
-    }
-
-
-    document.body.classList.remove(
-        "country-open"
-    );
-}
-
-
-/* =========================================================
-   SHOW COUNTRY SELECTOR
-========================================================= */
-
-function showCountrySelector() {
-
-    const selector =
-        document.getElementById(
-            "countrySelector"
-        );
-
-    const gate =
-        document.getElementById(
-            "countryGate"
-        );
-
-
-    if (gate) {
-
-        gate.style.display =
-            "none";
-    }
-
-
-    if (selector) {
-
-        selector.style.display =
-            "flex";
-
-        selector.classList.add(
-            "active"
-        );
-    }
-
-
-    document.body.classList.add(
-        "country-open"
-    );
-}
-
-
-/* =========================================================
-   CHANGE COUNTRY BUTTON
-========================================================= */
-
-function changeCountry() {
-
-    showCountrySelector();
-}
-
-
-/* =========================================================
-   FIRST VISIT COUNTRY CHECK
-========================================================= */
-
-function checkCountryGate() {
-
-    const savedCountry =
-        localStorage.getItem(
-            "footworldCountry"
-        );
-
-
-    /*
-       Returning customer
-    */
-
-    if (
-        savedCountry &&
-        countrySettings[savedCountry]
-    ) {
-
-        currentCountry =
-            savedCountry;
-
-        hideCountrySelector();
-
-        return;
-    }
-
-
-    /*
-       First visit
-
-       Do NOT show the main website
-       until country is selected.
-    */
-
-    currentCountry = null;
-
-    showCountrySelector();
-}
-
-
-/* =========================================================
-   COUNTRY CHANGE FROM CHECKOUT
+   COUNTRY FROM CHECKOUT
 ========================================================= */
 
 function countryChanged() {
@@ -1456,24 +1512,34 @@ function countryChanged() {
             "customerCountry"
         );
 
+
     if (!select) {
+
         return;
+
     }
+
 
     const country =
         select.value;
 
+
     if (!countrySettings[country]) {
+
         return;
+
     }
+
 
     currentCountry =
         country;
+
 
     localStorage.setItem(
         "footworldCountry",
         country
     );
+
 
     updateCountryUI();
 
@@ -1481,9 +1547,10 @@ function countryChanged() {
 
     updateCartUI();
 
+    updatePaymentMethods();
+
     updateCheckoutTotal();
 
-    updatePaymentMethods();
 }
 
 
@@ -1500,6 +1567,7 @@ function openCheckout() {
         );
 
         return;
+
     }
 
 
@@ -1514,12 +1582,17 @@ function openCheckout() {
         checkout.classList.add(
             "active"
         );
+
+        document.body.style.overflow =
+            "hidden";
+
     }
 
 
     updateCheckoutTotal();
 
     updatePaymentMethods();
+
 }
 
 
@@ -1540,7 +1613,12 @@ function closeCheckout() {
         checkout.classList.remove(
             "active"
         );
+
     }
+
+
+    document.body.style.overflow = "";
+
 }
 
 
@@ -1550,10 +1628,18 @@ function closeCheckout() {
 
 function updateCheckoutTotal() {
 
+    if (!currentCountry) {
+
+        return;
+
+    }
+
+
     const total =
         document.getElementById(
             "checkoutTotal"
         );
+
 
     if (total) {
 
@@ -1561,6 +1647,7 @@ function updateCheckoutTotal() {
             formatPrice(
                 calculateCartTotal()
             );
+
     }
 
 
@@ -1570,20 +1657,13 @@ function updateCheckoutTotal() {
         );
 
 
-    const settings =
-        countrySettings[
-            currentCountry
-        ];
-
-
-    if (
-        notice &&
-        settings
-    ) {
+    if (notice) {
 
         notice.textContent =
-            `Prices shown in ${settings.currency}`;
+            `Prices shown in ${countrySettings[currentCountry].currency}`;
+
     }
+
 }
 
 
@@ -1593,15 +1673,24 @@ function updateCheckoutTotal() {
 
 function updatePaymentMethods() {
 
+    if (!currentCountry) {
+
+        return;
+
+    }
+
+
     const india =
         document.getElementById(
             "indiaPayments"
         );
 
+
     const canada =
         document.getElementById(
             "canadaPayments"
         );
+
 
     const international =
         document.getElementById(
@@ -1615,6 +1704,7 @@ function updatePaymentMethods() {
             currentCountry === "IN"
                 ? "block"
                 : "none";
+
     }
 
 
@@ -1624,19 +1714,22 @@ function updatePaymentMethods() {
             currentCountry === "CA"
                 ? "block"
                 : "none";
+
     }
 
 
     if (international) {
 
         international.style.display =
-            currentCountry &&
-            currentCountry !== "IN" &&
-            currentCountry !== "CA"
-
+            (
+                currentCountry !== "IN" &&
+                currentCountry !== "CA"
+            )
                 ? "block"
                 : "none";
+
     }
+
 }
 
 
@@ -1653,6 +1746,7 @@ function placeOrder() {
         );
 
         return;
+
     }
 
 
@@ -1734,6 +1828,7 @@ function placeOrder() {
         );
 
         return;
+
     }
 
 
@@ -1750,13 +1845,8 @@ function placeOrder() {
         );
 
         return;
+
     }
-
-
-    const settings =
-        countrySettings[
-            currentCountry
-        ];
 
 
     let message =
@@ -1773,10 +1863,7 @@ function placeOrder() {
         `Phone: ${phone}\n`;
 
     message +=
-        `Country: ${settings.name}\n`;
-
-    message +=
-        `Currency: ${settings.currency}\n\n`;
+        `Country: ${countrySettings[currentCountry].name}\n\n`;
 
 
     message +=
@@ -1788,8 +1875,10 @@ function placeOrder() {
 
             message +=
                 `${item.name} | Size ${item.size} | Qty ${item.quantity} | ${formatPrice(
-                    item.price * item.quantity
+                    Number(item.price) *
+                    Number(item.quantity)
                 )}\n`;
+
         }
     );
 
@@ -1818,11 +1907,12 @@ function placeOrder() {
         "Your order has been prepared.\n\n" +
         "FOOTWORLD will contact you to confirm the order."
     );
+
 }
 
 
 /* =========================================================
-   MODAL OUTSIDE CLICK
+   CLOSE MODALS WHEN CLICKING OUTSIDE
 ========================================================= */
 
 document.addEventListener(
@@ -1834,12 +1924,14 @@ document.addEventListener(
                 "productModal"
             );
 
+
         if (
             productModal &&
             event.target === productModal
         ) {
 
             closeProductModal();
+
         }
 
 
@@ -1848,12 +1940,14 @@ document.addEventListener(
                 "cartOverlay"
             );
 
+
         if (
             cartOverlay &&
             event.target === cartOverlay
         ) {
 
             closeCart();
+
         }
 
 
@@ -1862,12 +1956,14 @@ document.addEventListener(
                 "checkoutOverlay"
             );
 
+
         if (
             checkoutOverlay &&
             event.target === checkoutOverlay
         ) {
 
             closeCheckout();
+
         }
 
     }
@@ -1882,15 +1978,14 @@ document.addEventListener(
     "keydown",
     function(event) {
 
-        if (
-            event.key === "Escape"
-        ) {
+        if (event.key === "Escape") {
 
             closeProductModal();
 
             closeCart();
 
             closeCheckout();
+
         }
 
     }
@@ -1898,7 +1993,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   WEBSITE INITIALIZATION
+   WEBSITE STARTUP
 ========================================================= */
 
 document.addEventListener(
@@ -1906,14 +2001,16 @@ document.addEventListener(
     function() {
 
         /*
-           1. Check country first
+           FIRST:
+           Determine country.
         */
 
         checkCountryGate();
 
 
         /*
-           2. Only render prices if country exists
+           If customer already selected
+           a country, load website.
         */
 
         if (currentCountry) {
@@ -1928,14 +2025,6 @@ document.addEventListener(
 
             updateCheckoutTotal();
 
-        } else {
-
-            /*
-               No country selected yet.
-               Do not show INR by default.
-            */
-
-            updateCartUI();
         }
 
     }
