@@ -12,6 +12,73 @@ const countrySettings = {
     DE: { name: "Germany", flag: "🇩🇪", currency: "EUR", symbol: "€" }
 };
 
+// =========================
+// SHIPPING SETTINGS
+// =========================
+
+const shippingSettings = {
+    IN: {
+        type: "free",
+        amount: 0,
+        label: "FREE SHIPPING",
+        delivery: "3–5 business days"
+    },
+
+    CA: {
+        type: "flat",
+        amount: 29,
+        label: "Standard Shipping",
+        delivery: "5–10 business days"
+    },
+
+    US: {
+        type: "flat",
+        amount: 25,
+        label: "Standard Shipping",
+        delivery: "5–10 business days"
+    },
+
+    GB: {
+        type: "flat",
+        amount: 18,
+        label: "Standard Shipping",
+        delivery: "5–10 business days"
+    },
+
+    AU: {
+        type: "flat",
+        amount: 30,
+        label: "Standard Shipping",
+        delivery: "7–12 business days"
+    },
+
+    DE: {
+        type: "flat",
+        amount: 20,
+        label: "Standard Shipping",
+        delivery: "5–10 business days"
+    }
+};
+
+function getShippingCost() {
+    const shipping = shippingSettings[currentCountry];
+
+    if (!shipping) {
+        return 0;
+    }
+
+    return shipping.amount;
+}
+
+function getShippingInfo() {
+    return shippingSettings[currentCountry] || {
+        type: "flat",
+        amount: 0,
+        label: "Shipping",
+        delivery: "Delivery time varies"
+    };
+}
+
 
 /* =========================================================
    PRODUCTS
@@ -1020,11 +1087,31 @@ function updateCheckoutTotal() {
 
     if (total) {
 
+        const subtotal = calculateCartTotal();
+        const shipping = getShippingCost();
+        const finalTotal = subtotal + shipping;
+
         total.textContent =
-            formatPrice(
-                calculateCartTotal()
-            );
+            formatPrice(finalTotal);
     }
+
+    const notice =
+        document.getElementById(
+            "currencyNotice"
+        );
+
+    if (
+        notice &&
+        currentCountry &&
+        countrySettings[currentCountry]
+    ) {
+
+        const shippingInfo = getShippingInfo();
+
+        notice.textContent =
+            `Prices shown in ${countrySettings[currentCountry].currency} • ${shippingInfo.label} • ${shippingInfo.delivery}`;
+    }
+}
 
     const notice =
         document.getElementById(
