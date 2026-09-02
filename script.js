@@ -1,7 +1,10 @@
 /* =========================================================
-   FOOTWORLD
-   CLEAN WEBSITE SCRIPT
-   COUNTRY + PRODUCTS + CART + CHECKOUT + SHIPPING
+   FOOTWORLD - COMPLETE SCRIPT
+   COUNTRY SELECTION
+   COUNTRY-SPECIFIC PRICES
+   PRODUCTS
+   CART
+   CHECKOUT
 ========================================================= */
 
 
@@ -10,6 +13,7 @@
 ========================================================= */
 
 const countrySettings = {
+
     IN: {
         name: "India",
         flag: "🇮🇳",
@@ -51,63 +55,15 @@ const countrySettings = {
         currency: "EUR",
         symbol: "€"
     }
-};
 
-
-/* =========================================================
-   SHIPPING SETTINGS
-   INDIA:
-   FREE SHIPPING
-   3–5 BUSINESS DAYS
-
-   INTERNATIONAL:
-   TEMPORARY FLAT RATES
-   We can replace these later with live Shiprocket/DHL
-   rates without changing the rest of the website.
-========================================================= */
-
-const shippingSettings = {
-
-    IN: {
-        amount: 0,
-        label: "FREE SHIPPING",
-        delivery: "Delivery in 3–5 business days"
-    },
-
-    CA: {
-        amount: 29,
-        label: "Shipping CA$29",
-        delivery: "Delivery in 5–10 business days"
-    },
-
-    US: {
-        amount: 25,
-        label: "Shipping $25",
-        delivery: "Delivery in 5–10 business days"
-    },
-
-    GB: {
-        amount: 18,
-        label: "Shipping £18",
-        delivery: "Delivery in 5–10 business days"
-    },
-
-    AU: {
-        amount: 30,
-        label: "Shipping A$30",
-        delivery: "Delivery in 7–12 business days"
-    },
-
-    DE: {
-        amount: 20,
-        label: "Shipping €20",
-        delivery: "Delivery in 5–10 business days"
-    }
 };
 
 
 /* =========================================================
    PRODUCTS
+   IMPORTANT:
+   PRICES ARE FIXED BY COUNTRY.
+   NO CURRENCY CONVERSION.
 ========================================================= */
 
 const products = [
@@ -315,20 +271,34 @@ const products = [
 
 
 /* =========================================================
-   GLOBAL STATE
+   CURRENT COUNTRY
 ========================================================= */
 
 let currentCountry =
     localStorage.getItem("footworldCountry") || null;
 
+
+/* =========================================================
+   CART
+========================================================= */
+
 let cart = [];
+
+
+/*
+   IMPORTANT:
+   Old cart data may contain wrong prices.
+   We load it, then repair prices from the product table.
+*/
 
 try {
 
-    cart =
+    const savedCart =
         JSON.parse(
             localStorage.getItem("footworldCart")
         ) || [];
+
+    cart = savedCart;
 
 } catch (error) {
 
@@ -337,13 +307,82 @@ try {
 }
 
 
+/* =========================================================
+   PRODUCT MODAL
+========================================================= */
+
 let selectedProduct = null;
 let selectedSize = null;
 let modalQuantity = 1;
 
 
 /* =========================================================
-   PRICE
+   GET PRODUCT
+========================================================= */
+
+function getProductById(productId) {
+
+    return products.find(
+        product => Number(product.id) === Number(productId)
+    );
+
+}
+
+
+/* =========================================================
+   GET COUNTRY PRICE
+   NO CONVERSION
+========================================================= */
+
+function getProductPrice(product) {
+
+    if (!product) {
+        return 0;
+    }
+
+    if (!product.prices) {
+        return 0;
+    }
+
+    if (
+        currentCountry &&
+        Object.prototype.hasOwnProperty.call(
+            product.prices,
+            currentCountry
+        )
+    ) {
+
+        return Number(
+            product.prices[currentCountry]
+        );
+
+    }
+
+    /*
+       If country is not selected,
+       use India only as fallback.
+    */
+
+    if (
+        Object.prototype.hasOwnProperty.call(
+            product.prices,
+            "IN"
+        )
+    ) {
+
+        return Number(
+            product.prices.IN
+        );
+
+    }
+
+    return 0;
+
+}
+
+
+/* =========================================================
+   FORMAT PRICE
 ========================================================= */
 
 function formatPrice(amount) {
@@ -355,69 +394,98 @@ function formatPrice(amount) {
         return amount;
     }
 
+    const numericAmount =
+        Number(amount) || 0;
+
+
+    if (country.currency === "INR") {
+
+        return (
+            country.symbol +
+            numericAmount.toLocaleString(
+                "en-IN",
+                {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }
+            )
+        );
+
+    }
+
+
     return (
         country.symbol +
-        Number(amount).toLocaleString(
+        numericAmount.toLocaleString(
             "en-US",
             {
-                minimumFractionDigits:
-                    country.currency === "INR" ? 0 : 2,
-
-                maximumFractionDigits:
-                    country.currency === "INR" ? 0 : 2
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
             }
         )
     );
+
 }
 
 
 /* =========================================================
-   PRODUCT PRICE
+   REPAIR CART PRICES
+   VERY IMPORTANT
 ========================================================= */
 
-function getProductPrice(product) {
+function repairCartPrices() {
 
-    if (
-        currentCountry &&
-        product.prices &&
-        product.prices[currentCountry] !== undefined
-    ) {
-
-        return product.prices[currentCountry];
-
+    if (!currentCountry) {
+        return;
     }
 
-    return product.prices?.IN || 0;
+    cart.forEach(item => {
+
+        const product =
+            getProductById(item.productId);
+
+        if (!product) {
+            return;
+        }
+
+        /*
+           Always use the current country's
+           official product price.
+        */
+
+        item.price =
+            getProductPrice(product);
+
+        item.country =
+            currentCountry;
+
+        item.name =
+            product.name;
+
+        item.category =
+            product.category;
+
+        item.image =
+            product.image;
+
+    });
+
+    saveCart();
+
 }
 
 
 /* =========================================================
-   SHIPPING
+   SAVE CART
 ========================================================= */
 
-function getShippingInfo() {
+function saveCart() {
 
-    if (
-        currentCountry &&
-        shippingSettings[currentCountry]
-    ) {
-
-        return shippingSettings[currentCountry];
-
-    }
-
-    return shippingSettings.IN;
-}
-
-
-function getShippingCost() {
-
-    const shipping =
-        getShippingInfo();
-
-    return Number(
-        shipping.amount || 0
+    localStorage.setItem(
+        "footworldCart",
+        JSON.stringify(cart)
     );
+
 }
 
 
@@ -426,6 +494,9 @@ function getShippingCost() {
 ========================================================= */
 
 function createProductCard(product) {
+
+    const price =
+        getProductPrice(product);
 
     return `
 
@@ -450,9 +521,7 @@ function createProductCard(product) {
                 </div>
 
                 <div class="product-price">
-                    ${formatPrice(
-                        getProductPrice(product)
-                    )}
+                    ${formatPrice(price)}
                 </div>
 
                 <button
@@ -468,11 +537,12 @@ function createProductCard(product) {
         </article>
 
     `;
+
 }
 
 
 /* =========================================================
-   RENDER PRODUCT SECTION
+   RENDER SECTION
 ========================================================= */
 
 function renderProductSection(
@@ -481,9 +551,7 @@ function renderProductSection(
 ) {
 
     const container =
-        document.getElementById(
-            containerId
-        );
+        document.getElementById(containerId);
 
     if (!container) {
         return;
@@ -503,6 +571,7 @@ function renderProductSection(
             `<p>No products available.</p>`;
 
         return;
+
     }
 
 
@@ -510,6 +579,7 @@ function renderProductSection(
         sectionProducts
             .map(createProductCard)
             .join("");
+
 }
 
 
@@ -538,6 +608,7 @@ function renderAllProducts() {
         "boys",
         "boysProducts"
     );
+
 }
 
 
@@ -594,6 +665,7 @@ function checkCountryGate() {
 
 
         return;
+
     }
 
 
@@ -619,6 +691,7 @@ function checkCountryGate() {
     document.body.classList.remove(
         "country-selection-active"
     );
+
 }
 
 
@@ -626,22 +699,28 @@ function checkCountryGate() {
    SELECT COUNTRY
 ========================================================= */
 
-function selectShoppingCountry(
-    country
-) {
+function selectShoppingCountry(country) {
 
     if (!countrySettings[country]) {
         return;
     }
 
 
-    currentCountry = country;
+    currentCountry =
+        country;
 
 
     localStorage.setItem(
         "footworldCountry",
         country
     );
+
+
+    /*
+       FIX OLD CART PRICES
+    */
+
+    repairCartPrices();
 
 
     const gate =
@@ -662,11 +741,11 @@ function selectShoppingCountry(
 
     if (selector) {
 
-        selector.style.display = "none";
-
         selector.classList.remove(
             "active"
         );
+
+        selector.style.display = "none";
 
     }
 
@@ -685,6 +764,7 @@ function selectShoppingCountry(
     updateCheckoutTotal();
 
     updatePaymentMethods();
+
 }
 
 
@@ -694,9 +774,8 @@ function selectShoppingCountry(
 
 function selectCountry(country) {
 
-    selectShoppingCountry(
-        country
-    );
+    selectShoppingCountry(country);
+
 }
 
 
@@ -719,8 +798,7 @@ function changeCountry() {
 
     if (selector) {
 
-        selector.style.display =
-            "flex";
+        selector.style.display = "flex";
 
         selector.classList.add(
             "active"
@@ -737,6 +815,7 @@ function changeCountry() {
     document.body.classList.add(
         "country-selection-active"
     );
+
 }
 
 
@@ -752,10 +831,7 @@ function updateCountryUI() {
 
 
     const settings =
-        countrySettings[
-            currentCountry
-        ];
-
+        countrySettings[currentCountry];
 
     if (!settings) {
         return;
@@ -784,14 +860,18 @@ function updateCountryUI() {
 
 
     if (flag) {
+
         flag.textContent =
             settings.flag;
+
     }
 
 
     if (name) {
+
         name.textContent =
             settings.name;
+
     }
 
 
@@ -805,13 +885,11 @@ function updateCountryUI() {
 
     if (currencyNotice) {
 
-        const shipping =
-            getShippingInfo();
-
         currencyNotice.textContent =
-            `Prices shown in ${settings.currency} • ${shipping.label} • ${shipping.delivery}`;
+            `Prices shown in ${settings.currency}`;
 
     }
+
 }
 
 
@@ -819,27 +897,24 @@ function updateCountryUI() {
    PRODUCT MODAL
 ========================================================= */
 
-function openProductModal(
-    productId
-) {
+function openProductModal(productId) {
 
     const product =
-        products.find(
-            item =>
-                item.id === productId
-        );
-
+        getProductById(productId);
 
     if (!product) {
         return;
     }
 
 
-    selectedProduct = product;
+    selectedProduct =
+        product;
 
-    selectedSize = null;
+    selectedSize =
+        null;
 
-    modalQuantity = 1;
+    modalQuantity =
+        1;
 
 
     const modal =
@@ -955,6 +1030,7 @@ function openProductModal(
             "hidden";
 
     }
+
 }
 
 
@@ -983,11 +1059,12 @@ function closeProductModal() {
         "";
 
 
-    selectedProduct = null;
+    selectedProduct =
+        null;
 
-    selectedSize = null;
+    selectedSize =
+        null;
 
-    modalQuantity = 1;
 }
 
 
@@ -1000,7 +1077,8 @@ function selectProductSize(
     button
 ) {
 
-    selectedSize = size;
+    selectedSize =
+        size;
 
 
     document
@@ -1022,6 +1100,7 @@ function selectProductSize(
         );
 
     }
+
 }
 
 
@@ -1033,16 +1112,23 @@ function changeModalQuantity(
     amount
 ) {
 
-    modalQuantity += amount;
+    modalQuantity +=
+        amount;
 
 
     if (modalQuantity < 1) {
-        modalQuantity = 1;
+
+        modalQuantity =
+            1;
+
     }
 
 
     if (modalQuantity > 20) {
-        modalQuantity = 20;
+
+        modalQuantity =
+            20;
+
     }
 
 
@@ -1058,11 +1144,12 @@ function changeModalQuantity(
             modalQuantity;
 
     }
+
 }
 
 
 /* =========================================================
-   ADD PRODUCT TO CART
+   ADD TO CART
 ========================================================= */
 
 function addSelectedProductToCart() {
@@ -1079,16 +1166,25 @@ function addSelectedProductToCart() {
         );
 
         return;
+
     }
+
+
+    const currentPrice =
+        getProductPrice(
+            selectedProduct
+        );
 
 
     const existing =
         cart.find(
             item =>
-                item.productId ===
-                    selectedProduct.id &&
-                item.size ===
-                    selectedSize &&
+                Number(item.productId) ===
+                    Number(selectedProduct.id) &&
+
+                String(item.size) ===
+                    String(selectedSize) &&
+
                 item.country ===
                     currentCountry
         );
@@ -1098,6 +1194,13 @@ function addSelectedProductToCart() {
 
         existing.quantity +=
             modalQuantity;
+
+        /*
+           Always refresh the price
+        */
+
+        existing.price =
+            currentPrice;
 
     } else {
 
@@ -1125,9 +1228,8 @@ function addSelectedProductToCart() {
                 currentCountry,
 
             price:
-                getProductPrice(
-                    selectedProduct
-                )
+                currentPrice
+
         });
 
     }
@@ -1140,19 +1242,7 @@ function addSelectedProductToCart() {
     closeProductModal();
 
     openCart();
-}
 
-
-/* =========================================================
-   SAVE CART
-========================================================= */
-
-function saveCart() {
-
-    localStorage.setItem(
-        "footworldCart",
-        JSON.stringify(cart)
-    );
 }
 
 
@@ -1163,51 +1253,76 @@ function saveCart() {
 function calculateCartCount() {
 
     return cart.reduce(
+
         (total, item) =>
+
             total +
             Number(
                 item.quantity || 0
             ),
+
         0
+
     );
+
 }
 
 
 /* =========================================================
-   CART SUBTOTAL
+   CART TOTAL
 ========================================================= */
 
 function calculateCartTotal() {
 
+    /*
+       IMPORTANT:
+       Recalculate every cart item using
+       the CURRENT country price table.
+
+       This prevents:
+       ₹7000 -> CA$7000
+    */
+
     return cart.reduce(
-        (total, item) =>
-            total +
-            Number(
-                item.price || 0
-            ) *
-            Number(
-                item.quantity || 0
-            ),
+
+        (total, item) => {
+
+            const product =
+                getProductById(
+                    item.productId
+                );
+
+
+            if (!product) {
+                return total;
+            }
+
+
+            const correctPrice =
+                getProductPrice(
+                    product
+                );
+
+
+            return (
+                total +
+                correctPrice *
+                Number(
+                    item.quantity || 0
+                )
+            );
+
+        },
+
         0
+
     );
+
 }
 
 
 /* =========================================================
-   FINAL ORDER TOTAL
-========================================================= */
-
-function calculateOrderTotal() {
-
-    return (
-        calculateCartTotal() +
-        getShippingCost()
-    );
-}
-
-
-/* =========================================================
-   UPDATE CART
+   UPDATE CART UI
 ========================================================= */
 
 function updateCartUI() {
@@ -1226,6 +1341,13 @@ function updateCartUI() {
         document.getElementById(
             "cartTotal"
         );
+
+
+    /*
+       Repair stored cart before display.
+    */
+
+    repairCartPrices();
 
 
     if (cartCount) {
@@ -1262,63 +1384,91 @@ function updateCartUI() {
         `;
 
         return;
+
     }
 
 
     cartItems.innerHTML =
+
         cart
             .map(
-                (item, index) => `
+                (item, index) => {
 
-                    <div class="cart-item">
+                    const product =
+                        getProductById(
+                            item.productId
+                        );
 
-                        <img
-                            src="${item.image}"
-                            alt="${item.name}"
-                            onerror="this.src='https://placehold.co/200x250?text=FOOTWORLD'"
-                        >
 
-                        <div class="cart-item-info">
+                    if (!product) {
+                        return "";
+                    }
 
-                            <h4>
-                                ${item.name}
-                            </h4>
 
-                            <p>
-                                ${item.category}
-                            </p>
+                    const correctPrice =
+                        getProductPrice(
+                            product
+                        );
 
-                            <p>
-                                Size: ${item.size}
-                            </p>
 
-                            <p>
-                                Quantity: ${item.quantity}
-                            </p>
+                    const itemTotal =
+                        correctPrice *
+                        Number(
+                            item.quantity || 0
+                        );
 
-                            <p>
-                                ${formatPrice(
-                                    item.price *
-                                    item.quantity
-                                )}
-                            </p>
+
+                    return `
+
+                        <div class="cart-item">
+
+                            <img
+                                src="${product.image}"
+                                alt="${product.name}"
+                                onerror="this.src='https://placehold.co/200x250?text=FOOTWORLD'"
+                            >
+
+                            <div class="cart-item-info">
+
+                                <h4>
+                                    ${product.name}
+                                </h4>
+
+                                <p>
+                                    ${product.category}
+                                </p>
+
+                                <p>
+                                    Size: ${item.size}
+                                </p>
+
+                                <p>
+                                    Quantity: ${item.quantity}
+                                </p>
+
+                                <p>
+                                    ${formatPrice(itemTotal)}
+                                </p>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="remove-item"
+                                onclick="removeCartItem(${index})"
+                            >
+                                REMOVE
+                            </button>
 
                         </div>
 
+                    `;
 
-                        <button
-                            type="button"
-                            class="remove-item"
-                            onclick="removeCartItem(${index})"
-                        >
-                            REMOVE
-                        </button>
-
-                    </div>
-
-                `
+                }
             )
             .join("");
+
 }
 
 
@@ -1332,7 +1482,9 @@ function removeCartItem(index) {
         index < 0 ||
         index >= cart.length
     ) {
+
         return;
+
     }
 
 
@@ -1347,6 +1499,7 @@ function removeCartItem(index) {
     updateCartUI();
 
     updateCheckoutTotal();
+
 }
 
 
@@ -1369,6 +1522,7 @@ function openCart() {
         );
 
     }
+
 }
 
 
@@ -1391,11 +1545,12 @@ function closeCart() {
         );
 
     }
+
 }
 
 
 /* =========================================================
-   OPEN CHECKOUT
+   CHECKOUT
 ========================================================= */
 
 function openCheckout() {
@@ -1407,6 +1562,7 @@ function openCheckout() {
         );
 
         return;
+
     }
 
 
@@ -1428,6 +1584,7 @@ function openCheckout() {
     updateCheckoutTotal();
 
     updatePaymentMethods();
+
 }
 
 
@@ -1450,26 +1607,110 @@ function closeCheckout() {
         );
 
     }
+
 }
 
 
 /* =========================================================
-   UPDATE CHECKOUT TOTAL
+   SHIPPING
+   TEMPORARY FIXED SHIPPING
+   UNTIL SHIPROCKET X IS CONNECTED
+========================================================= */
+
+const shippingSettings = {
+
+    IN: {
+        price: 0,
+        label: "FREE SHIPPING",
+        delivery: "3–5 business days"
+    },
+
+    CA: {
+        price: 29,
+        label: "Standard Shipping",
+        delivery: "5–10 business days"
+    },
+
+    US: {
+        price: 25,
+        label: "Standard Shipping",
+        delivery: "5–10 business days"
+    },
+
+    GB: {
+        price: 18,
+        label: "Standard Shipping",
+        delivery: "5–10 business days"
+    },
+
+    AU: {
+        price: 30,
+        label: "Standard Shipping",
+        delivery: "7–12 business days"
+    },
+
+    DE: {
+        price: 20,
+        label: "Standard Shipping",
+        delivery: "5–10 business days"
+    }
+
+};
+
+
+/* =========================================================
+   GET SHIPPING
+========================================================= */
+
+function getShippingPrice() {
+
+    if (
+        !currentCountry ||
+        !shippingSettings[currentCountry]
+    ) {
+
+        return 0;
+
+    }
+
+
+    return Number(
+        shippingSettings[currentCountry].price
+    ) || 0;
+
+}
+
+
+/* =========================================================
+   CHECKOUT TOTAL
 ========================================================= */
 
 function updateCheckoutTotal() {
 
-    const total =
+    const totalElement =
         document.getElementById(
             "checkoutTotal"
         );
 
 
-    if (total) {
+    const productTotal =
+        calculateCartTotal();
 
-        total.textContent =
+
+    const shipping =
+        getShippingPrice();
+
+
+    const finalTotal =
+        productTotal +
+        shipping;
+
+
+    if (totalElement) {
+
+        totalElement.textContent =
             formatPrice(
-                calculateOrderTotal()
+                finalTotal
             );
 
     }
@@ -1487,14 +1728,21 @@ function updateCheckoutTotal() {
         countrySettings[currentCountry]
     ) {
 
-        const shipping =
-            getShippingInfo();
+        const shippingInfo =
+            shippingSettings[currentCountry];
 
 
         notice.textContent =
-            `Prices shown in ${countrySettings[currentCountry].currency} • ${shipping.label} • ${shipping.delivery}`;
+            `Prices shown in ${
+                countrySettings[currentCountry].currency
+            } • ${
+                shippingInfo
+                    ? shippingInfo.label
+                    : ""
+            }`;
 
     }
+
 }
 
 
@@ -1554,11 +1802,12 @@ function updatePaymentMethods() {
                 : "none";
 
     }
+
 }
 
 
 /* =========================================================
-   CUSTOMER COUNTRY CHANGE
+   CUSTOMER COUNTRY
 ========================================================= */
 
 function countryChanged() {
@@ -1577,6 +1826,7 @@ function countryChanged() {
     selectShoppingCountry(
         select.value
     );
+
 }
 
 
@@ -1593,6 +1843,7 @@ function placeOrder() {
         );
 
         return;
+
     }
 
 
@@ -1601,8 +1852,7 @@ function placeOrder() {
             .getElementById(
                 "customerName"
             )
-            ?.value
-            .trim();
+            ?.value.trim();
 
 
     const email =
@@ -1610,8 +1860,7 @@ function placeOrder() {
             .getElementById(
                 "customerEmail"
             )
-            ?.value
-            .trim();
+            ?.value.trim();
 
 
     const phone =
@@ -1619,8 +1868,7 @@ function placeOrder() {
             .getElementById(
                 "customerPhone"
             )
-            ?.value
-            .trim();
+            ?.value.trim();
 
 
     const address =
@@ -1628,8 +1876,7 @@ function placeOrder() {
             .getElementById(
                 "customerAddress"
             )
-            ?.value
-            .trim();
+            ?.value.trim();
 
 
     const city =
@@ -1637,8 +1884,7 @@ function placeOrder() {
             .getElementById(
                 "customerCity"
             )
-            ?.value
-            .trim();
+            ?.value.trim();
 
 
     const state =
@@ -1646,8 +1892,7 @@ function placeOrder() {
             .getElementById(
                 "customerState"
             )
-            ?.value
-            .trim();
+            ?.value.trim();
 
 
     const pin =
@@ -1655,17 +1900,7 @@ function placeOrder() {
             .getElementById(
                 "customerPin"
             )
-            ?.value
-            .trim();
-
-
-    const landmark =
-        document
-            .getElementById(
-                "customerLandmark"
-            )
-            ?.value
-            .trim();
+            ?.value.trim();
 
 
     if (
@@ -1683,6 +1918,7 @@ function placeOrder() {
         );
 
         return;
+
     }
 
 
@@ -1699,50 +1935,28 @@ function placeOrder() {
         );
 
         return;
+
     }
 
 
     const shipping =
-        getShippingInfo();
-
-
-    const subtotal =
-        calculateCartTotal();
-
-
-    const shippingCost =
-        getShippingCost();
+        getShippingPrice();
 
 
     const orderTotal =
-        subtotal +
-        shippingCost;
+        calculateCartTotal() +
+        shipping;
 
-
-    const orderNumber =
-        "FW-" +
-        Date.now();
-
-
-    /*
-       Build order information.
-       This is ready for future backend/payment
-       integration.
-    */
 
     const orderData = {
 
-        orderNumber:
-
-            orderNumber,
-
-        date:
-
-            new Date().toISOString(),
-
         country:
-
             currentCountry,
+
+        currency:
+            countrySettings[
+                currentCountry
+            ].currency,
 
         customer: {
 
@@ -1764,59 +1978,63 @@ function placeOrder() {
             state:
                 state,
 
-            pin:
-                pin,
-
-            landmark:
-                landmark
+            postalCode:
+                pin
 
         },
 
         items:
             cart.map(
-                item => ({
+                item => {
 
-                    productId:
-                        item.productId,
+                    const product =
+                        getProductById(
+                            item.productId
+                        );
 
-                    name:
-                        item.name,
+                    return {
 
-                    size:
-                        item.size,
+                        productId:
+                            item.productId,
 
-                    quantity:
-                        item.quantity,
+                        productName:
+                            product
+                                ? product.name
+                                : item.name,
 
-                    price:
-                        item.price
+                        size:
+                            item.size,
 
-                })
+                        quantity:
+                            item.quantity,
+
+                        unitPrice:
+                            product
+                                ? getProductPrice(
+                                    product
+                                )
+                                : item.price
+
+                    };
+
+                }
             ),
 
         subtotal:
-
-            subtotal,
+            calculateCartTotal(),
 
         shipping:
-
-            shippingCost,
+            shipping,
 
         total:
-
             orderTotal,
 
-        shippingLabel:
-
-            shipping.label,
-
-        delivery:
-
-            shipping.delivery,
-
         paymentMethod:
+            payment.value,
 
-            payment.value
+        createdAt:
+            new Date().toISOString()
+
     };
 
 
@@ -1826,28 +2044,11 @@ function placeOrder() {
     );
 
 
-    /*
-       Temporary confirmation.
-
-       Real payment/email/order database
-       will be connected in the next step.
-    */
-
     alert(
-
         "Your order has been prepared.\n\n" +
-
-        "Order: " +
-        orderNumber +
-        "\n\n" +
-
-        "Total: " +
-        formatPrice(orderTotal) +
-        "\n\n" +
-
         "FOOTWORLD will contact you to confirm the order."
-
     );
+
 }
 
 
@@ -1918,7 +2119,9 @@ document.addEventListener(
     "keydown",
     function(event) {
 
-        if (event.key === "Escape") {
+        if (
+            event.key === "Escape"
+        ) {
 
             closeProductModal();
 
@@ -1940,19 +2143,26 @@ document.addEventListener(
     "DOMContentLoaded",
     function() {
 
+
         /*
-           First check country.
+           COUNTRY FIRST
         */
 
         checkCountryGate();
 
 
         /*
-           Only render products after
-           country has been selected.
+           COUNTRY SELECTED
         */
 
         if (currentCountry) {
+
+            /*
+               FIX OLD CART PRICES
+            */
+
+            repairCartPrices();
+
 
             updateCountryUI();
 
@@ -1964,12 +2174,14 @@ document.addEventListener(
 
             updateCheckoutTotal();
 
-        } else {
+        }
 
-            /*
-               Country has not been selected.
-               Keep country gate visible.
-            */
+
+        /*
+           COUNTRY NOT SELECTED
+        */
+
+        else {
 
             updateCartUI();
 
