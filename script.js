@@ -1,10 +1,7 @@
 /* =========================================================
-   FOOTWORLD - COMPLETE SCRIPT
-   COUNTRY SELECTION
-   COUNTRY-SPECIFIC PRICES
-   PRODUCTS
-   CART
-   CHECKOUT
+   FOOTWORLD - STEP 2A
+   COUNTRY + PRODUCTS + CART + CHECKOUT
+   SHIPPING BREAKDOWN + ORDER PREPARATION
 ========================================================= */
 
 
@@ -61,9 +58,6 @@ const countrySettings = {
 
 /* =========================================================
    PRODUCTS
-   IMPORTANT:
-   PRICES ARE FIXED BY COUNTRY.
-   NO CURRENCY CONVERSION.
 ========================================================= */
 
 const products = [
@@ -271,7 +265,53 @@ const products = [
 
 
 /* =========================================================
-   CURRENT COUNTRY
+   SHIPPING
+   TEMPORARY UNTIL SHIPROCKET IS CONNECTED
+========================================================= */
+
+const shippingSettings = {
+
+    IN: {
+        amount: 0,
+        label: "FREE SHIPPING",
+        delivery: "3–5 business days"
+    },
+
+    CA: {
+        amount: 29,
+        label: "Standard Shipping",
+        delivery: "5–10 business days"
+    },
+
+    US: {
+        amount: 25,
+        label: "Standard Shipping",
+        delivery: "5–10 business days"
+    },
+
+    GB: {
+        amount: 18,
+        label: "Standard Shipping",
+        delivery: "5–10 business days"
+    },
+
+    AU: {
+        amount: 30,
+        label: "Standard Shipping",
+        delivery: "7–12 business days"
+    },
+
+    DE: {
+        amount: 20,
+        label: "Standard Shipping",
+        delivery: "5–10 business days"
+    }
+
+};
+
+
+/* =========================================================
+   COUNTRY
 ========================================================= */
 
 let currentCountry =
@@ -284,21 +324,12 @@ let currentCountry =
 
 let cart = [];
 
-
-/*
-   IMPORTANT:
-   Old cart data may contain wrong prices.
-   We load it, then repair prices from the product table.
-*/
-
 try {
 
-    const savedCart =
+    cart =
         JSON.parse(
             localStorage.getItem("footworldCart")
         ) || [];
-
-    cart = savedCart;
 
 } catch (error) {
 
@@ -317,72 +348,7 @@ let modalQuantity = 1;
 
 
 /* =========================================================
-   GET PRODUCT
-========================================================= */
-
-function getProductById(productId) {
-
-    return products.find(
-        product => Number(product.id) === Number(productId)
-    );
-
-}
-
-
-/* =========================================================
-   GET COUNTRY PRICE
-   NO CONVERSION
-========================================================= */
-
-function getProductPrice(product) {
-
-    if (!product) {
-        return 0;
-    }
-
-    if (!product.prices) {
-        return 0;
-    }
-
-    if (
-        currentCountry &&
-        Object.prototype.hasOwnProperty.call(
-            product.prices,
-            currentCountry
-        )
-    ) {
-
-        return Number(
-            product.prices[currentCountry]
-        );
-
-    }
-
-    /*
-       If country is not selected,
-       use India only as fallback.
-    */
-
-    if (
-        Object.prototype.hasOwnProperty.call(
-            product.prices,
-            "IN"
-        )
-    ) {
-
-        return Number(
-            product.prices.IN
-        );
-
-    }
-
-    return 0;
-
-}
-
-
-/* =========================================================
-   FORMAT PRICE
+   PRICE FORMAT
 ========================================================= */
 
 function formatPrice(amount) {
@@ -394,50 +360,76 @@ function formatPrice(amount) {
         return amount;
     }
 
-    const numericAmount =
-        Number(amount) || 0;
-
-
-    if (country.currency === "INR") {
-
-        return (
-            country.symbol +
-            numericAmount.toLocaleString(
-                "en-IN",
-                {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
-                }
-            )
-        );
-
-    }
-
-
     return (
+
         country.symbol +
-        numericAmount.toLocaleString(
+
+        Number(amount).toLocaleString(
             "en-US",
             {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
+                minimumFractionDigits:
+                    country.currency === "INR" ? 0 : 2,
+
+                maximumFractionDigits:
+                    country.currency === "INR" ? 0 : 2
             }
         )
+
     );
 
 }
 
 
 /* =========================================================
+   GET PRODUCT
+========================================================= */
+
+function getProductById(productId) {
+
+    return products.find(
+        product =>
+            product.id === Number(productId)
+    );
+
+}
+
+
+/* =========================================================
+   GET CURRENT COUNTRY PRICE
+========================================================= */
+
+function getProductPrice(product) {
+
+    if (
+
+        currentCountry &&
+
+        product &&
+
+        product.prices &&
+
+        product.prices[currentCountry] !== undefined
+
+    ) {
+
+        return product.prices[currentCountry];
+
+    }
+
+    return product?.prices?.IN || 0;
+
+}
+
+
+/* =========================================================
    REPAIR CART PRICES
-   VERY IMPORTANT
+   IMPORTANT:
+   CART ALWAYS USES CURRENT COUNTRY PRICE
 ========================================================= */
 
 function repairCartPrices() {
 
-    if (!currentCountry) {
-        return;
-    }
+    let changed = false;
 
     cart.forEach(item => {
 
@@ -448,43 +440,27 @@ function repairCartPrices() {
             return;
         }
 
-        /*
-           Always use the current country's
-           official product price.
-        */
-
-        item.price =
+        const correctPrice =
             getProductPrice(product);
 
-        item.country =
-            currentCountry;
+        if (Number(item.price) !== Number(correctPrice)) {
 
-        item.name =
-            product.name;
+            item.price = correctPrice;
 
-        item.category =
-            product.category;
+            changed = true;
+        }
 
-        item.image =
-            product.image;
+        item.name = product.name;
+        item.category = product.category;
+        item.image = product.image;
+        item.country = currentCountry;
 
     });
 
-    saveCart();
 
-}
-
-
-/* =========================================================
-   SAVE CART
-========================================================= */
-
-function saveCart() {
-
-    localStorage.setItem(
-        "footworldCart",
-        JSON.stringify(cart)
-    );
+    if (changed) {
+        saveCart();
+    }
 
 }
 
@@ -494,9 +470,6 @@ function saveCart() {
 ========================================================= */
 
 function createProductCard(product) {
-
-    const price =
-        getProductPrice(product);
 
     return `
 
@@ -521,7 +494,9 @@ function createProductCard(product) {
                 </div>
 
                 <div class="product-price">
-                    ${formatPrice(price)}
+                    ${formatPrice(
+                        getProductPrice(product)
+                    )}
                 </div>
 
                 <button
@@ -565,20 +540,15 @@ function renderProductSection(
         );
 
 
-    if (!sectionProducts.length) {
-
-        container.innerHTML =
-            `<p>No products available.</p>`;
-
-        return;
-
-    }
-
-
     container.innerHTML =
-        sectionProducts
-            .map(createProductCard)
-            .join("");
+
+        sectionProducts.length
+
+            ? sectionProducts
+                .map(createProductCard)
+                .join("")
+
+            : `<p>No products available.</p>`;
 
 }
 
@@ -595,11 +565,6 @@ function renderAllProducts() {
     );
 
     renderProductSection(
-        "new",
-        "newProducts"
-    );
-
-    renderProductSection(
         "loafers",
         "loaferProducts"
     );
@@ -607,6 +572,11 @@ function renderAllProducts() {
     renderProductSection(
         "boys",
         "boysProducts"
+    );
+
+    renderProductSection(
+        "new",
+        "newProducts"
     );
 
 }
@@ -619,15 +589,10 @@ function renderAllProducts() {
 function checkCountryGate() {
 
     const gate =
-        document.getElementById(
-            "countryGate"
-        );
+        document.getElementById("countryGate");
 
     const selector =
-        document.getElementById(
-            "countrySelector"
-        );
-
+        document.getElementById("countrySelector");
 
     const saved =
         localStorage.getItem(
@@ -642,27 +607,21 @@ function checkCountryGate() {
 
         currentCountry = null;
 
-
         if (gate) {
             gate.style.display = "flex";
         }
-
 
         if (selector) {
 
             selector.style.display = "flex";
 
-            selector.classList.add(
-                "active"
-            );
+            selector.classList.add("active");
 
         }
-
 
         document.body.classList.add(
             "country-selection-active"
         );
-
 
         return;
 
@@ -676,17 +635,13 @@ function checkCountryGate() {
         gate.style.display = "none";
     }
 
-
     if (selector) {
 
         selector.style.display = "none";
 
-        selector.classList.remove(
-            "active"
-        );
+        selector.classList.remove("active");
 
     }
-
 
     document.body.classList.remove(
         "country-selection-active"
@@ -696,7 +651,7 @@ function checkCountryGate() {
 
 
 /* =========================================================
-   SELECT COUNTRY
+   SELECT SHOPPING COUNTRY
 ========================================================= */
 
 function selectShoppingCountry(country) {
@@ -706,8 +661,7 @@ function selectShoppingCountry(country) {
     }
 
 
-    currentCountry =
-        country;
+    currentCountry = country;
 
 
     localStorage.setItem(
@@ -716,34 +670,20 @@ function selectShoppingCountry(country) {
     );
 
 
-    /*
-       FIX OLD CART PRICES
-    */
-
-    repairCartPrices();
-
-
     const gate =
-        document.getElementById(
-            "countryGate"
-        );
+        document.getElementById("countryGate");
 
     const selector =
-        document.getElementById(
-            "countrySelector"
-        );
+        document.getElementById("countrySelector");
 
 
     if (gate) {
         gate.style.display = "none";
     }
 
-
     if (selector) {
 
-        selector.classList.remove(
-            "active"
-        );
+        selector.classList.remove("active");
 
         selector.style.display = "none";
 
@@ -754,6 +694,8 @@ function selectShoppingCountry(country) {
         "country-selection-active"
     );
 
+
+    repairCartPrices();
 
     updateCountryUI();
 
@@ -800,9 +742,7 @@ function changeCountry() {
 
         selector.style.display = "flex";
 
-        selector.classList.add(
-            "active"
-        );
+        selector.classList.add("active");
 
     }
 
@@ -860,26 +800,20 @@ function updateCountryUI() {
 
 
     if (flag) {
-
         flag.textContent =
             settings.flag;
-
     }
 
 
     if (name) {
-
         name.textContent =
             settings.name;
-
     }
 
 
     if (customerCountry) {
-
         customerCountry.value =
             currentCountry;
-
     }
 
 
@@ -907,14 +841,11 @@ function openProductModal(productId) {
     }
 
 
-    selectedProduct =
-        product;
+    selectedProduct = product;
 
-    selectedSize =
-        null;
+    selectedSize = null;
 
-    modalQuantity =
-        1;
+    modalQuantity = 1;
 
 
     const modal =
@@ -1001,6 +932,7 @@ function openProductModal(productId) {
     if (sizes) {
 
         sizes.innerHTML =
+
             product.sizes
                 .map(
                     size => `
@@ -1022,9 +954,7 @@ function openProductModal(productId) {
 
     if (modal) {
 
-        modal.classList.add(
-            "active"
-        );
+        modal.classList.add("active");
 
         document.body.style.overflow =
             "hidden";
@@ -1055,21 +985,18 @@ function closeProductModal() {
     }
 
 
-    document.body.style.overflow =
-        "";
+    document.body.style.overflow = "";
 
 
-    selectedProduct =
-        null;
+    selectedProduct = null;
 
-    selectedSize =
-        null;
+    selectedSize = null;
 
 }
 
 
 /* =========================================================
-   SELECT SIZE
+   SIZE
 ========================================================= */
 
 function selectProductSize(
@@ -1077,8 +1004,7 @@ function selectProductSize(
     button
 ) {
 
-    selectedSize =
-        size;
+    selectedSize = size;
 
 
     document
@@ -1105,30 +1031,21 @@ function selectProductSize(
 
 
 /* =========================================================
-   MODAL QUANTITY
+   QUANTITY
 ========================================================= */
 
-function changeModalQuantity(
-    amount
-) {
+function changeModalQuantity(amount) {
 
-    modalQuantity +=
-        amount;
+    modalQuantity += amount;
 
 
     if (modalQuantity < 1) {
-
-        modalQuantity =
-            1;
-
+        modalQuantity = 1;
     }
 
 
     if (modalQuantity > 20) {
-
-        modalQuantity =
-            20;
-
+        modalQuantity = 20;
     }
 
 
@@ -1170,23 +1087,19 @@ function addSelectedProductToCart() {
     }
 
 
-    const currentPrice =
-        getProductPrice(
-            selectedProduct
-        );
-
-
     const existing =
         cart.find(
             item =>
-                Number(item.productId) ===
-                    Number(selectedProduct.id) &&
 
-                String(item.size) ===
-                    String(selectedSize) &&
+                item.productId ===
+                    selectedProduct.id &&
+
+                item.size ===
+                    selectedSize &&
 
                 item.country ===
                     currentCountry
+
         );
 
 
@@ -1195,12 +1108,10 @@ function addSelectedProductToCart() {
         existing.quantity +=
             modalQuantity;
 
-        /*
-           Always refresh the price
-        */
-
         existing.price =
-            currentPrice;
+            getProductPrice(
+                selectedProduct
+            );
 
     } else {
 
@@ -1228,7 +1139,9 @@ function addSelectedProductToCart() {
                 currentCountry,
 
             price:
-                currentPrice
+                getProductPrice(
+                    selectedProduct
+                )
 
         });
 
@@ -1247,16 +1160,56 @@ function addSelectedProductToCart() {
 
 
 /* =========================================================
+   SAVE CART
+========================================================= */
+
+function saveCart() {
+
+    localStorage.setItem(
+        "footworldCart",
+        JSON.stringify(cart)
+    );
+
+}
+
+
+/* =========================================================
    CART COUNT
 ========================================================= */
 
 function calculateCartCount() {
 
     return cart.reduce(
+        (total, item) =>
+            total +
+            Number(
+                item.quantity || 0
+            ),
+        0
+    );
+
+}
+
+
+/* =========================================================
+   CART SUBTOTAL
+========================================================= */
+
+function calculateCartSubtotal() {
+
+    repairCartPrices();
+
+
+    return cart.reduce(
 
         (total, item) =>
 
             total +
+
+            Number(
+                item.price || 0
+            ) *
+
             Number(
                 item.quantity || 0
             ),
@@ -1269,52 +1222,45 @@ function calculateCartCount() {
 
 
 /* =========================================================
-   CART TOTAL
+   SHIPPING
 ========================================================= */
 
-function calculateCartTotal() {
+function calculateShipping() {
 
-    /*
-       IMPORTANT:
-       Recalculate every cart item using
-       the CURRENT country price table.
-
-       This prevents:
-       ₹7000 -> CA$7000
-    */
-
-    return cart.reduce(
-
-        (total, item) => {
-
-            const product =
-                getProductById(
-                    item.productId
-                );
+    if (!currentCountry) {
+        return 0;
+    }
 
 
-            if (!product) {
-                return total;
-            }
+    const shipping =
+        shippingSettings[
+            currentCountry
+        ];
 
 
-            const correctPrice =
-                getProductPrice(
-                    product
-                );
+    if (!shipping) {
+        return 0;
+    }
 
 
-            return (
-                total +
-                correctPrice *
-                Number(
-                    item.quantity || 0
-                )
-            );
+    return Number(
+        shipping.amount || 0
+    );
 
-        },
+}
 
-        0
+
+/* =========================================================
+   FINAL ORDER TOTAL
+========================================================= */
+
+function calculateOrderTotal() {
+
+    return (
+
+        calculateCartSubtotal() +
+
+        calculateShipping()
 
     );
 
@@ -1326,6 +1272,9 @@ function calculateCartTotal() {
 ========================================================= */
 
 function updateCartUI() {
+
+    repairCartPrices();
+
 
     const cartItems =
         document.getElementById(
@@ -1343,13 +1292,6 @@ function updateCartUI() {
         );
 
 
-    /*
-       Repair stored cart before display.
-    */
-
-    repairCartPrices();
-
-
     if (cartCount) {
 
         cartCount.textContent =
@@ -1362,7 +1304,7 @@ function updateCartUI() {
 
         cartTotal.textContent =
             formatPrice(
-                calculateCartTotal()
+                calculateCartSubtotal()
             );
 
     }
@@ -1390,84 +1332,58 @@ function updateCartUI() {
 
     cartItems.innerHTML =
 
-        cart
-            .map(
-                (item, index) => {
+        cart.map(
 
-                    const product =
-                        getProductById(
-                            item.productId
-                        );
+            (item, index) => `
 
+                <div class="cart-item">
 
-                    if (!product) {
-                        return "";
-                    }
+                    <img
+                        src="${item.image}"
+                        alt="${item.name}"
+                        onerror="this.src='https://placehold.co/200x250?text=FOOTWORLD'"
+                    >
 
+                    <div class="cart-item-info">
 
-                    const correctPrice =
-                        getProductPrice(
-                            product
-                        );
+                        <h4>
+                            ${item.name}
+                        </h4>
 
+                        <p>
+                            ${item.category}
+                        </p>
 
-                    const itemTotal =
-                        correctPrice *
-                        Number(
-                            item.quantity || 0
-                        );
+                        <p>
+                            Size: ${item.size}
+                        </p>
 
+                        <p>
+                            Quantity: ${item.quantity}
+                        </p>
 
-                    return `
+                        <p>
+                            ${formatPrice(
+                                Number(item.price) *
+                                Number(item.quantity)
+                            )}
+                        </p>
 
-                        <div class="cart-item">
+                    </div>
 
-                            <img
-                                src="${product.image}"
-                                alt="${product.name}"
-                                onerror="this.src='https://placehold.co/200x250?text=FOOTWORLD'"
-                            >
+                    <button
+                        type="button"
+                        class="remove-item"
+                        onclick="removeCartItem(${index})"
+                    >
+                        REMOVE
+                    </button>
 
-                            <div class="cart-item-info">
+                </div>
 
-                                <h4>
-                                    ${product.name}
-                                </h4>
+            `
 
-                                <p>
-                                    ${product.category}
-                                </p>
-
-                                <p>
-                                    Size: ${item.size}
-                                </p>
-
-                                <p>
-                                    Quantity: ${item.quantity}
-                                </p>
-
-                                <p>
-                                    ${formatPrice(itemTotal)}
-                                </p>
-
-                            </div>
-
-
-                            <button
-                                type="button"
-                                class="remove-item"
-                                onclick="removeCartItem(${index})"
-                            >
-                                REMOVE
-                            </button>
-
-                        </div>
-
-                    `;
-
-                }
-            )
-            .join("");
+        ).join("");
 
 }
 
@@ -1479,8 +1395,11 @@ function updateCartUI() {
 function removeCartItem(index) {
 
     if (
+
         index < 0 ||
+
         index >= cart.length
+
     ) {
 
         return;
@@ -1488,11 +1407,7 @@ function removeCartItem(index) {
     }
 
 
-    cart.splice(
-        index,
-        1
-    );
-
+    cart.splice(index, 1);
 
     saveCart();
 
@@ -1566,6 +1481,9 @@ function openCheckout() {
     }
 
 
+    repairCartPrices();
+
+
     const checkout =
         document.getElementById(
             "checkoutOverlay"
@@ -1580,6 +1498,8 @@ function openCheckout() {
 
     }
 
+
+    updateCountryUI();
 
     updateCheckoutTotal();
 
@@ -1612,106 +1532,165 @@ function closeCheckout() {
 
 
 /* =========================================================
-   SHIPPING
-   TEMPORARY FIXED SHIPPING
-   UNTIL SHIPROCKET X IS CONNECTED
+   CREATE CHECKOUT BREAKDOWN
 ========================================================= */
 
-const shippingSettings = {
+function createCheckoutBreakdown() {
 
-    IN: {
-        price: 0,
-        label: "FREE SHIPPING",
-        delivery: "3–5 business days"
-    },
-
-    CA: {
-        price: 29,
-        label: "Standard Shipping",
-        delivery: "5–10 business days"
-    },
-
-    US: {
-        price: 25,
-        label: "Standard Shipping",
-        delivery: "5–10 business days"
-    },
-
-    GB: {
-        price: 18,
-        label: "Standard Shipping",
-        delivery: "5–10 business days"
-    },
-
-    AU: {
-        price: 30,
-        label: "Standard Shipping",
-        delivery: "7–12 business days"
-    },
-
-    DE: {
-        price: 20,
-        label: "Standard Shipping",
-        delivery: "5–10 business days"
-    }
-
-};
-
-
-/* =========================================================
-   GET SHIPPING
-========================================================= */
-
-function getShippingPrice() {
-
-    if (
-        !currentCountry ||
-        !shippingSettings[currentCountry]
-    ) {
-
-        return 0;
-
-    }
-
-
-    return Number(
-        shippingSettings[currentCountry].price
-    ) || 0;
-
-}
-
-
-/* =========================================================
-   CHECKOUT TOTAL
-========================================================= */
-
-function updateCheckoutTotal() {
-
-    const totalElement =
-        document.getElementById(
-            "checkoutTotal"
+    const summary =
+        document.querySelector(
+            ".checkout-summary"
         );
 
 
-    const productTotal =
-        calculateCartTotal();
+    if (!summary) {
+        return;
+    }
 
+
+    let breakdown =
+        document.getElementById(
+            "checkoutBreakdown"
+        );
+
+
+    if (!breakdown) {
+
+        breakdown =
+            document.createElement(
+                "div"
+            );
+
+        breakdown.id =
+            "checkoutBreakdown";
+
+        breakdown.style.marginBottom =
+            "15px";
+
+        breakdown.style.borderTop =
+            "1px solid rgba(0,0,0,0.12)";
+
+        breakdown.style.paddingTop =
+            "15px";
+
+
+        const totalStrong =
+            document.getElementById(
+                "checkoutTotal"
+            );
+
+
+        if (totalStrong) {
+
+            summary.insertBefore(
+                breakdown,
+                totalStrong
+            );
+
+        } else {
+
+            summary.appendChild(
+                breakdown
+            );
+
+        }
+
+    }
+
+
+    const subtotal =
+        calculateCartSubtotal();
 
     const shipping =
-        getShippingPrice();
+        calculateShipping();
+
+    const total =
+        subtotal + shipping;
 
 
-    const finalTotal =
-        productTotal +
-        shipping;
+    const shippingData =
+        shippingSettings[
+            currentCountry
+        ];
 
 
-    if (totalElement) {
+    let shippingText;
 
-        totalElement.textContent =
-            formatPrice(
-                finalTotal
-            );
+
+    if (shipping === 0) {
+
+        shippingText =
+            "FREE";
+
+    } else {
+
+        shippingText =
+            formatPrice(shipping);
+
+    }
+
+
+    breakdown.innerHTML = `
+
+        <div
+            style="
+                display:flex;
+                justify-content:space-between;
+                gap:20px;
+                margin-bottom:8px;
+            "
+        >
+            <span>
+                SUBTOTAL
+            </span>
+
+            <span>
+                ${formatPrice(subtotal)}
+            </span>
+        </div>
+
+
+        <div
+            style="
+                display:flex;
+                justify-content:space-between;
+                gap:20px;
+                margin-bottom:8px;
+            "
+        >
+            <span>
+                SHIPPING
+            </span>
+
+            <span>
+                ${shippingText}
+            </span>
+        </div>
+
+
+        <div
+            style="
+                font-size:12px;
+                opacity:0.7;
+                margin-top:5px;
+            "
+        >
+            ${
+                shippingData
+                    ? shippingData.label +
+                      " • " +
+                      shippingData.delivery
+                    : ""
+            }
+        </div>
+
+    `;
+
+
+    if (totalStrong) {
+
+        totalStrong.textContent =
+            formatPrice(total);
 
     }
 
@@ -1728,20 +1707,27 @@ function updateCheckoutTotal() {
         countrySettings[currentCountry]
     ) {
 
-        const shippingInfo =
-            shippingSettings[currentCountry];
-
-
         notice.textContent =
             `Prices shown in ${
-                countrySettings[currentCountry].currency
-            } • ${
-                shippingInfo
-                    ? shippingInfo.label
-                    : ""
-            }`;
+                countrySettings[
+                    currentCountry
+                ].currency
+            } • Shipping calculated at checkout`;
 
     }
+
+}
+
+
+/* =========================================================
+   UPDATE CHECKOUT TOTAL
+========================================================= */
+
+function updateCheckoutTotal() {
+
+    repairCartPrices();
+
+    createCheckoutBreakdown();
 
 }
 
@@ -1776,8 +1762,11 @@ function updatePaymentMethods() {
     if (india) {
 
         india.style.display =
+
             currentCountry === "IN"
+
                 ? "block"
+
                 : "none";
 
     }
@@ -1786,8 +1775,11 @@ function updatePaymentMethods() {
     if (canada) {
 
         canada.style.display =
+
             currentCountry === "CA"
+
                 ? "block"
+
                 : "none";
 
     }
@@ -1796,12 +1788,31 @@ function updatePaymentMethods() {
     if (international) {
 
         international.style.display =
+
             currentCountry !== "IN" &&
             currentCountry !== "CA"
+
                 ? "block"
+
                 : "none";
 
     }
+
+
+    /*
+       Remove any old payment selection
+       when country changes.
+    */
+
+    document
+        .querySelectorAll(
+            'input[name="paymentMethod"]'
+        )
+        .forEach(
+            radio => {
+                radio.checked = false;
+            }
+        );
 
 }
 
@@ -1831,7 +1842,192 @@ function countryChanged() {
 
 
 /* =========================================================
+   COLLECT ORDER DATA
+========================================================= */
+
+function collectOrderData() {
+
+    repairCartPrices();
+
+
+    const shipping =
+        calculateShipping();
+
+    const subtotal =
+        calculateCartSubtotal();
+
+    const total =
+        subtotal + shipping;
+
+
+    const payment =
+        document.querySelector(
+            'input[name="paymentMethod"]:checked'
+        );
+
+
+    const name =
+        document.getElementById(
+            "customerName"
+        )?.value.trim() || "";
+
+
+    const email =
+        document.getElementById(
+            "customerEmail"
+        )?.value.trim() || "";
+
+
+    const phone =
+        document.getElementById(
+            "customerPhone"
+        )?.value.trim() || "";
+
+
+    const country =
+        document.getElementById(
+            "customerCountry"
+        )?.value ||
+        currentCountry;
+
+
+    const address =
+        document.getElementById(
+            "customerAddress"
+        )?.value.trim() || "";
+
+
+    const city =
+        document.getElementById(
+            "customerCity"
+        )?.value.trim() || "";
+
+
+    const state =
+        document.getElementById(
+            "customerState"
+        )?.value.trim() || "";
+
+
+    const pin =
+        document.getElementById(
+            "customerPin"
+        )?.value.trim() || "";
+
+
+    const landmark =
+        document.getElementById(
+            "customerLandmark"
+        )?.value.trim() || "";
+
+
+    return {
+
+        orderDate:
+            new Date().toISOString(),
+
+        country:
+
+            countrySettings[
+                country
+            ]?.name || country,
+
+        countryCode:
+            country,
+
+        currency:
+            countrySettings[
+                country
+            ]?.currency || "",
+
+        customer: {
+
+            name:
+                name,
+
+            email:
+                email,
+
+            phone:
+                phone,
+
+            address:
+                address,
+
+            city:
+                city,
+
+            state:
+                state,
+
+            postalCode:
+                pin,
+
+            landmark:
+                landmark
+
+        },
+
+        items:
+
+            cart.map(
+                item => ({
+
+                    productId:
+                        item.productId,
+
+                    name:
+                        item.name,
+
+                    category:
+                        item.category,
+
+                    size:
+                        item.size,
+
+                    quantity:
+                        Number(
+                            item.quantity
+                        ),
+
+                    price:
+                        Number(
+                            item.price
+                        ),
+
+                    lineTotal:
+
+                        Number(
+                            item.price
+                        ) *
+
+                        Number(
+                            item.quantity
+                        )
+
+                })
+            ),
+
+        subtotal:
+            subtotal,
+
+        shipping:
+            shipping,
+
+        total:
+            total,
+
+        paymentMethod:
+            payment?.value || ""
+
+    };
+
+}
+
+
+/* =========================================================
    PLACE ORDER
+   STEP 2A = PREPARE ORDER
 ========================================================= */
 
 function placeOrder() {
@@ -1848,69 +2044,63 @@ function placeOrder() {
 
 
     const name =
-        document
-            .getElementById(
-                "customerName"
-            )
-            ?.value.trim();
+        document.getElementById(
+            "customerName"
+        )?.value.trim();
 
 
     const email =
-        document
-            .getElementById(
-                "customerEmail"
-            )
-            ?.value.trim();
+        document.getElementById(
+            "customerEmail"
+        )?.value.trim();
 
 
     const phone =
-        document
-            .getElementById(
-                "customerPhone"
-            )
-            ?.value.trim();
+        document.getElementById(
+            "customerPhone"
+        )?.value.trim();
 
 
     const address =
-        document
-            .getElementById(
-                "customerAddress"
-            )
-            ?.value.trim();
+        document.getElementById(
+            "customerAddress"
+        )?.value.trim();
 
 
     const city =
-        document
-            .getElementById(
-                "customerCity"
-            )
-            ?.value.trim();
+        document.getElementById(
+            "customerCity"
+        )?.value.trim();
 
 
     const state =
-        document
-            .getElementById(
-                "customerState"
-            )
-            ?.value.trim();
+        document.getElementById(
+            "customerState"
+        )?.value.trim();
 
 
     const pin =
-        document
-            .getElementById(
-                "customerPin"
-            )
-            ?.value.trim();
+        document.getElementById(
+            "customerPin"
+        )?.value.trim();
 
 
     if (
+
         !name ||
+
         !email ||
+
         !phone ||
+
         !address ||
+
         !city ||
+
         !state ||
+
         !pin
+
     ) {
 
         alert(
@@ -1939,103 +2129,20 @@ function placeOrder() {
     }
 
 
-    const shipping =
-        getShippingPrice();
+    const orderData =
+        collectOrderData();
 
 
-    const orderTotal =
-        calculateCartTotal() +
-        shipping;
+    /*
+       TEMPORARY:
+       For Step 2A we are NOT charging
+       the customer's card yet.
 
+       The order is only prepared.
 
-    const orderData = {
-
-        country:
-            currentCountry,
-
-        currency:
-            countrySettings[
-                currentCountry
-            ].currency,
-
-        customer: {
-
-            name:
-                name,
-
-            email:
-                email,
-
-            phone:
-                phone,
-
-            address:
-                address,
-
-            city:
-                city,
-
-            state:
-                state,
-
-            postalCode:
-                pin
-
-        },
-
-        items:
-            cart.map(
-                item => {
-
-                    const product =
-                        getProductById(
-                            item.productId
-                        );
-
-                    return {
-
-                        productId:
-                            item.productId,
-
-                        productName:
-                            product
-                                ? product.name
-                                : item.name,
-
-                        size:
-                            item.size,
-
-                        quantity:
-                            item.quantity,
-
-                        unitPrice:
-                            product
-                                ? getProductPrice(
-                                    product
-                                )
-                                : item.price
-
-                    };
-
-                }
-            ),
-
-        subtotal:
-            calculateCartTotal(),
-
-        shipping:
-            shipping,
-
-        total:
-            orderTotal,
-
-        paymentMethod:
-            payment.value,
-
-        createdAt:
-            new Date().toISOString()
-
-    };
+       Real payment connection will be
+       added in the next step.
+    */
 
 
     console.log(
@@ -2045,8 +2152,23 @@ function placeOrder() {
 
 
     alert(
-        "Your order has been prepared.\n\n" +
-        "FOOTWORLD will contact you to confirm the order."
+
+        "Order details are ready.\n\n" +
+
+        "Total: " +
+        formatPrice(
+            orderData.total
+        ) +
+
+        "\n\n" +
+
+        "Payment method: " +
+        orderData.paymentMethod +
+
+        "\n\n" +
+
+        "Next step will connect the real payment system."
+
     );
 
 }
@@ -2067,8 +2189,12 @@ document.addEventListener(
 
 
         if (
+
             productModal &&
-            event.target === productModal
+
+            event.target ===
+                productModal
+
         ) {
 
             closeProductModal();
@@ -2083,8 +2209,12 @@ document.addEventListener(
 
 
         if (
+
             cartOverlay &&
-            event.target === cartOverlay
+
+            event.target ===
+                cartOverlay
+
         ) {
 
             closeCart();
@@ -2099,8 +2229,12 @@ document.addEventListener(
 
 
         if (
+
             checkoutOverlay &&
-            event.target === checkoutOverlay
+
+            event.target ===
+                checkoutOverlay
+
         ) {
 
             closeCheckout();
@@ -2145,7 +2279,7 @@ document.addEventListener(
 
 
         /*
-           COUNTRY FIRST
+           COUNTRY
         */
 
         checkCountryGate();
@@ -2157,12 +2291,7 @@ document.addEventListener(
 
         if (currentCountry) {
 
-            /*
-               FIX OLD CART PRICES
-            */
-
             repairCartPrices();
-
 
             updateCountryUI();
 
