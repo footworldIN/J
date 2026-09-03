@@ -2075,89 +2075,302 @@ function collectOrderData() {
    STEP 2B - SAVE ORDER TO SUPABASE
 ========================================================= */
 
+/* =========================================================
+   PLACE ORDER - SECURE SUPABASE FUNCTION
+========================================================= */
+
 async function placeOrder() {
 
-    /* -----------------------------------------------------
-       BASIC CART CHECK
-    ----------------------------------------------------- */
-
-    if (!cart.length) {
-
-        alert(
-            "Your bag is empty."
-        );
-
+    if (!cart || cart.length === 0) {
+        alert("Your cart is empty.");
         return;
     }
-
-
-    /* -----------------------------------------------------
-       CUSTOMER DETAILS
-    ----------------------------------------------------- */
 
     const name =
-        document.getElementById(
-            "customerName"
-        )?.value.trim() || "";
+        document.getElementById("customerName")?.value.trim();
 
     const email =
-        document.getElementById(
-            "customerEmail"
-        )?.value.trim() || "";
+        document.getElementById("customerEmail")?.value.trim();
 
     const phone =
-        document.getElementById(
-            "customerPhone"
-        )?.value.trim() || "";
+        document.getElementById("customerPhone")?.value.trim();
 
     const address =
-        document.getElementById(
-            "customerAddress"
-        )?.value.trim() || "";
+        document.getElementById("customerAddress")?.value.trim();
 
     const city =
-        document.getElementById(
-            "customerCity"
-        )?.value.trim() || "";
+        document.getElementById("customerCity")?.value.trim();
 
     const state =
-        document.getElementById(
-            "customerState"
-        )?.value.trim() || "";
+        document.getElementById("customerState")?.value.trim();
 
-    const pin =
-        document.getElementById(
-            "customerPin"
-        )?.value.trim() || "";
+    const postalCode =
+        document.getElementById("customerPin")?.value.trim();
 
     const landmark =
-        document.getElementById(
-            "customerLandmark"
-        )?.value.trim() || "";
+        document.getElementById("customerLandmark")?.value.trim();
 
-
-    /* -----------------------------------------------------
-       VALIDATE CUSTOMER DETAILS
-    ----------------------------------------------------- */
-
-    if (
-        !name ||
-        !email ||
-        !phone ||
-        !address ||
-        !city ||
-        !state ||
-        !pin
-    ) {
-
-        alert(
-            "Please complete all required delivery details."
+    const paymentElement =
+        document.querySelector(
+            'input[name="paymentMethod"]:checked'
         );
 
+    if (!name) {
+        alert("Please enter your name.");
         return;
     }
 
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+    }
 
+    if (!phone) {
+        alert("Please enter your phone number.");
+        return;
+    }
+
+    if (!address || !city || !state || !postalCode) {
+        alert("Please complete your delivery address.");
+        return;
+    }
+
+    if (!paymentElement) {
+        alert("Please select a payment method.");
+        return;
+    }
+
+    repairCartPrices();
+
+    const subtotal = calculateCartSubtotal();
+    const shipping = calculateShipping();
+    const total = subtotal + shipping;
+
+    const country =
+        countrySettings[currentCountry];
+
+    const orderNumber =
+        generateOrderNumber();
+
+    const orderPayload = {
+
+        order_number: orderNumber,
+
+        order_date:
+            new Date().toISOString(),
+
+        country_code:
+            currentCountry,
+
+        country_name:
+            country.name,
+
+        currency:
+            country.currency,
+
+        customer_name:
+            name,
+
+        customer_email:
+            email,
+
+        customer_phone:
+            phone,
+
+        customer_address:
+            address,
+
+        customer_city:
+            city,
+
+        customer_state:
+            state,
+
+        customer_postal_code:
+            postalCode,
+
+        customer_landmark:
+            landmark,
+
+        items: cart.map(item => ({
+
+            productId:
+                item.productId,
+
+            name:
+                item.name,
+
+            category:
+                item.category,
+
+            size:
+                item.size,
+
+            quantity:
+                Number(item.quantity),
+
+            price:
+                Number(item.price),
+
+            lineTotal:
+                Number(item.price) *
+                Number(item.quantity)
+
+        })),
+
+        subtotal:
+            Number(subtotal.toFixed(2)),
+
+        shipping:
+            Number(shipping.toFixed(2)),
+
+        total:
+            Number(total.toFixed(2)),
+
+        payment_method:
+            paymentElement.value,
+
+        payment_status:
+            "PENDING",
+
+        order_status:
+            "NEW"
+
+    };
+
+
+    const placeOrderButton =
+        document.querySelector(
+            '#checkoutOverlay button[onclick="placeOrder()"]'
+        );
+
+    if (placeOrderButton) {
+
+        placeOrderButton.disabled = true;
+
+        placeOrderButton.textContent =
+            "SAVING ORDER...";
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "https://ujkomlpfrfnfovwkyisu.supabase.co/functions/v1/create-order-public",
+                {
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json",
+
+                        "apikey":
+                            SUPABASE_PUBLISHABLE_KEY
+
+                    },
+
+                    body:
+                        JSON.stringify(orderPayload)
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok || !result.ok) {
+
+            console.error(
+                "Order error:",
+                result
+            );
+
+            throw new Error(
+                result.error ||
+                "Unable to save order."
+            );
+
+        }
+
+
+        console.log(
+            "ORDER SAVED:",
+            result
+        );
+
+
+        localStorage.setItem(
+            "footworldLastOrder",
+            JSON.stringify(
+                orderPayload
+            )
+        );
+
+
+        /* Clear cart */
+
+        cart = [];
+
+        localStorage.setItem(
+            "footworldCart",
+            JSON.stringify(cart)
+        );
+
+        updateCartUI();
+
+
+        /* Close checkout */
+
+        closeCheckout();
+
+
+        alert(
+            "ORDER RECEIVED!\n\n" +
+            "Order Number: " +
+            result.order.order_number +
+            "\n\n" +
+            "Total: " +
+            formatPrice(total) +
+            "\n\n" +
+            "Payment: " +
+            paymentElement.value +
+            "\n\n" +
+            "Payment Status: PENDING\n\n" +
+            "Thank you for shopping with FOOTWORLD."
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "PLACE ORDER ERROR:",
+            error
+        );
+
+        alert(
+            "We could not complete your order.\n\n" +
+            "Please try again."
+        );
+
+    } finally {
+
+        if (placeOrderButton) {
+
+            placeOrderButton.disabled =
+                false;
+
+            placeOrderButton.textContent =
+                "PLACE ORDER";
+
+        }
+
+    }
+}
     /* -----------------------------------------------------
        PAYMENT METHOD
     ----------------------------------------------------- */
