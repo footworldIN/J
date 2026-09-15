@@ -17,7 +17,22 @@ const SUPABASE_PUBLISHABLE_KEY =
 const SUPABASE_ORDERS_URL =
     `${SUPABASE_URL}/rest/v1/orders`;
 
+/* =========================================================
+   FOOTWORLD - SQUARE SANDBOX
+========================================================= */
 
+const SQUARE_APPLICATION_ID =
+    "sq0idp-Kj5gvaikoa5hs9S9JCqUAA";
+
+const SQUARE_LOCATION_ID =
+    "LW1RR23D5FQ71";
+
+const SQUARE_PAYMENT_FUNCTION =
+    "https://ujkomlpfrfnfovwkyisu.supabase.co/functions/v1/create-square-payment";
+
+let squarePayments = null;
+let squareCard = null;
+let squareCardReady = false;
 /* =========================================================
    CREATE ORDER NUMBER
 ========================================================= */
@@ -2961,7 +2976,125 @@ document.addEventListener(
     }
 );
 
+/* =========================================================
+   INITIALIZE SQUARE CARD
+========================================================= */
 
+async function initializeSquareCard() {
+
+    if (squareCardReady) {
+        return true;
+    }
+
+    if (!window.Square) {
+
+        console.error(
+            "Square Web Payments SDK failed to load."
+        );
+
+        return false;
+    }
+
+    try {
+
+        squarePayments =
+            window.Square.payments(
+                SQUARE_APPLICATION_ID,
+                SQUARE_LOCATION_ID
+            );
+
+        squareCard =
+            await squarePayments.card();
+
+        await squareCard.attach(
+            "#card-container"
+        );
+
+        squareCardReady = true;
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Square card initialization failed:",
+            error
+        );
+
+        return false;
+    }
+}
+
+async function initializeSquareCard() {
+
+    // Step 4 code here
+
+}
+
+
+/* =========================================================
+   SHOW / HIDE SQUARE CARD
+========================================================= */
+
+async function updateSquareCardVisibility() {
+
+    const box =
+        document.getElementById(
+            "squareCardBox"
+        );
+
+    if (!box) {
+        return;
+    }
+
+    const payment =
+        document.querySelector(
+            'input[name="paymentMethod"]:checked'
+        );
+
+    const isCard =
+        payment &&
+        payment.value === "Card" &&
+        currentCountry === "CA";
+
+    if (!isCard) {
+
+        box.style.display = "none";
+
+        return;
+    }
+
+    box.style.display = "block";
+
+    await initializeSquareCard();
+}
+
+/* =========================================================
+   SQUARE PAYMENT METHOD LISTENER
+========================================================= */
+
+document.addEventListener(
+    "change",
+    function(event) {
+
+        if (
+            event.target &&
+            event.target.name === "paymentMethod"
+        ) {
+
+            updateSquareCardVisibility();
+
+        }
+
+    }
+);
+/* =========================================================
+   START WEBSITE
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
 /* =========================================================
    START WEBSITE
 ========================================================= */
